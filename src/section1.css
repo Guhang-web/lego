@@ -1,0 +1,111 @@
+#section1 {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+}
+
+/*  section1 헤더 */
+#section1 #header {
+    display: flex;
+    height: 80px;
+    width: 1240px;
+    position: relative;
+    top: 50px;
+    margin: 0 auto;
+    background-color: yellow;
+    border: 1px solid black;
+    overflow: hidden;
+}
+
+#section1 #header:hover {
+    height: 450px;
+    transition: height 1s ease;
+    z-index: 2;
+}
+
+#section1 #header .legoLogo {
+    height: 80px;
+    width: 80px;
+}
+
+#section1 #header #headerNav {
+    display: flex;
+    height: 80px;
+    width: 1161px;
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: yellow;
+    border-bottom: 2px solid black;
+
+}
+
+#section1 #header #headerNav .meun1 {
+    width: 175px;
+    margin-top: 30px;
+}
+
+#section1 #header #headerNav .meun1 li {
+    margin-bottom: 7px;
+    cursor: pointer;
+}
+#section1 #header #headerNav .meun1 li:hover {
+    color: rgba( 100, 100, 100, 1);
+}
+
+#section1 #header #headerNav .meun1:nth-child(1) {
+    margin-left: 50px;
+}
+
+#section1 #header #headerNav a {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 45px;
+    font-size: 18px;
+}
+
+#section1 #header #headerNav .icon {
+    display: flex;
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    width: 70px;
+    justify-content: space-between;
+}
+#section1 #header #headerNav .icon img{
+    cursor: pointer;
+}
+
+#section1 #section1Meddle {
+    width: 51.6%;
+    height: 200px;
+    position: absolute;
+    top: 57%;
+    left: 49.7%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+#section1 #section1Meddle h1 {
+    font-size: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 26px;
+}
+
+#section1 #section1Meddle h1 span {
+    flex: 1;
+    height: 3px;
+    background: linear-gradient(white);
+}
+
+#section1 #section1Meddle p {
+    text-align: center;
+    font-size: 20px;
+    margin-left: 10px;
+    line-height: 30px;
+}

@@ -1,6 +1,5 @@
 @import 'swiper/css';
 
-
 #section3 {
     height: 100vh;
     width: 100%;
@@ -8,7 +7,7 @@
     position: relative;
 }
 
-/* (A) 스와이퍼가 섹션과 같은 풀 화면 크기 쓰도록 */
+/* 스와이퍼 전체 크기 */
 .s3-swiper {
     width: 100%;
     height: 100vh;
@@ -23,73 +22,117 @@
     height: 100%;
 }
 
-/* 슬라이드 래퍼가 절대좌표 기준이 되도록 */
+/* ── 기본 변수값(네 현재 값) ── */
 .s3-slide {
+    /* 좌측 */
+    --left-top: 231px;
+    --left-left: 140px;
+    --left-width: 585px;
+    --left-gap: 48px;
+
+    /* 가운데 */
+    --center-w: 555px;
+    --center-h: 795px;
+
+    /* VIEW MORE */
+    --vp-top: 297px;
+    --vp-right: -34px;
+    --vp-size: 200px;
+
+    /* 우측 묶음 */
+    --right-bottom: 80px;
+    --right-right: 100px;
+    --right-width: 400px;
+
+    --disney-top: 90px;
+    --dlogo-top: 210px;
+    --dlogo-left: -30px;
+    --dlogo-size: 138px;
+
     position: relative;
     width: 100%;
     height: 100%;
 }
 
+/* 좌측 */
 #section3 .section3Left {
-    width: 585px;
+    width: var(--left-width);
     height: 200px;
     position: relative;
-    top: 231px;
-    left: 140px;
+    top: var(--left-top);
+    left: var(--left-left);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 48px;
+    gap: var(--left-gap);
+}
+
+.section3Left .marvelLogo {
+    width: var(--logo-w, auto);
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .section3Left p {
+    font-size: var(--text-fs, 20px);
+    line-height: var(--text-lh, 33px);
+    max-width: var(--text-mw, none);
     font-size: 20px;
     text-align: right;
     line-height: 33px;
+    position: absolute;
+    top: 160px;
+
 }
 
+/* 가운데 */
 #section3 .section3Meddle {
-    width: 555px;
-    height: 795px;
+    width: var(--center-w);
+    height: var(--center-h);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-
 }
 
+#section3 .section3Meddle .marvelImg {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    left: var(--center-x, 0px);
+    top: var(--center-y, 0px);
+}
+
+/* VIEW MORE */
 #section3 .section3Meddle .viewPoint {
-    width: 200px;
-    height: 200px;
+    width: var(--vp-size);
+    height: var(--vp-size);
     border-radius: 50%;
     background-color: #FFD700;
     position: absolute;
-    top: 297px;
-    right: -34px;
+    top: var(--vp-top);
+    right: var(--vp-right);
     text-align: center;
-}
-
-#section3 .section3Meddle .viewPoint {
     font-size: 24px;
-    line-height: 200px;
+    line-height: var(--vp-size);
 }
 
+/* 우측(프리뷰) */
 #section3 .section3Right {
     position: absolute;
-    bottom: 80px;
-    right: 100px;
-    width: 400px;
+    bottom: var(--right-bottom);
+    right: var(--right-right);
+    width: var(--right-width);
     height: 600px;
-
 }
-
 
 #section3 .section3Right .scroll-hint {
     height: 170px;
     width: 20px;
     color: #444;
-    /* 색 한 번에 관리 */
     display: flex;
     flex-wrap: wrap;
     margin-left: 80px;
@@ -98,16 +141,13 @@
     left: 0;
 }
 
-/* 마우스 외곽선 */
 #section3 .section3Right .scroll-hint .mouse {
     width: 18px;
     height: 28px;
     border: 2px solid currentColor;
     border-radius: 12px;
     display: inline-block;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
+    position: relative;
 }
 
 .scroll-hint .mouse::after {
@@ -140,7 +180,6 @@
     }
 }
 
-/* 세로 텍스트 */
 #section3 .section3Right .scroll-hint .label {
     writing-mode: vertical-rl;
     font-size: 14px;
@@ -149,19 +188,19 @@
 #section3 .section3Right .disneyPoint {
     width: 100%;
     position: absolute;
-    top: 100px;
+    top: var(--disney-top);
 }
 
 #section3 .section3Right .disneyPoint .disneyLogo1 {
-    width: 138px;
-    height: 138px;
+    width: var(--dlogo-size);
+    height: var(--dlogo-size);
     position: absolute;
-    top: 210px;
-    left: -30px;
-    opacity: 0.6;
+    top: var(--dlogo-top);
+    left: var(--dlogo-left);
+    opacity: .6;
 }
 
-/* (B) 우측 흑백 프리뷰 스타일 */
+/* 우측 흑백 프리뷰 */
 #section3 .section3Right .disneyPoint .disneyBlock img {
     width: 100%;
     height: auto;
@@ -171,7 +210,7 @@
     pointer-events: none;
 }
 
-/* (C) ul 기본 여백 제거(배치 흔들림 방지) */
+/* 공통 */
 #section3 ul {
     margin: 0;
     padding: 0;

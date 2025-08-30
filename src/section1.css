@@ -4,6 +4,47 @@
     background-repeat: no-repeat;
     height: 100vh;
     width: 100%;
+    position: relative;
+}
+
+/* 배경 비디오 레이어 */
+#section1 .bg-video{
+  position: absolute;
+  inset: 0;                      /* top:0; right:0; bottom:0; left:0 */
+  overflow: hidden;
+  z-index: 0;                    /* 뒤로 */
+}
+#section1 .bg-video iframe{
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* ✅ cover 트릭: 16:9를 화면 꽉 채우기 */
+  width: 100vw;
+  height: 56.25vw;               /* 100vw * 9/16 */
+  min-height: 100vh;
+  min-width: 177.78vh;           /* 100vh * 16/9 */
+
+  pointer-events: none;          /* 클릭 못 하게 (오버레이 클릭 가능) */
+}
+
+/* 가독성 오버레이 (원하면 진하게/연하게 조정) */
+#section1 .bg-video .bg-overlay{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35)); /* .35~.55 사이 추천 */
+}
+
+/* 콘텐츠/헤더는 비디오 위에 */
+#section1 #header,
+#section1 #section1Meddle{
+  position: relative;
+  z-index: 1;
+}
+
+/* ⚠️ 모바일에서는 비디오 숨기고 이미지 배경만 사용 */
+@media (max-width: 768px){
+  #section1 .bg-video{ display: none; }
 }
 
 /*  section1 헤더 */

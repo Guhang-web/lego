@@ -16,32 +16,38 @@
     height: 1529px;
     background-color: #fff1d7;
     position: relative;
+    overflow: hidden;
 }
-#section4 #section4Main .section4Up{
+/* section4 Up */
+#section4 #section4Main .section4Up {
     display: flex;
     width: 100%;
-    height: 480px;
+    height: 515px;
     position: relative;
-    top: 60px;
+    top: 100px;
 }
+
 #section4 #section4Main .section4Up .col-left img:nth-child(1) {
     position: absolute;
     top: 0px;
     left: 250px;
 }
+
 #section4 #section4Main .section4Up .col-left img:nth-child(2) {
     position: absolute;
     bottom: 0;
-    left: 140px;
+    left: 150px;
 }
-#section4 #section4Main .section4Up .col-center{
+
+#section4 #section4Main .section4Up .col-center {
     height: 400px;
     width: 720px;
     position: absolute;
     top: 140px;
     left: 360px;
 }
-#section4 #section4Main .section4Up .col-center .eyebrow{
+
+#section4 #section4Main .section4Up .col-center .eyebrow {
     width: 150px;
     height: 40px;
     background-color: #ffd700;
@@ -53,30 +59,97 @@
 
 #section4 #section4Main .section4Up .col-center h2 {
     font-size: 80px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
+
 #section4 #section4Main .section4Up .col-center p {
     font-size: 24px;
     line-height: 35px;
 }
 
-#section4 #section4Main .section4Up .col-right{
+#section4 #section4Main .section4Up .col-right {
     position: absolute;
-    top: 86px;
-    right: 247px;
+    top: 80px;
+    right: 155px;
     width: 200px;
     height: 200px;
 }
+
 #section4 #section4Main .section4Up .col-right img:nth-child(2) {
     position: absolute;
     top: 79px;
-left: 28px;
+    left: 28px;
 }
 
 
-.col{ list-style:none; margin:0; padding:0; }
+.col {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* section4 Meddle */
+#section4 #section4Main .section4Meddle {
+    display: flex;
+    width: 1255px;
+    height: 740px;
+    position: relative;
+    top: 26%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+}
+#section4 #section4Main .section4Meddle ul{
+    width: 310px;
+    height: 588px;
+    position: relative;
+}
+#section4 #section4Main .section4Meddle .greenBox, .redBox {
+top: 115px;
+}
+
+#section4 #section4Main .section4Meddle ul .boxHead {
+    position: absolute;
+    top: 5px;
+    left: 15%;
+    z-index: 2;
+}
+
+#section4 #section4Main .section4Meddle ul .boxBody {
+    position: absolute;
+    top: 40px;
+    left: 0;
+}
+#section4 #section4Main .section4Meddle ul .darkEffet{
+    position: absolute;
+    bottom: 0;
+    left: 6px;
+    z-index: 3;
+}
+#section4 #section4Main .section4Meddle ul .boxImg{
+    position: absolute;
+    bottom: 0;
+    left: 6px;
+    z-index: 2;
+}
+#section4 #section4Main .section4Meddle ul .boxPage {
+    color: white;
+    position: absolute;
+    bottom: 38px;
+    left: 42px;
+    z-index: 3;
+}
+#section4 #section4Main .section4Meddle ul .boxPage h3{
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+#section4 #section4Main .section4Meddle ul .boxPage p{
+    font-size: 15px;
+}
 
 
+
+
+/* section4 Down */
 #section4 #section4Main .section4Down {
     width: 100%;
     height: 309px;
@@ -84,60 +157,115 @@ left: 28px;
     bottom: 0;
     left: 0;
 }
-    #section4 #section4Main .section4Down .section4LeftDown {
-        width: 320px;
-        height: 100%;
-        position: relative;
-    }
-    #section4 #section4Main .section4Down .section4LeftDown img:nth-child(1) {
-        position: relative;
-        top: 5px;
-    }
-    #section4 #section4Main .section4Down .section4LeftDown img:nth-child(2) {
-        position: relative;
-        top: 91px;
-        right: 87px;
-    }
-    
-    #section4 #section4Main .section4Down .section4RightDown{
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 474px;
-        height: 220px;
-    }
-    #section4 #section4Main .section4Down .section4RightDown img:nth-child(1) {
-        position: absolute;
-        bottom: 0;
-    }
-    #section4 #section4Main .section4Down .section4RightDown img:nth-child(2) {
-        position: absolute;
-        bottom: 0;
-        right: 128px;
-    }
-    #section4 #section4Main .section4Down .section4RightDown img:nth-child(3) {
-        position: absolute;
-        bottom: 43px;
-        left: 129px;
-    }
-    #section4 #section4Main .section4Down .section4RightDown img:nth-child(4) {
-        position: absolute;
-        top: 3px;
-        left: 215px;
 
-    }
-        #section4 #section4Main .section4Down .section4RightDown img:nth-child(5) {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
-        #section4 #section4Main .section4Down .section4RightDown img:nth-child(6) {
-            position: absolute;
-            top: 3px;
-            right: 42px;
-        }
-        #section4 #section4Main .section4Down .section4RightDown img:nth-child(7) {
-            position: absolute;
-            bottom: 43px;
-            right: 0;
-        }
+#section4 #section4Main .section4Down .section4LeftDown {
+    width: 320px;
+    height: 100%;
+    position: relative;
+}
+
+#section4 #section4Main .section4Down .section4LeftDown img:nth-child(1) {
+    position: relative;
+    top: 5px;
+}
+
+#section4 #section4Main .section4Down .section4LeftDown img:nth-child(2) {
+    position: relative;
+    top: 91px;
+    right: 87px;
+}
+
+#section4 #section4Main .section4Down .section4RightDown {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 474px;
+    height: 220px;
+}
+
+#section4 #section4Main .section4Down .section4RightDown img:nth-child(1) {
+    position: absolute;
+    bottom: 0;
+}
+
+#section4 #section4Main .section4Down .section4RightDown img:nth-child(2) {
+    position: absolute;
+    bottom: 0;
+    right: 128px;
+}
+
+#section4 #section4Main .section4Down .section4RightDown img:nth-child(3) {
+    position: absolute;
+    bottom: 43px;
+    left: 129px;
+}
+
+#section4 #section4Main .section4Down .section4RightDown img:nth-child(4) {
+    position: absolute;
+    top: 3px;
+    left: 215px;
+
+}
+
+#section4 #section4Main .section4Down .section4RightDown img:nth-child(5) {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#section4 #section4Main .section4Down .section4RightDown img:nth-child(6) {
+    position: absolute;
+    top: 3px;
+    right: 42px;
+}
+
+#section4 #section4Main .section4Down .section4RightDown img:nth-child(7) {
+    position: absolute;
+    bottom: 43px;
+    right: 0;
+}
+/* 공통 낙하 애니메이션 */
+.fall {
+  will-change: transform;
+  animation-name: fall-in;               /* fall → fall-in 으로 교체 */
+  animation-duration: var(--dur, 10s);
+  animation-timing-function: cubic-bezier(.22,1,.36,1); /* 자연스러운 착석 */
+  animation-iteration-count: 1;          /* 무한 반복 제거 */
+  animation-fill-mode: both;             /* 끝 상태 유지(translateY(0)) */
+  animation-delay: var(--delay, 0s);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* 뷰포트 기준으로 위→아래 */
+@keyframes fall-in {
+  0%   { transform: translateY(-120vh); opacity: 0; }
+  10%  { opacity: 1; }
+  92%  { transform: translateY(-20px); }     /* 도착 */
+  100% { transform: translateY(0); }     /* 착석 */
+}
+
+
+/* 각 이미지별 개별 타이밍 (서로 안 겹치게 다양화) */
+.piece-1  { --dur: 11s; --delay: 0s;   }
+.piece-2  { --dur: 13s; --delay: 1.4s; }
+.piece-3  { --dur: 9s;  --delay: 0.6s; }
+.piece-4  { --dur: 12s; --delay: 2.1s; }
+
+.piece-5  { --dur: 10s; --delay: 0.8s; }
+.piece-6  { --dur: 14s; --delay: 1.2s; }
+.piece-7  { --dur: 9.5s;--delay: 2.6s; }
+.piece-8  { --dur: 12.5s;--delay: 3.0s; }
+
+.piece-9  { --dur: 11.5s;--delay: 0.3s; }
+.piece-10 { --dur: 13.5s;--delay: 1.8s; }
+.piece-11 { --dur: 10.5s;--delay: 2.9s; }
+.piece-12 { --dur: 15s; --delay: 0.9s; }
+.piece-13 { --dur: 9.8s;--delay: 1.7s; }
+.piece-14 { --dur: 12.8s;--delay: 2.3s; }
+.piece-15 { --dur: 14.2s;--delay: 3.4s; }
+
+/* 접근성: 사용자가 모션 감소 선호 시 정지 */
+@media (prefers-reduced-motion: reduce) {
+  .fall { animation: none !important; opacity: 1 !important; transform: none !important; }
+}

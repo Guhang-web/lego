@@ -7,7 +7,11 @@
     position: relative;
 }
 
-/* 스와이퍼 전체 크기 */
+.section3Left .abs {
+    position: absolute;
+}
+
+/* 스와이퍼 전체 */
 .s3-swiper {
     width: 100%;
     height: 100vh;
@@ -22,34 +26,25 @@
     height: 100%;
 }
 
-/* ── 기본 변수값(네 현재 값) ── */
+/* 기본 변수 */
 .s3-slide {
-    /* 좌측 */
     --left-top: 231px;
     --left-left: 140px;
     --left-width: 585px;
     --left-gap: 48px;
-
-    /* 가운데 */
-    --center-w: 555px;
-    --center-h: 795px;
-
-    /* VIEW MORE */
+    --logo-left: auto;
+    --center-max-w: 1000px;
+    --center-max-h: 1000px;
     --vp-top: 297px;
     --vp-right: -34px;
     --vp-size: 200px;
-
-    /* 우측 묶음 */
     --right-bottom: 80px;
     --right-right: 100px;
     --right-width: 400px;
-
-    --disney-top: 90px;
-    --dlogo-top: 210px;
-    --dlogo-left: -30px;
+    --disney-top: 80px;
+    --dlogo-top: 230px;
+    --dlogo-left: -35px;
     --dlogo-size: 138px;
-
-    position: relative;
     width: 100%;
     height: 100%;
 }
@@ -68,22 +63,24 @@
 }
 
 .section3Left .marvelLogo {
-    width: var(--logo-w, auto);
-    position: absolute;
-    top: 0;
-    right: 0;
+    width: auto;
+    height: auto;
+    max-width: var(--center-max-w, 600px);
+    max-height: var(--center-max-h, 80vh);
+    object-fit: contain;
+    position: relative;
+    left: var(--left-logo-left, 0px);
+    top: var(--left-logo-top, 0px);
 }
 
 .section3Left p {
     font-size: var(--text-fs, 20px);
     line-height: var(--text-lh, 33px);
     max-width: var(--text-mw, none);
-    font-size: 20px;
     text-align: right;
-    line-height: 33px;
     position: absolute;
-    top: 160px;
-
+    top: var(--left-text-top, auto);
+    left: var(--left-text-left, auto);
 }
 
 /* 가운데 */
@@ -98,15 +95,26 @@
 }
 
 #section3 .section3Meddle .marvelImg {
-    width: 100%;
-    height: auto;
     display: block;
+    width: auto;
+    height: auto;
+    max-width: var(--center-max-w, 600px);
+    max-height: var(--center-max-h, 80vh);
+    object-fit: contain;
+    transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(var(--center-scale, 1));
+    transform-origin: center;
+    will-change: transform;
+    transition: transform 2s ease;
     position: relative;
-    left: var(--center-x, 0px);
-    top: var(--center-y, 0px);
+    z-index: 1;
+
 }
 
-/* VIEW MORE */
+#section3 .section3Meddle .marvelImg:hover {
+    transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * 1.2));
+}
+
+/* VIEW MORE 커서 */
 #section3 .section3Meddle .viewPoint {
     width: var(--vp-size);
     height: var(--vp-size);
@@ -118,6 +126,21 @@
     text-align: center;
     font-size: 24px;
     line-height: var(--vp-size);
+    transition: transform .06s linear, opacity .2s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+#section3 .section3Meddle.cursor-mode {
+    cursor: none;
+}
+
+#section3 .section3Meddle.cursor-mode .viewPoint {
+    left: var(--cursor-x);
+    top: var(--cursor-y);
+    right: auto;
+    transform: translate(-50%, -50%);
+    opacity: .5;
 }
 
 /* 우측(프리뷰) */
@@ -137,7 +160,7 @@
     flex-wrap: wrap;
     margin-left: 80px;
     position: absolute;
-    top: -20px;
+    top: 0;
     left: 0;
 }
 
@@ -153,7 +176,7 @@
 .scroll-hint .mouse::after {
     content: "";
     position: absolute;
-    left: 45%;
+    left: 47%;
     top: 6px;
     width: 4px;
     height: 4px;
@@ -192,22 +215,44 @@
 }
 
 #section3 .section3Right .disneyPoint .disneyLogo1 {
-    width: var(--dlogo-size);
-    height: var(--dlogo-size);
     position: absolute;
-    top: var(--dlogo-top);
-    left: var(--dlogo-left);
-    opacity: .6;
+    opacity: .5;
+    top: var(--dlogo-top, 210px);
+    left: var(--dlogo-left, -30px);
+    width: var(--dlogo-size, 138px);
+    height: var(--dlogo-size, 138px);
 }
 
-/* 우측 흑백 프리뷰 */
+/* 우측 흑백(다음 장 프리뷰) : 클릭 → 중앙 비행 */
 #section3 .section3Right .disneyPoint .disneyBlock img {
-    width: 100%;
-    height: auto;
+    position: absolute;
+    width: var(--right-img-w, 100%);
+    height: var(--right-img-h, auto);
+    top: var(--right-img-top, 0px);
+    left: var(--right-img-left, 0px);
+    filter: grayscale(var(--ghost-gray, 100%));
+    opacity: var(--ghost-opacity, .5);
     display: block;
-    filter: grayscale(100%);
-    opacity: .25;
-    pointer-events: none;
+    cursor: pointer;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transform: translate(0, 0) scale(1);
+    z-index: 5;
+    /* 비행 시 다른 요소 위로 */
+}
+
+#section3 .section3Right .disneyPoint .disneyBlock img.is-flying {
+    transform: translate(var(--fly-x, 0px), var(--fly-y, 0px)) scale(var(--fly-scale, 1));
+    pointer-events: none; /* 클릭 불가능하게 */
+    z-index: 9;
+    transition:transform 0.5s ease;
+}
+
+/* 흑백 이미지 이동 */
+#section3 .section3Right .disneyBlock.is-flying img {
+    transform: translateX(var(--fly-x)) translateY(var(--fly-y)) scale(var(--fly-scale));
+   
+    transition: transform 0.5s ease;
+    /* 애니메이션 */
 }
 
 /* 공통 */

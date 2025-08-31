@@ -165,11 +165,9 @@ function Section3Slide({
     const rect = wrap.getBoundingClientRect();
     setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
-
   // 우측 흑백 이미지 클릭 → 중앙으로 비행 → 슬라이드 이동
   const onGhostClick = (imgEl: HTMLImageElement) => {
     if (!imgEl || !meddleRef.current || !swiper) return;
-    
 
     // 목표: 가운데 메인 컨테이너의 정중앙
     const target = meddleRef.current.getBoundingClientRect();
@@ -177,7 +175,6 @@ function Section3Slide({
 
     const dx = (target.left + target.width / 2) - (imgRect.left + imgRect.width / 2);
     const dy = (target.top + target.height / 2) - (imgRect.top + imgRect.height / 2);
-
     const scale = Math.min(target.width / imgRect.width, target.height / imgRect.height) * 0.9;
 
     // 비행 애니메이션 효과
@@ -186,35 +183,48 @@ function Section3Slide({
     imgEl.style.setProperty('--fly-scale', `${scale.toFixed(3)}`);
     imgEl.classList.add('is-flying');
 
-    // **중앙 이미지(마블 이미지) opacity를 0으로 설정해서 사라지게 처리**
-    const centralImg = document.querySelector('.marvelImg') as HTMLImageElement;
+    // ✅ 현재 슬라이드의 중앙 이미지만 페이드아웃
+    const centralImg = centralImgRef.current;
     if (centralImg) {
-      centralImg.style.opacity = '0'; // 중앙 이미지 사라짐
+      // 트랜지션 보장 (CSS에도 추가했지만 안전빵)
+      centralImg.style.opacity = '0';
     }
-
 
     // 휠 비활성화 (슬라이드 전환 중)
     swiper.mousewheel?.disable?.();
 
-    // 애니메이션 끝나면 슬라이드 전환
     const flightMs = 500;
-    imgEl.addEventListener('transitionend', () => {
-      imgEl.style.opacity = '1'; // 이동 후 투명도 복원
-      swiper.slideTo(index + 1, 700); // 다음 슬라이드로 이동
-      // 휠 다시 활성화
-      setTimeout(() => swiper.mousewheel?.enable?.(), 750);
+    imgEl.addEventListener(
+      'transitionend',
+      () => {
+        imgEl.style.opacity = '1';         // 이동 후 복원
+        swiper.slideTo(index + 1, 700);    // 다음 슬라이드로 이동
 
-      // 상태 리셋 (애니메이션 끝난 후)
-      setTimeout(() => imgEl.classList.remove('is-flying'), 50);
-      // 비행 끝나고 중앙 이미지를 다시 보이게 설정
-      setTimeout(() => {
-        if (centralImg) {
-          centralImg.style.opacity = '1'; // 중앙 이미지 보이게
+        // 휠 다시 활성화
+        setTimeout(() => swiper.mousewheel?.enable?.(), 750);
+
+        // 상태 리셋
+        setTimeout(() => imgEl.classList.remove('is-flying'), 50);
+
+        // ✅ 비행 끝나고 현재 슬라이드 중앙 이미지를 다시 보이게
+        setTimeout(() => {
+          if (centralImg)
+            centralImg.style.opacity = '1';
           imgEl.style.opacity = '0.5';
-        }
-      }, 500); // 500ms 후에 중앙 이미지 복원
-    }, { once: true });
+        }, 500);
+      },
+      { once: true }
+    );
+
+    // 혹시 브라우저가 transitionend를 못 주는 이슈 대비 백업 타이머 (선택)
+    setTimeout(() => {
+      try {
+        const ev = new Event('transitionend');
+        imgEl.dispatchEvent(ev);
+      } catch { }
+    }, flightMs + 50);
   };
+
 
   return (
     <div className="s3-slide" style={toVars(layout)}>
@@ -242,7 +252,7 @@ function Section3Slide({
         onMouseLeave={() => setActive(false)}
         onMouseMove={onMove}
       >
-        <img className="marvelImg" src={image} alt="메인 이미지" />
+        <img ref={centralImgRef} className="marvelImg" src={image} alt="메인 이미지" />
         <li className="viewPoint"><p>VIEW MORE</p></li>
       </ul>
 

@@ -1,0 +1,170 @@
+#section5 {
+    width: 1920px;
+    height: 1626px;
+    background-color: #FFDD60;
+    position: relative;
+    top: 602px;
+}
+
+/* section5Up */
+#section5 #section5Up {
+    width: 100%;
+    height: 530px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+#section5 #section5Up .section5UpLeft {
+    width: 586px;
+    height: 386px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#section5 #section5Up .section5UpRight {
+    width: 800px;
+    height: 295px;
+    position: absolute;
+    bottom: 0;
+    right: 355px;
+    text-align: right;
+}
+
+#section5 #section5Up .section5UpRight .s5UpRightP1 {
+    text-align: center;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #FFD700;
+    position: absolute;
+    right: 0;
+}
+
+#section5 #section5Up .section5UpRight .s5UpRightP1 p {
+    font-size: 24px;
+}
+
+#section5 #section5Up .section5UpRight h2 {
+    margin-top: 70px;
+    font-size: 80px;
+}
+
+#section5 #section5Up .section5UpRight .s5UpRightP2 p {
+    line-height: 40px;
+    font-size: 24px;
+    margin-top: 30px;
+}
+
+/* section5Down */
+#section5 #section5Down {
+    width: 100%;
+    height: 1046px;
+    margin-top: 50px;
+    display: flex;
+}
+
+#section5 #section5Down li {
+    overflow: hidden;
+}
+
+/* section5DownLeft */
+#section5 #section5Down .section5DownLeft {
+    width: 838px;
+    height: 100%;
+    position: relative;
+}
+
+#section5 #section5Down .section5DownLeft li {
+    width: 248px;
+    height: 265px;
+}
+
+#section5 #section5Down .section5DownLeft .section5Lego3 {
+    background: linear-gradient(135deg, #ff6a88 0%, #ff9966 45%, #ffd26f 100%);
+    margin-left: 342px;
+}
+
+#section5 #section5Down .section5DownLeft .section5Lego3 img,
+.section5DownRight .section5Lego6 img,
+.section5DownRight .section5Lego7 img {
+    width: 420px;
+    height: 420px;
+    position: relative;
+    top: 88%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+}
+
+#section5 #section5Down .section5DownLeft .section5Lego5 {
+    margin-left: 590px;
+}
+
+#section5 #section5Down .section5DownLeft .section5Lego8 {
+    margin-left: 342px;
+}
+
+/* sectionDownRight */
+#section5 #section5Down .section5DownRight {
+    height: 100%;
+    width: 1082px;
+    position: relative;
+}
+
+#section5 #section5Down .section5DownRight .section5Lego4 {
+    width: 496px;
+    height: 265px;
+}
+
+#section5 #section5Down .section5DownRight .section5Lego6,
+.section5Lego7,
+.section5Box8 {
+    width: 248px;
+    height: 265px;
+}
+
+#section5 #section5Down .section5DownRight .section5Lego6 {
+    background: linear-gradient(180deg,
+            #ffd32e 0%,
+            #ffae5a 55%,
+            #ff917d 100%);
+    position: absolute;
+    left: 0;
+}
+
+#section5 #section5Down .section5DownRight .section5Lego7 {
+    background: linear-gradient(90deg,
+            #ffd26f 0%,
+            #ffb35b 46%,
+            #ff8fa0 100%);
+    margin-left: 495px;
+}
+
+#section5 #section5Down .section5DownRight .section5Box8 {
+    background-color: #FFA600;
+    margin-left: 248px;
+    text-align: center;
+}
+
+#section5 #section5Down .section5DownRight .section5Box8 p:nth-child(1) {
+    margin-top: 55px;
+    font-size: 20px;
+}
+#section5 #section5Down .section5DownRight .section5Box8 p:nth-child(2) {
+    width: 170px;
+    height: 46px;
+    line-height: 46px;
+    background-color: #D01012;
+    font-size: 18px;
+    color: #FFFFFF;
+    margin: 22px 40px;
+}
+
+#section5 #section5Down .section5DownRight .section5Lego1 {
+position: absolute;
+bottom: 0;
+right: 0;
+width: 550px;
+height: 460px;
+}

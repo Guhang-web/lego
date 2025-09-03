@@ -15,7 +15,7 @@
 .s3-swiper {
     width: 100%;
     height: 100vh;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .s3-swiper .swiper-wrapper {

@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel } from 'swiper/modules';
 import './section3.css';
 
-type LayoutVars = {
+export type LayoutVars = {
   leftTop?: number; leftLeft?: number; leftWidth?: number; leftGap?: number;
   centerW?: number; centerH?: number;
   vpTop?: number; vpRight?: number; vpSize?: number;
@@ -17,7 +17,7 @@ type LayoutVars = {
   ghostOpacity?: number; ghostGray?: number;
 };
 
-type SlideData = {
+export type SlideData = {
   logo: string;
   text: string;
   image: string;
@@ -26,7 +26,7 @@ type SlideData = {
   layout?: LayoutVars;
 };
 
-const baseSlides = [
+export const baseSlides = [
   {
     logo: '/section3Img/marvelLogo.png',
     text: '마블 팬이라면 누구나 마음 속에 자신만의 영웅 이야기가 있기 마련이죠.<br/>자신만의 세계를 만들고 마음 속의 이야기를 한껏 펼쳐보세요!',
@@ -103,13 +103,13 @@ const baseSlides = [
   },
 ] as const;
 
-const slides: SlideData[] = baseSlides.map((s, i, arr) => ({
+export const slides: SlideData[] = baseSlides.map((s, i, arr) => ({
   ...s,
   rightGhost: i < arr.length - 1 ? arr[i + 1].image : undefined,
 }));
 
-type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
-const toVars = (v?: LayoutVars): CSSVarStyle => {
+export type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
+export const toVars = (v?: LayoutVars): CSSVarStyle => {
   const px = (n?: number) => (n === undefined ? undefined : `${n}px`);
   return {
     ...(v?.leftTop !== undefined && { ['--left-top']: px(v.leftTop) }),
@@ -150,7 +150,7 @@ const toVars = (v?: LayoutVars): CSSVarStyle => {
   };
 };
 
-function Section3Slide({
+export function Section3Slide({
   logo, text, image, rightLogo, rightGhost, layout, index, swiper,
 }: SlideData & { index: number; swiper: any }) {
 

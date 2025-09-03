@@ -89,13 +89,22 @@
     width: 175px;
     margin-top: 30px;
 }
+#section1 #header #headerNav .meun1 a{
+    transition: transform 0.7s ease;
+}
+#section1 #header #headerNav .meun1 a:hover{
+    color: rgba( 100, 100, 100, 1);
+    transform: scaleY(1.5);
+}
 
 #section1 #header #headerNav .meun1 li {
     margin-bottom: 7px;
     cursor: pointer;
+    transition: transform 0.7s ease;
 }
 #section1 #header #headerNav .meun1 li:hover {
     color: rgba( 100, 100, 100, 1);
+    transform: scaleY(1.3);
 }
 
 #section1 #header #headerNav .meun1:nth-child(1) {
@@ -119,6 +128,10 @@
 }
 #section1 #header #headerNav .icon img{
     cursor: pointer;
+    transition: transform 0.7s ease;
+}
+#section1 #header #headerNav .icon img:hover{
+transform: scale(1.2);
 }
 
 #section1 #section1Meddle {

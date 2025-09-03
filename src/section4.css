@@ -1,6 +1,8 @@
 #section4 {
     width: 100%;
     height: 100vh;
+    overflow: auto; /* ← 내부 스크롤 허용 */
+    overscroll-behavior: contain;/* 가장자리에서 바깥 섹션으로만 이동하도록 튕김 방지 */
 }
 
 #section4 #section4Head {
@@ -18,6 +20,7 @@
     position: relative;
     overflow: hidden;
 }
+
 /* section4 Up */
 #section4 #section4Main .section4Up {
     display: flex;
@@ -98,51 +101,82 @@
     left: 52%;
     transform: translate(-50%, -50%);
 }
-#section4 #section4Main .section4Meddle ul{
+
+#section4 #section4Main .section4Meddle .section4Box {
     width: 310px;
     height: 588px;
     position: relative;
 }
-#section4 #section4Main .section4Meddle .greenBox, .redBox {
-top: 115px;
+
+#section4 #section4Main .section4Meddle .greenBox,
+.redBox {
+    top: 115px;
 }
 
-#section4 #section4Main .section4Meddle ul .boxHead {
+#section4 #section4Main .section4Meddle .section4Box .boxHead {
     position: absolute;
     top: 5px;
     left: 15%;
     z-index: 2;
 }
 
-#section4 #section4Main .section4Meddle ul .boxBody {
+#section4 #section4Main .section4Meddle .section4Box .boxBody {
     position: absolute;
     top: 40px;
     left: 0;
 }
-#section4 #section4Main .section4Meddle ul .darkEffet{
+
+#section4 #section4Main .section4Meddle .section4Box .darkEffet {
     position: absolute;
     bottom: 0;
-    left: 6px;
+    left: 0;
     z-index: 3;
 }
-#section4 #section4Main .section4Meddle ul .boxImg{
+
+#section4 #section4Main .section4Meddle .section4Box .overBox {
+    width: 300px;
+    height: 514px;
+    overflow: hidden;
     position: absolute;
-    bottom: 0;
-    left: 6px;
-    z-index: 2;
+    top: 73px;
+    left: 5px;
 }
-#section4 #section4Main .section4Meddle ul .boxPage {
-    color: white;
+
+#section4 #section4Main .section4Meddle .section4Box .boxImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#section4 #section4Main .section4Meddle .section4Box .greenImg {
+    left: 28%;
+}
+
+#section4 #section4Main .section4Meddle .section4Box .redImg {
+    left: 81%;
+}
+
+#section4 #section4Main .section4Meddle .section4Box .yellowImg {
+    top: 55%;
+}
+
+#section4 #section4Main .section4Meddle .section4Box .boxPage {
+    color: rgba(255, 255, 255, 0.9);
     position: absolute;
     bottom: 38px;
     left: 42px;
     z-index: 3;
 }
-#section4 #section4Main .section4Meddle ul .boxPage h3{
+
+#section4 #section4Main .section4Meddle .section4Box .boxPage h3 {
     font-size: 34px;
     margin-bottom: 10px;
 }
-#section4 #section4Main .section4Meddle ul .boxPage p{
+
+#section4 #section4Main .section4Meddle .section4Box .boxPage p {
     font-size: 15px;
 }
 
@@ -224,48 +258,185 @@ top: 115px;
     bottom: 43px;
     right: 0;
 }
+
 /* 공통 낙하 애니메이션 */
 .fall {
-  will-change: transform;
-  animation-name: fall-in;               /* fall → fall-in 으로 교체 */
-  animation-duration: var(--dur, 10s);
-  animation-timing-function: cubic-bezier(.22,1,.36,1); /* 자연스러운 착석 */
-  animation-iteration-count: 1;          /* 무한 반복 제거 */
-  animation-fill-mode: both;             /* 끝 상태 유지(translateY(0)) */
-  animation-delay: var(--delay, 0s);
-  backface-visibility: hidden;
-  transform: translateZ(0);
+    will-change: transform;
+    animation-name: fall-in;
+    /* fall → fall-in 으로 교체 */
+    animation-duration: var(--dur, 10s);
+    animation-timing-function: cubic-bezier(.22, 1, .36, 1);
+    /* 자연스러운 착석 */
+    animation-iteration-count: 1;
+    /* 무한 반복 제거 */
+    animation-fill-mode: both;
+    /* 끝 상태 유지(translateY(0)) */
+    animation-delay: var(--delay, 0s);
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 /* 뷰포트 기준으로 위→아래 */
 @keyframes fall-in {
-  0%   { transform: translateY(-120vh); opacity: 0; }
-  10%  { opacity: 1; }
-  92%  { transform: translateY(-20px); }     /* 도착 */
-  100% { transform: translateY(0); }     /* 착석 */
+    0% {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    /* 착석 */
 }
 
 
 /* 각 이미지별 개별 타이밍 (서로 안 겹치게 다양화) */
-.piece-1  { --dur: 11s; --delay: 0s;   }
-.piece-2  { --dur: 13s; --delay: 1.4s; }
-.piece-3  { --dur: 9s;  --delay: 0.6s; }
-.piece-4  { --dur: 12s; --delay: 2.1s; }
+.piece-1 {
+    --dur: 11s;
+    --delay: 0s;
+}
 
-.piece-5  { --dur: 10s; --delay: 0.8s; }
-.piece-6  { --dur: 14s; --delay: 1.2s; }
-.piece-7  { --dur: 9.5s;--delay: 2.6s; }
-.piece-8  { --dur: 12.5s;--delay: 3.0s; }
+.piece-2 {
+    --dur: 13s;
+    --delay: 1.4s;
+}
 
-.piece-9  { --dur: 11.5s;--delay: 0.3s; }
-.piece-10 { --dur: 13.5s;--delay: 1.8s; }
-.piece-11 { --dur: 10.5s;--delay: 2.9s; }
-.piece-12 { --dur: 15s; --delay: 0.9s; }
-.piece-13 { --dur: 9.8s;--delay: 1.7s; }
-.piece-14 { --dur: 12.8s;--delay: 2.3s; }
-.piece-15 { --dur: 14.2s;--delay: 3.4s; }
+.piece-3 {
+    --dur: 9s;
+    --delay: 0.6s;
+}
+
+.piece-4 {
+    --dur: 12s;
+    --delay: 2.1s;
+}
+
+.piece-5 {
+    --dur: 10s;
+    --delay: 0.8s;
+}
+
+.piece-6 {
+    --dur: 14s;
+    --delay: 1.2s;
+}
+
+.piece-7 {
+    --dur: 9.5s;
+    --delay: 2.6s;
+}
+
+.piece-8 {
+    --dur: 12.5s;
+    --delay: 2.7s;
+}
+
+.piece-9 {
+    --dur: 11.5s;
+    --delay: 0.3s;
+}
+
+.piece-10 {
+    --dur: 13.1s;
+    --delay: 1.8s;
+}
+
+.piece-11 {
+    --dur: 10.5s;
+    --delay: 2.9s;
+}
+
+.piece-12 {
+    --dur: 15s;
+    --delay: 0.9s;
+}
+
+.piece-13 {
+    --dur: 9.8s;
+    --delay: 1.7s;
+}
+
+.piece-14 {
+    --dur: 12.8s;
+    --delay: 2.3s;
+}
+
+.piece-15 {
+    --dur: 14.2s;
+    --delay: 2.5s;
+}
 
 /* 접근성: 사용자가 모션 감소 선호 시 정지 */
 @media (prefers-reduced-motion: reduce) {
-  .fall { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .fall {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+/* 오버레이 자체 */
+#section4 #section4Main .section4Meddle .spotlight {
+    position: absolute;
+    inset: 0;
+    /* 부모(.section4Meddle) 정확히 덮기 */
+    display: grid;
+    place-items: center;
+    /* 가운데 딱 */
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 10;
+    /* 기존 요소들 위로 */
+    animation: spotlight-fade 0.8s ease-out;
+}
+
+/* 안쪽 컨테이너 */
+#section4 #section4Main .section4Meddle .spotlightInner {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    display: grid;
+    place-items: center;
+}
+
+/* 확대 이미지 */
+#section4 #section4Main .section4Meddle .spotlightImg {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    will-change: transform;
+    transform-origin: top left;
+    /* FLIP 오차 없애기 */
+    animation: none !important;
+    /* 기존 zoom-in 같은 애니 끄기 */
+}
+
+/* 기본은 대기(안 보임) */
+.fall {
+    opacity: 0;
+    animation-name: none;
+    /* 나머지 duration/ delay/ easing 등은 너가 쓰던 값 유지 */
+}
+
+/* 섹션이 보일 때만 낙하 실행 */
+#section4.s4-in .fall {
+    animation-name: fall-in;
+}
+
+/* 애니메이션 */
+@keyframes spotlight-fade {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
 }

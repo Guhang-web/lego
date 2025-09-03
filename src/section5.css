@@ -1,10 +1,22 @@
 #section5 {
-    width: 1920px;
-    height: 1626px;
+    width: 100%;
+    max-width: 1920px;
+    height: 100vh;
     background-color: #FFDD60;
     position: relative;
-    top: 602px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    --s5-dur: 1.5s;
+    --s5-ease: cubic-bezier(.22, 1, .36, 1);/* 순서: 1 → 3 → 4 → 6 → 7 */
+    --s5-d2: 0s;/* lego2 (맨 먼저) */
+    --s5-d3: .35s;/* lego3 */
+    --s5-d4: .60s;/* lego4 */
+    --s5-d6: .95s;/* lego6 */
+    --s5-d7: 1.20s;/* lego7 */
 }
+
+#section5Inner { min-height: 1626px; position: relative; }
 
 /* section5Up */
 #section5 #section5Up {
@@ -16,11 +28,18 @@
 }
 
 #section5 #section5Up .section5UpLeft {
-    width: 586px;
+    width: 568px;
     height: 386px;
     position: absolute;
     bottom: 0;
     left: 0;
+    overflow: hidden;
+}
+
+#section5 #section5Up .section5UpLeft li {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 #section5 #section5Up .section5UpRight {
@@ -28,7 +47,7 @@
     height: 295px;
     position: absolute;
     bottom: 0;
-    right: 355px;
+    right: 295px;
     text-align: right;
 }
 
@@ -67,11 +86,17 @@
 
 #section5 #section5Down li {
     overflow: hidden;
+    transition: transform 1s ease;
+}
+
+#section5 #section5Down li:hover {
+    transform: scale(1.1);
+    z-index: 100;
 }
 
 /* section5DownLeft */
 #section5 #section5Down .section5DownLeft {
-    width: 838px;
+    width: 857px;
     height: 100%;
     position: relative;
 }
@@ -97,12 +122,19 @@
     transform: translate(-50%, -50%);
 }
 
+.section5DownRight .section5Lego7 img {
+    width: 362px;
+    height: 362px;
+    top: 90%;
+}
+
 #section5 #section5Down .section5DownLeft .section5Lego5 {
     margin-left: 590px;
 }
 
 #section5 #section5Down .section5DownLeft .section5Lego8 {
     margin-left: 342px;
+
 }
 
 /* sectionDownRight */
@@ -145,12 +177,18 @@
     background-color: #FFA600;
     margin-left: 248px;
     text-align: center;
+    transition: all 1s ease;
+}
+
+#section5 #section5Down .section5DownRight .section5Box8:hover {
+    background: linear-gradient(135deg, #FFE199 0%, #FFA600 50%, #FF7A00 100%);
 }
 
 #section5 #section5Down .section5DownRight .section5Box8 p:nth-child(1) {
     margin-top: 55px;
     font-size: 20px;
 }
+
 #section5 #section5Down .section5DownRight .section5Box8 p:nth-child(2) {
     width: 170px;
     height: 46px;
@@ -159,12 +197,114 @@
     font-size: 18px;
     color: #FFFFFF;
     margin: 22px 40px;
+    transition: transform 1s ease;
+}
+
+#section5 #section5Down .section5DownRight .section5Box8 p:nth-child(2):hover {
+    transform: scale(1.2);
 }
 
 #section5 #section5Down .section5DownRight .section5Lego1 {
-position: absolute;
-bottom: 0;
-right: 0;
-width: 550px;
-height: 460px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 550px;
+    height: 460px;
+}
+
+/* 초기: s5-in 아닐 때 왼쪽으로 숨기기 */
+#section5:not(.s5-in) #section5Up .section5UpLeft .section5Lego2>img {
+    transform: translateX(-40%);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* 초기 상태: s5-in 아닐 때만 아래로 숨기기 */
+#section5:not(.s5-in) #section5Down .section5DownLeft .section5Lego3>img,
+#section5:not(.s5-in) #section5Down .section5DownRight .section5Lego6>img,
+#section5:not(.s5-in) #section5Down .section5DownRight .section5Lego7>img {
+    transform: translate(-50%, 40%);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* 초기 상태: s5-in 아닐 때 오른쪽으로 밀어 숨김 */
+#section5:not(.s5-in) #section5Down .section5DownRight .section5Lego4>img {
+    transform: translateX(40%);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+/* in-view: 왼쪽 → 현재 위치로 */
+#section5.s5-in #section5Up .section5UpLeft .section5Lego2>img {
+    animation: s5-slide-left var(--s5-dur) var(--s5-ease) var(--s5-d2) forwards;
+}
+
+/* in-view 되면 순차적으로 위(정위치)로 */
+#section5.s5-in #section5Down .section5DownLeft .section5Lego3>img {
+    animation: s5-rise var(--s5-dur) var(--s5-ease) var(--s5-d3) forwards;
+}
+
+#section5.s5-in #section5Down .section5DownRight .section5Lego6>img {
+    animation: s5-rise var(--s5-dur) var(--s5-ease) var(--s5-d6) forwards;
+}
+
+#section5.s5-in #section5Down .section5DownRight .section5Lego7>img {
+    animation: s5-rise var(--s5-dur) var(--s5-ease) var(--s5-d7) forwards;
+}
+
+/* in-view: 오른쪽→현재 위치로 슬라이드 인 */
+#section5.s5-in #section5Down .section5DownRight .section5Lego4>img {
+    animation: s5-slide-right var(--s5-dur, 1.5s) var(--s5-ease, cubic-bezier(.22, 1, .36, 1)) var(--s5-d4, .15s) forwards;
+}
+
+/* 키프레임(왼쪽에서) */
+@keyframes s5-slide-left {
+    from {
+        transform: translateX(-40%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes s5-slide-right {
+    from {
+        transform: translateX(60%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes s5-rise {
+    from {
+        transform: translate(-50%, 40%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+/* 접근성: 모션 감소 선호 시 정지 */
+@media (prefers-reduced-motion: reduce) {
+
+    #section5.s5-in #section5Down .section5DownLeft .section5Lego3>img,
+    #section5.s5-in #section5Down .section5DownRight .section5Lego6>img,
+    #section5.s5-in #section5Down .section5DownRight .section5Lego7>img {
+        animation: none !important;
+        transform: translate(-50%, -50%) !important;
+        opacity: 1 !important;
+    }
 }

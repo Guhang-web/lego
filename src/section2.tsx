@@ -1,6 +1,7 @@
 // src/components/Section2.tsx  (네 위치에 맞게)
 import { useRef, useEffect } from 'react'
 import './section2.css'
+import StarfieldCanvas from './starfieldCanvas';
 
 export default function Section2() {
   const stageRef = useRef<HTMLDivElement | null>(null)
@@ -53,6 +54,15 @@ export default function Section2() {
 
   return (
     <section id="section2" style={{backgroundColor:'#EDEDED'}}>
+ {/* ⭐ 배경 레이어 */}
+      <StarfieldCanvas
+        density={0.00025}   // 별 개수
+        speed={60}          // 하강 속도(px/s)
+        direction="down"    // 'down' | 'down-right' | 'down-left'
+        twinkle              // 반짝임 on
+      />
+
+
       <div
         id="section2Meddle"
         ref={stageRef}

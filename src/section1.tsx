@@ -67,15 +67,16 @@ export default function Section1() {
                         <li>부속품 브릭</li>
                     </ul>
                     <ul className='icon'>
-                        <li><img src="/section1Img/heart.png" alt="하트 아이콘" /></li>
-                        <li><img src="/section1Img/shoppingBag.png" alt="쇼핑 아이콘" /></li>
+                        <li><img className='heartIcon' src="/section1Img/heart.png" alt="하트 아이콘" /></li>
+                        <li><img className='shoppingBagIcon' src="/section1Img/shoppingBag.png" alt="쇼핑 아이콘" /></li>
+                        <li><img className='meunListIcon' src="/section1Img/meunList.png" alt="메뉴 아이콘" /></li>
                     </ul>
                 </div>
             </header>
             <div id='section1Meddle'>
                 <h1>상상 속 세상을<span className='line'></span>현실로 </h1>
-                <p>상상으로만 그리던 세상, 이제는 눈앞에 펼쳐집니다.</p>
-                <p>레고는 상상의 한계를 넘어서 당신만의 세계를 현실로 만들어줍니다.</p>
+                <p className='p1'>상상으로만 그리던 세상, 이제는 눈앞에 펼쳐집니다.</p>
+                <p className='p2'>레고는 상상의 한계를 넘어서 <span className='p3'>당신만의 세계를 현실로 만들어줍니다.</span></p>
             </div>
         </section>
     )

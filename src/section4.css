@@ -9,8 +9,11 @@
     width: 100%;
     height: 36px;
     display: flex;
-    gap: 200px;
+    gap: 10%;
     justify-content: center;
+}
+#section4 #section4Head img{
+width: 18.4%;
 }
 
 #section4 #section4Main {
@@ -33,13 +36,13 @@
 #section4 #section4Main .section4Up .col-left img:nth-child(1) {
     position: absolute;
     top: 0px;
-    left: 250px;
+    left: 13.2%;
 }
 
 #section4 #section4Main .section4Up .col-left img:nth-child(2) {
     position: absolute;
     bottom: 0;
-    left: 150px;
+    left: 7.91%;
 }
 
 #section4 #section4Main .section4Up .col-center {
@@ -47,7 +50,7 @@
     width: 720px;
     position: absolute;
     top: 140px;
-    left: 360px;
+    left: 18.98%;
 }
 
 #section4 #section4Main .section4Up .col-center .eyebrow {
@@ -439,4 +442,16 @@
     to {
         opacity: 1
     }
+}
+
+/* --------------------------- */
+
+@media (max-width: 1350px) {
+
+#section4 #section4Main .section4Up .col-center {
+    left: 3%;
+}
+#section4 #section4Main .section4Up .col-left img:nth-child(2) {
+   display: none;
+}
 }

@@ -24,6 +24,7 @@
   transform-style: preserve-3d;    /* 3D 회전 유지 */
   transform-origin: center center; /* 회전 기준을 이미지 중앙으로 */
   transition: none;                /* 느려지지 않게 즉각 반응 */
+
 }
 #section2 #section2Meddle .legoBlock h1{
     position: absolute;
@@ -38,16 +39,39 @@
 #section2 #section2Meddle .section2Footer p {
     font-size: 24px;
     margin-left: 90px;
+    line-height: 40px;
 }
 #section2 #section2Meddle .section2Footer .section2FooterBox {
     width: 182px;
     height: 72px;
     line-height: 72px;
     background-color: #ffd700;
-    margin: 20px 325px;
+    margin: 30px 325px;
     cursor: pointer;
     transition: all 0.5s ease;
 }
 #section2 #section2Meddle .section2Footer .section2FooterBox:hover {
 background-color: rgba(200, 200, 200, 0.7);
+}
+
+@media (max-width: 768px) {
+    #section2 #section2Meddle .legoBlock img {
+        width: 80%;
+        margin: 150px 90px;
+    }
+#section2 #section2Meddle .legoBlock h1{
+font-size: 110px;
+left: 52%;
+top: 50%;
+}
+
+#section2 #section2Meddle .section2Footer p {
+    margin-left: 40px;
+    position: relative;
+    bottom: 20px;
+}
+#section2 #section2Meddle .section2Footer .section2FooterBox {
+    margin-left: 310px;
+}
+
 }

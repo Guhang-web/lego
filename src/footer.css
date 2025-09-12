@@ -17,19 +17,20 @@
 #footer #footerUp .footerLogo {
     width: 96px;
     height: 96px;
-    margin-left: 340px;
+    margin-left: 17.9%;
     margin-top: 44px;
+    margin-right: 150px;
     transition: transform 1s ease;
 }
 
 #footer #footerUp .footerLogo:hover {
-      transform: scale(1.3) rotate(360deg);
+    transform: scale(1.3) rotate(360deg);
 }
 
 #footer #footerUp ul {
     display: flex;
     margin-top: 80px;
-    margin-right: 310px;
+    margin-right: 16.22%;
     gap: 20px;
 }
 
@@ -56,8 +57,8 @@
     width: 100%;
     height: 180px;
     margin-top: 60px;
-    margin-left: 340px;
-    gap: 205px;
+    margin-left: 17.8%;
+    gap: 10.8%;
 }
 
 #footer #footerDown ul a {
@@ -88,4 +89,82 @@
 #footer #footerEnd p {
     margin-top: 20px;
     line-height: 15px;
+}
+
+
+/* ---------------------------- */
+
+@media (max-width: 1000px) {
+    #footer #footerUp .footerLogo {
+        margin-left: 5%;
+    }
+
+    #footer #footerDown {
+        margin-left: 5%;
+        gap: 8%;
+    }
+}
+
+@media (max-width: 700px) {
+    #footer #footerUp .footerLogo {
+        margin-left: 5%;
+    }
+
+    #footer #footerUp ul {
+        display: flex;
+        margin-top: 40px;
+        margin-right: 4%;
+        gap: 20px;
+    }
+
+    #footer #footerDown {
+        display: none;
+    }
+#footer #footerEnd {
+    width: 305px;
+    height: 100%;
+    text-align: left;
+    font-size: 14px;
+    border-top: none;
+    margin-left: 5%;
+}
+
+#footer #footerEnd p {
+    margin-top: 20px;
+    line-height: 30px;
+}
+
+}
+
+@media (max-width: 500px) {
+    #footer {
+    width: 100%;
+    position: relative;
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+    #footer #footerUp {
+        height: 110px;
+    }
+    #footer #footerUp .footerLogo {
+        width: 63px;
+        height: 63px;
+    }
+
+    #footer #footerUp ul li:nth-child(1) img {
+        width: 29px;
+        height: 27px;
+        margin-top: 3px;
+    }
+
+    #footer #footerUp ul li:nth-child(2) img {
+        width: 27px;
+        height: 26px;
+    }
+
+    #footer #footerUp ul li:nth-child(3) img {
+        width: 27px;
+        height: 26px;
+    }
 }

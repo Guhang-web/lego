@@ -51,7 +51,7 @@
     transition: all 0.5s ease;
 }
 #section2 #section2Meddle .section2Footer .section2FooterBox:hover {
-background-color: rgba(200, 200, 200, 0.7);
+    background-color: #dd9b00;
 }
 
 @media (max-width: 768px) {

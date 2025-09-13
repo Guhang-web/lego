@@ -28,7 +28,7 @@
 }
 
 #section5 #section5Up .section5UpLeft {
-    width: 568px;
+    width: 29.82%;
     height: 386px;
     position: absolute;
     bottom: 0;
@@ -43,7 +43,7 @@
 }
 
 #section5 #section5Up .section5UpRight {
-    width: 800px;
+    width: 42%;
     height: 295px;
     position: absolute;
     bottom: 0;
@@ -67,12 +67,12 @@
 
 #section5 #section5Up .section5UpRight h2 {
     margin-top: 70px;
-    font-size: 80px;
+    font-size: 4.17vw;
 }
 
 #section5 #section5Up .section5UpRight .s5UpRightP2 p {
     line-height: 40px;
-    font-size: 24px;
+    font-size: 1.25vw;
     margin-top: 30px;
 }
 

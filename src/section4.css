@@ -137,6 +137,7 @@
     bottom: 0;
     left: 0;
     z-index: 3;
+    pointer-events: none;
 }
 
 #section4 #section4Main .section4Meddle .section4Box .overBox {
@@ -155,6 +156,11 @@
     transform: translate(-50%, -50%);
     z-index: 2;
     cursor: pointer;
+    transition: transform 0.3s ease-out;
+}
+
+#section4 #section4Main .section4Meddle .section4Box .boxImg:hover {
+    transform: translate(-50%, -50%) scale(1.05);
 }
 
 #section4 #section4Main .section4Meddle .section4Box .greenImg {

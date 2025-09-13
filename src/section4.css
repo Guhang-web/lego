@@ -1,8 +1,10 @@
 #section4 {
     width: 100%;
     height: 100vh;
-    overflow: auto; /* ← 내부 스크롤 허용 */
-    overscroll-behavior: contain;/* 가장자리에서 바깥 섹션으로만 이동하도록 튕김 방지 */
+    overflow: auto;
+    /* ← 내부 스크롤 허용 */
+    overscroll-behavior: contain;
+    /* 가장자리에서 바깥 섹션으로만 이동하도록 튕김 방지 */
 }
 
 #section4 #section4Head {
@@ -12,8 +14,9 @@
     gap: 10%;
     justify-content: center;
 }
-#section4 #section4Head img{
-width: 18.4%;
+
+#section4 #section4Head img {
+    width: 18.4%;
 }
 
 #section4 #section4Main {
@@ -378,9 +381,19 @@ width: 18.4%;
 /* 접근성: 사용자가 모션 감소 선호 시 정지 */
 @media (prefers-reduced-motion: reduce) {
     .fall {
-        animation: none !important;
-        opacity: 1 !important;
-        transform: none !important;
+        /* animation: none !important; */
+        /* opacity: 1 !important; */
+        /* transform: none !important; */
+    }
+}
+
+#section4.force-anim .fall {
+    animation-play-state: running !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #section4.force-anim .fall {
+        animation: var(--your-fall-animation) !important;
     }
 }
 
@@ -448,10 +461,11 @@ width: 18.4%;
 
 @media (max-width: 1350px) {
 
-#section4 #section4Main .section4Up .col-center {
-    left: 3%;
-}
-#section4 #section4Main .section4Up .col-left img:nth-child(2) {
-   display: none;
-}
+    #section4 #section4Main .section4Up .col-center {
+        left: 3%;
+    }
+
+    #section4 #section4Main .section4Up .col-left img:nth-child(2) {
+        display: none;
+    }
 }

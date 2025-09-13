@@ -303,8 +303,8 @@
     #section5.s5-in #section5Down .section5DownLeft .section5Lego3>img,
     #section5.s5-in #section5Down .section5DownRight .section5Lego6>img,
     #section5.s5-in #section5Down .section5DownRight .section5Lego7>img {
-        animation: none !important;
-        transform: translate(-50%, -50%) !important;
-        opacity: 1 !important;
+        /* animation: none !important; */
+        /* transform: translate(-50%, -50%) !important; */
+        /* opacity: 1 !important; */
     }
 }

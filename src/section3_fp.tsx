@@ -1,6 +1,4 @@
-// src/section3_fp.tsx
-import React, { useRef, useState, useEffect } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { slides, Section3Slide } from "./section3";
 import "./section3.css";
 
@@ -19,18 +17,56 @@ export default function Section3FP({
   exposeApi?: (api: Section3Handle) => void;
 }) {
   const rootRef = useRef<HTMLElement | null>(null);
-  const [swiper, setSwiper] = useState<any>(null);
+  const [index, setIndex] = useState(0);
+  const [lock, setLock] = useState(false);
+  const [fading, setFading] = useState(false);
+  const max = slides.length - 1;
 
-  // 상위(FullPageNav)에 제어 API 전달
+  const goTo = useCallback((i: number) => {
+    const next = Math.max(0, Math.min(max, i));
+    setIndex(next);
+  }, [max]);
+
+  const slideNext = useCallback(() => {
+    if (index >= max) return;
+    setFading(true);
+    setTimeout(() => {
+      goTo(index + 1);
+      setTimeout(() => setFading(false), 300);
+    }, 220);
+  }, [index, max, goTo]);
+
+  const slidePrev = useCallback(() => {
+    if (index <= 0) return;
+    setFading(true);
+    setTimeout(() => {
+      goTo(index - 1);
+      setTimeout(() => setFading(false), 300);
+    }, 220);
+  }, [index, goTo]);
+
+  // 상위에 제어 API 노출
   useEffect(() => {
-    if (!swiper) return;
     exposeApi?.({
-      slideNext: () => swiper.slideNext?.(700),
-      slidePrev: () => swiper.slidePrev?.(700),
-      isBeginning: () => !!swiper.isBeginning,
-      isEnd: () => !!swiper.isEnd,
+      slideNext,
+      slidePrev,
+      isBeginning: () => index === 0,
+      isEnd: () => index === max,
     });
-  }, [swiper, exposeApi]);
+  }, [exposeApi, slideNext, slidePrev, index, max]);
+
+  // 섹션 내부 휠만 소비
+  const onWheel: React.WheelEventHandler<HTMLElement> = (e) => {
+    const dy = e.deltaY;
+    if (Math.abs(dy) < 10) return;
+    if (lock) return;
+    e.preventDefault();
+    setLock(true);
+    if (dy > 0) slideNext(); else slidePrev();
+    setTimeout(() => setLock(false), 750);
+  };
+
+  const s = slides[index];
 
   return (
     <section
@@ -39,22 +75,16 @@ export default function Section3FP({
         rootRef.current = el;
         refEl?.(el);
       }}
+      className="s3-stage"
+      onWheel={onWheel}
     >
-      <Swiper
-        className="s3-swiper"
-        onSwiper={setSwiper}
-        slidesPerView={1}
-        spaceBetween={0}
-        loop={false}
-        speed={700}
-        allowTouchMove={false}   // 전역 휠만 쓰기
-      >
-        {slides.map((s, i) => (
-          <SwiperSlide key={i}>
-            <Section3Slide {...s} index={i} swiper={swiper} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      <Section3Slide
+        {...s}
+        index={index}
+        onNext={slideNext}
+        onPrev={slidePrev}
+        fading={fading}
+      />
     </section>
   );
 }

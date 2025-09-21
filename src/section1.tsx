@@ -99,14 +99,14 @@ export default function Section1() {
                         <li>*특별한 날을 위한 세트</li>
                         <li>*레고&reg; 상품</li>
                         <li>*레고&reg; 데코</li>
-                        <li>*관심분야</li>
+                        {/* <li>*관심분야</li>
                         <li>*독점 제품</li>
                         <li>*신제품</li>
                         <li>*베스트셀러</li>
                         <li>*할인 및 행사</li>
                         <li>*출시 예정</li>
                         <li>*단종 예정</li>
-                        <li>*브릭 액세서리 & 키트</li>
+                        <li>*브릭 액세서리 & 키트</li> */}
                     </ul>
                     <ul className='s2Menu1'>
                         <a href="#">2. 브랜드소개</a>
@@ -115,24 +115,24 @@ export default function Section1() {
                         <li>*레고 매거진</li>
                         <li>*블프 라이브쇼핑</li>
                         <li>*레고 전 제품</li>
-                        <li>*레고 전체 관심사별</li>
+                        {/* <li>*레고 전체 관심사별</li>
                         <li>*특별한 아이디어</li>
                         <li>*어른이 환영</li>
                         <li>*가족 놀이</li>
                         <li>*레고&reg; 포트나이트&reg;</li>
                         <li>*레고&reg; Insiders</li>
                         <li>*레고&reg; MOSAIC MAKER </li>
-                        <li>*레고&reg; 선물 아이디어</li>
+                        <li>*레고&reg; 선물 아이디어</li> */}
                     </ul>
                     <ul className='s2Menu1'>
                         <a href="#">3. 고객지원</a>
                         <li>*주문 현황 확인</li>
                         <li>*배송 및 반품</li>
                         <li>*스토어 검색</li>
-                        <li>*조립설명서 검색</li>
+                        {/* <li>*조립설명서 검색</li>
                         <li>*일반적인 질문</li>
                         <li>*문의하기</li>
-                        <li>*부속품 브릭</li>
+                        <li>*부속품 브릭</li> */}
                     </ul>
                 </div>
             <div id='section1Meddle'>

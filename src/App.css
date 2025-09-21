@@ -5,18 +5,8 @@ body {
 html,
 body {
     overflow-x: hidden;
-    overflow-y: hidden;
 }
 
-/* 지원 브라우저에서는 clip 사용 */
-@supports (overflow: clip) {
-
-    html,
-    body {
-        overflow-x: clip;
-        overflow-y: hidden;
-    }
-}
 
 @font-face {
     font-family: 'Daeojamjil';
@@ -61,9 +51,8 @@ body {
 }
 
 .fp-root {
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
-  overflow: hidden;
   position: relative;
 }
 .fp-track {
@@ -73,9 +62,13 @@ body {
   display: block;
 }
 .fp-section {
-  height: 100vh;
+  /* height: 100vh; */
   width: 100%;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .fp-section.fp-last { height: auto; }
+
+body.s3-locked {            /* 섹션3 활성화 동안 페이지 스크롤 잠금 */
+  overflow: hidden;
+}

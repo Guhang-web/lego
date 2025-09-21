@@ -55,12 +55,12 @@ export default function Section2() {
   return (
     <section id="section2" style={{backgroundColor:'#EDEDED'}}>
  {/* ⭐ 배경 레이어 */}
-      <StarfieldCanvas
+      {/* <StarfieldCanvas
         density={0.00025}   // 별 개수
         speed={60}          // 하강 속도(px/s)
         direction="down"    // 'down' | 'down-right' | 'down-left'
         twinkle              // 반짝임 on
-      />
+      /> */}
 
 
       <div

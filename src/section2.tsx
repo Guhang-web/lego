@@ -1,83 +1,67 @@
-// src/components/Section2.tsx  (네 위치에 맞게)
 import { useRef, useEffect } from 'react'
 import './section2.css'
-import StarfieldCanvas from './starfieldCanvas';
 
 export default function Section2() {
-  const stageRef = useRef<HTMLDivElement | null>(null)
-  const imgRef   = useRef<HTMLImageElement | null>(null)
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const floatImgRef = useRef<HTMLImageElement | null>(null)
+  const rafId = useRef<number | null>(null)
 
-  // 현재 각도/목표 각도 (리렌더 발생 X)
-  const current = useRef({ x: 0, y: 0 })
-  const target  = useRef({ x: 0, y: 0 })
-  const rafId   = useRef<number | null>(null)
-
-  // 애니메이션 루프 (빠르면서도 너무 튀지 않게 보간)
-  const tick = () => {
-    // lerp(보간): 현재 → 목표로 20%씩 다가감 (빠르게 느껴짐)
-    const ease = 0.2
-    current.current.x += (target.current.x - current.current.x) * ease
-    current.current.y += (target.current.y - current.current.y) * ease
-
-    if (imgRef.current) {
-      imgRef.current.style.transform =
-        `rotateX(${current.current.x}deg) rotateY(${current.current.y}deg)`
-    }
-    rafId.current = requestAnimationFrame(tick)
-  }
+  // 🔧 속도/여백 조절
+  const START_OFFSET = 0;
+  const END_MARGIN = 0;
+  const TRACK_OFFSET = 120;
 
   useEffect(() => {
+    const tick = () => {
+      const sec = sectionRef.current
+      const img = floatImgRef.current
+      if (!sec || !img) {
+        rafId.current = requestAnimationFrame(tick)
+        return
+      }
+
+      const secRect = sec.getBoundingClientRect()
+      const secH = secRect.height
+      const imgH = img.getBoundingClientRect().height
+
+      // 섹션 진행도 0~1 (섹션 상단이 뷰포트 상단에 닿는 순간 0)
+      const scrolled = Math.min(Math.max(-secRect.top, 0), secH)
+
+      // 0 → (섹션높이 - 이미지높이 - END_MARGIN) 까지
+      const maxY = Math.max(secH - imgH - END_MARGIN, 0)
+      const yRaw = START_OFFSET + scrolled + TRACK_OFFSET
+      const y = Math.min(Math.max(yRaw, START_OFFSET), START_OFFSET + maxY)
+
+      img.style.setProperty('--ty', `${y}px`);
+      rafId.current = requestAnimationFrame(tick)
+    }
+    const onResize = () => {
+      // 리사이즈 시 한 프레임 재계산 트리거
+      if (rafId.current) cancelAnimationFrame(rafId.current)
+      rafId.current = requestAnimationFrame(tick)
+    }
+
     rafId.current = requestAnimationFrame(tick)
-    return () => { if (rafId.current) cancelAnimationFrame(rafId.current) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    window.addEventListener('resize', onResize)
+
+    return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current)
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    const dx = e.clientX - cx
-    const dy = e.clientY - cy
-
-    // 각도 스케일 (세게/덜 세게 원하면 45를 조절)
-    const max = 180
-    target.current = {
-      x: -(dy / rect.height) * max,
-      y:  (dx / rect.width)  * max,
-    }
-  }
-
-  const handleMouseLeave = () => {
-    // 마우스 나가면 자연스럽게 원위치
-    target.current = { x: 0, y: 0 }
-  }
-
   return (
-    <section id="section2" style={{backgroundColor:'#EDEDED'}}>
- {/* ⭐ 배경 레이어 */}
-      {/* <StarfieldCanvas
-        density={0.00025}   // 별 개수
-        speed={60}          // 하강 속도(px/s)
-        direction="down"    // 'down' | 'down-right' | 'down-left'
-        twinkle              // 반짝임 on
-      /> */}
+    <section id="section2" ref={sectionRef} style={{ backgroundColor: '#EDEDED' }}>
+      <img
+        ref={floatImgRef}
+        src="/section2Img/legoBlock.png"
+        alt="lego"
+        className="legoFloat"
+      />
 
-
-      <div
-        id="section2Meddle"
-        ref={stageRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div id="section2Meddle">
         <ul>
           <li className="legoBlock">
-            {/* ✅ 이미지는 public/section2Img/legoBlock.png 에 두고 이렇게 참조 */}
-            <img
-              ref={imgRef}
-              src="/section2Img/legoBlock.png"
-              alt="lego"
-              className="legoImg"
-            />
             <h1>LEGO</h1>
           </li>
 

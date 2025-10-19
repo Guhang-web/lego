@@ -1,68 +1,146 @@
+// section3.tsx (Wheel 전용 전환 버전)
 import React, { useRef, useState, useCallback, useEffect } from "react";
 import "./section3.css";
 
-/** ----- 타입 & 데이터는 그대로 사용 ----- */
+/* ================== 타입 ================== */
 export type LayoutVars = {
-  leftTop?: number; leftLeft?: number; leftWidth?: number; leftGap?: number;
-  centerW?: number; centerH?: number;
-  vpTop?: number; vpRight?: number; vpSize?: number;
-  rightBottom?: number; rightRight?: number; rightWidth?: number;
-  disneyTop?: number; dLogoTop?: number; dLogoLeft?: number; dLogoSize?: number;
-  logoW?: number; textFS?: number; textLH?: number; textMaxW?: number;
-  logoTop?: number; logoLeft?: number; textTop?: number; textLeft?: number;
-  centerMaxW?: number; centerMaxH?: number; centerX?: number; centerY?: number; centerScale?: number;
-  rightImgW?: number; rightImgH?: number; rightImgTop?: number; rightImgLeft?: number;
-  ghostOpacity?: number; ghostGray?: number;
+  leftTop?: number | string; leftLeft?: number | string; leftWidth?: number | string; leftGap?: number | string;
+  centerW?: number | string; centerH?: number | string;
+  vpTop?: number | string; vpRight?: number | string; vpSize?: number | string;
+  rightBottom?: number | string; rightRight?: number | string; rightWidth?: number | string;
+  disneyTop?: number | string; dLogoTop?: number | string; dLogoLeft?: number | string; dLogoSize?: number | string;
+  logoW?: number | string; textFS?: number | string; textLH?: number | string; textMaxW?: number | string;
+  logoTop?: number | string; logoLeft?: number | string; textTop?: number | string; textLeft?: number | string;
+  centerMaxW?: number | string; centerMaxH?: number | string; centerX?: number | string; centerY?: number | string; centerScale?: number | string;
+  rightImgW?: number | string; rightImgH?: number | string; rightImgTop?: number | string; rightImgLeft?: number | string; rightImgRight?: number | string;
+  ghostOpacity?: number | string; ghostGray?: number | string;
 };
 
 export type SlideData = {
+  id?: string;
   logo: string;
   text: string;
   image: string;
   rightLogo?: string;
   rightGhost?: string;
   layout?: LayoutVars;
+  layoutSm?: LayoutVars;
 };
 
-export const baseSlides = [
+export type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
+
+const toVars = (v?: LayoutVars): CSSVarStyle => {
+  const unit = (n?: number | string) =>
+    n === undefined ? undefined : (typeof n === "number" ? `${n}px` : n);
+  return {
+    ...(v?.leftTop !== undefined && { ["--left-top"]: unit(v.leftTop) }),
+    ...(v?.leftLeft !== undefined && { ["--left-left"]: unit(v.leftLeft) }),
+    ...(v?.leftWidth !== undefined && { ["--left-width"]: unit(v.leftWidth) }),
+    ...(v?.leftGap !== undefined && { ["--left-gap"]: unit(v.leftGap) }),
+    ...(v?.centerMaxW !== undefined && { ["--center-max-w"]: unit(v.centerMaxW) }),
+    ...(v?.centerMaxH !== undefined && { ["--center-max-h"]: unit(v.centerMaxH) }),
+    ...(v?.centerW !== undefined && { ["--center-w"]: unit(v.centerW) }),
+    ...(v?.centerH !== undefined && { ["--center-h"]: unit(v.centerH) }),
+    ...(v?.centerX !== undefined && { ["--center-x"]: unit(v.centerX) }),
+    ...(v?.centerY !== undefined && { ["--center-y"]: unit(v.centerY) }),
+    ...(v?.centerScale !== undefined && { ["--center-scale"]: v.centerScale }),
+    ...(v?.vpTop !== undefined && { ["--vp-top"]: unit(v.vpTop) }),
+    ...(v?.vpRight !== undefined && { ["--vp-right"]: unit(v.vpRight) }),
+    ...(v?.vpSize !== undefined && { ["--vp-size"]: unit(v.vpSize) }),
+    ...(v?.rightBottom !== undefined && { ["--right-bottom"]: unit(v.rightBottom) }),
+    ...(v?.rightRight !== undefined && { ["--right-right"]: unit(v.rightRight) }),
+    ...(v?.rightWidth !== undefined && { ["--right-width"]: unit(v.rightWidth) }),
+    ...(v?.disneyTop !== undefined && { ["--disney-top"]: unit(v.disneyTop) }),
+    ...(v?.dLogoTop !== undefined && { ["--dlogo-top"]: unit(v.dLogoTop) }),
+    ...(v?.dLogoLeft !== undefined && { ["--dlogo-left"]: unit(v.dLogoLeft) }),
+    ...(v?.dLogoSize !== undefined && { ["--dlogo-size"]: unit(v.dLogoSize) }),
+    ...(v?.logoTop !== undefined && { ["--left-logo-top"]: unit(v.logoTop) }),
+    ...(v?.logoLeft !== undefined && { ["--left-logo-left"]: unit(v.logoLeft) }),
+    ...(v?.logoW !== undefined && { ["--logo-w"]: unit(v.logoW) }),
+    ...(v?.textTop !== undefined && { ["--left-text-top"]: unit(v.textTop) }),
+    ...(v?.textLeft !== undefined && { ["--left-text-left"]: unit(v.textLeft) }),
+    ...(v?.textFS !== undefined && { ["--text-fs"]: unit(v.textFS) }),
+    ...(v?.textLH !== undefined && { ["--text-lh"]: unit(v.textLH) }),
+    ...(v?.textMaxW !== undefined && { ["--text-mw"]: unit(v.textMaxW) }),
+    ...(v?.rightImgW !== undefined && { ["--right-img-w"]: unit(v.rightImgW) }),
+    ...(v?.rightImgH !== undefined && { ["--right-img-h"]: unit(v.rightImgH) }),
+    ...(v?.rightImgTop !== undefined && { ["--right-img-top"]: unit(v.rightImgTop) }),
+    ...(v?.rightImgLeft !== undefined && { ["--right-img-left"]: unit(v.rightImgLeft) }),
+    ...(v?.rightImgRight !== undefined && { ["--right-img-right"]: unit(v.rightImgRight) }),
+    ...(v?.ghostOpacity !== undefined && { ["--ghost-opacity"]: v.ghostOpacity }),
+    ...(v?.ghostGray !== undefined && { ["--ghost-gray"]: typeof v.ghostGray === "number" ? `${v.ghostGray}%` : v.ghostGray }),
+  };
+};
+
+/* ================== 유틸 ================== */
+function useIsMobile(bp = 768) {
+  const [is, setIs] = useState(false);
+  useEffect(() => {
+    const m = window.matchMedia(`(max-width:${bp}px)`);
+    const on = () => setIs(m.matches);
+    on();
+    m.addEventListener?.("change", on);
+    return () => m.removeEventListener?.("change", on);
+  }, [bp]);
+  return is;
+}
+const mergeLayout = (base?: LayoutVars, override?: LayoutVars): LayoutVars =>
+  ({ ...(base || {}), ...(override || {}) });
+
+/* ================== 데이터 ================== */
+export const baseSlides: SlideData[] = [
   {
+    id: "marvel",
     logo: "/section3Img/marvelLogo.png",
-    text: "마블 팬이라면 누구나 마음 속에 자신만의 영웅 이야기가 있기 마련이죠.<br/>자신만의 세계를 만들고 마음 속의 이야기를 한껏 펼쳐보세요!",
+    text: `마블 팬이라면 누구나 마음 속에<span class="br-m"></span> 자신만의 영웅 이야기가 있기 마련이죠.<br/>자신만의 세계를 만들고<span class="br-m"></span> 마음 속의 이야기를 한껏 펼쳐보세요!`,
     image: "/section3Img/marvelImg.png",
     rightLogo: "/section3Img/disneyLogo1.png",
     layout: { leftTop: 220, centerY: -6, textTop: 160, rightImgW: 340, rightImgH: 484, rightImgTop: 70, rightImgLeft: 0 },
   },
   {
+    id: "disney",
     logo: "/section3Img/disneyLogo2.png",
-    text: "수십 년의 감성이 모여 완성되는 디즈니의 상징,<br/>정교한 디테일 속에 담긴 이야기를 직접 만나보세요.",
+    text: `수십 년의 감성이 모여 완성되는 디즈니의 상징,<br/>정교한 디테일 속에 담긴 이야기를 <span class="br-m"></span>직접 만나보세요.`,
     image: "/section3Img/disneyImg.png",
     rightLogo: "/section3Img/ninjagoLogo1.png",
     layout: {
-      leftTop: 160, leftLeft: 200, leftWidth: 460, leftGap: 20, textTop: 220,
-      centerW: 548, centerH: 780, centerX: -30, centerY: 0,
-      vpTop: 620, vpRight: 440, vpSize: 200,
-      rightBottom: 80, rightRight: 120, rightWidth: 413,
-      rightImgW: 413, rightImgH: 413, rightImgTop: 130, rightImgLeft: 0,
-      disneyTop: 110, dLogoTop: 220, dLogoLeft: -50, dLogoSize: 120,
+      leftTop: 160, leftLeft: 10, leftWidth: 460,
+      leftGap: 20, textTop: 220, centerW: 548, centerH: 780,
+      centerX: -30, centerY: 0, vpTop: 620, vpRight: 440, vpSize: 200,
+      rightBottom: 80, rightRight: 120, rightWidth: 413, rightImgW: 413,
+      rightImgH: 413, rightImgTop: 130, rightImgLeft: 0, disneyTop: 110,
+      dLogoTop: 220, dLogoLeft: -50, dLogoSize: 120,
     },
+    layoutSm: {
+      leftTop: "0%", leftLeft: 10, leftWidth: 400, textTop: 180,
+      centerMaxW: 520, centerMaxH: 520, centerX: "0%", centerY: 10,
+      vpTop: 360, vpRight: 24, vpSize: 140,
+      rightRight: 16, rightWidth: 300,
+      rightImgW: 260, rightImgTop: 65, rightImgLeft: 10,
+    }
   },
   {
+    id: "ninjago",
     logo: "/section3Img/ninjagoLogo2.png",
-    text: "수많은 이야기와 닌자가 오가는 닌자고 시티의 중심,<br/>모험은 이곳에서 시작됩니다.",
+    text: `수많은 이야기와 닌자가 오가는 <span class="br-m"></span> 닌자고 시티의 중심,<br/>모험은 이곳에서 시작됩니다.`,
     image: "/section3Img/ninjagoImg.png",
     rightLogo: "/section3Img/starwarsLogo1.png",
     layout: {
       leftTop: 230, leftLeft: 190, leftWidth: 460, textTop: 120,
-      centerW: 700, centerH: 700, centerX: -100, centerY: 20,
-      vpTop: 200, vpRight: 0, vpSize: 200,
-      rightBottom: 80, rightRight: 40, rightWidth: 500,
+      centerW: 700, centerH: 700, centerX: -100, centerY: 20, vpTop: 200,
+      vpRight: 0, vpSize: 200, rightBottom: 80, rightRight: 40, rightWidth: 500,
       rightImgW: 442, rightImgH: 372, rightImgTop: 210, rightImgLeft: 0,
       disneyTop: 160, dLogoTop: 120, dLogoLeft: -10, dLogoSize: 120,
     },
+    layoutSm: { leftTop: "38%", leftLeft: 18, leftWidth: 380, textTop: 110, 
+      centerMaxW: 520, centerMaxH: 520, centerX: 0, centerY: 10, vpTop: 330, 
+      vpRight: 20, vpSize: 130, rightRight: 14, rightWidth: 280, rightImgW: 240, 
+      rightImgTop: 150, rightImgLeft: 10, }
   },
   {
+    id: "starwars",
     logo: "/section3Img/starwarsLogo2.png",
-    text: "세월을 넘어 사랑받아온 은하계 밀레니엄 팔콘,<br/>최고의 세팅과 압도적 디테일을 지금 만나보세요.",
+    text: `세월을 넘어 사랑받아온 은하계 밀레니엄 팔콘,<br/>최고의 세팅과 압도적 디테일을<span class="br-m"></span> 지금 만나보세요.`,
     image: "/section3Img/starwarsImg.png",
     rightLogo: "/section3Img/cityLogo1.png",
     layout: {
@@ -73,8 +151,17 @@ export const baseSlides = [
       rightImgW: 451, rightImgH: 338, rightImgTop: 260, rightImgLeft: -40,
       disneyTop: 20, dLogoTop: 280, dLogoLeft: -20, dLogoSize: 131,
     },
+    layoutSm: {
+      leftTop: "38%", leftLeft: 24, leftWidth: 380, textTop: 132,
+      centerMaxW: 520, centerMaxH: 520, centerW: 520, centerH: 420,
+      centerX: 0, centerY: 80, centerScale: 1,
+      vpTop: 360, vpRight: 24, vpSize: 140,
+      rightRight: 16, rightWidth: 280,
+      rightImgW: 240, rightImgTop: 80, rightImgLeft: 0,
+    }
   },
   {
+    id: "city",
     logo: "/section3Img/cityLogo2.png",
     text: "거대한 임무를 가르고 나아가는 북극 탐사선,<br/>신비한 대자연 속에서 모험이 펼쳐집니다.",
     image: "/section3Img/cityImg.png",
@@ -87,8 +174,16 @@ export const baseSlides = [
       rightImgW: 444, rightImgH: 389, rightImgTop: 260, rightImgLeft: -10,
       disneyTop: 10, dLogoTop: 320, dLogoLeft: 50, dLogoSize: 131,
     },
+    layoutSm: {
+      leftTop: "36%", leftLeft: 18, leftWidth: 380, textTop: 140, textLeft: 40,
+      centerMaxW: 600, centerMaxH: 600, centerX: -30, centerY: 0,
+      vpTop: 340, vpRight: 24, vpSize: 140,
+      rightRight: 12, rightWidth: 280,
+      rightImgW: 240, rightImgTop: 60, rightImgLeft: 40,
+    }
   },
   {
+    id: "harry",
     logo: "/section3Img/harryPotterLogo2.png",
     text: "수많은 마법사의 꿈이 머물렀던 곳, 호그와트.<br/>신비로운 마법의 세계로 모험을 떠나보세요.",
     image: "/section3Img/harryPotterImg.png",
@@ -98,71 +193,45 @@ export const baseSlides = [
       vpTop: 402, vpRight: -125, vpSize: 200,
       rightBottom: 120, rightRight: 80,
     },
+    layoutSm: {
+      leftTop: "38%", leftLeft: 24, leftWidth: 380, textTop: 120, textLeft: 40,
+      centerMaxW: 520, centerMaxH: 520, centerX: 20, centerY: 0,
+      vpTop: 320, vpRight: 20, vpSize: 130,
+      rightRight: 16,
+    }
   },
-] as const;
+];
 
 export const slides: SlideData[] = baseSlides.map((s, i, arr) => ({
   ...s,
   rightGhost: i < arr.length - 1 ? arr[i + 1].image : undefined,
 }));
 
-export type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
-export const toVars = (v?: LayoutVars): CSSVarStyle => {
-  const px = (n?: number) => (n === undefined ? undefined : `${n}px`);
-  return {
-    ...(v?.leftTop !== undefined && { ["--left-top"]: px(v.leftTop) }),
-    ...(v?.leftLeft !== undefined && { ["--left-left"]: px(v.leftLeft) }),
-    ...(v?.leftWidth !== undefined && { ["--left-width"]: px(v.leftWidth) }),
-    ...(v?.leftGap !== undefined && { ["--left-gap"]: px(v.leftGap) }),
-    ...(v?.centerMaxW !== undefined && { ["--center-max-w"]: px(v.centerMaxW) }),
-    ...(v?.centerMaxH !== undefined && { ["--center-max-h"]: px(v.centerMaxH) }),
-    ...(v?.centerW !== undefined && { ["--center-w"]: px(v.centerW) }),
-    ...(v?.centerH !== undefined && { ["--center-h"]: px(v.centerH) }),
-    ...(v?.centerX !== undefined && { ["--center-x"]: px(v.centerX) }),
-    ...(v?.centerY !== undefined && { ["--center-y"]: px(v.centerY) }),
-    ...(v?.centerScale !== undefined && { ["--center-scale"]: v.centerScale }),
-    ...(v?.vpTop !== undefined && { ["--vp-top"]: px(v.vpTop) }),
-    ...(v?.vpRight !== undefined && { ["--vp-right"]: px(v.vpRight) }),
-    ...(v?.vpSize !== undefined && { ["--vp-size"]: px(v.vpSize) }),
-    ...(v?.rightBottom !== undefined && { ["--right-bottom"]: px(v.rightBottom) }),
-    ...(v?.rightRight !== undefined && { ["--right-right"]: px(v.rightRight) }),
-    ...(v?.rightWidth !== undefined && { ["--right-width"]: px(v.rightWidth) }),
-    ...(v?.disneyTop !== undefined && { ["--disney-top"]: px(v.disneyTop) }),
-    ...(v?.dLogoTop !== undefined && { ["--dlogo-top"]: px(v.dLogoTop) }),
-    ...(v?.dLogoLeft !== undefined && { ["--dlogo-left"]: px(v.dLogoLeft) }),
-    ...(v?.dLogoSize !== undefined && { ["--dlogo-size"]: px(v.dLogoSize) }),
-    ...(v?.logoTop !== undefined && { ["--left-logo-top"]: px(v.logoTop) }),
-    ...(v?.logoLeft !== undefined && { ["--left-logo-left"]: px(v.logoLeft) }),
-    ...(v?.logoW !== undefined && { ["--logo-w"]: px(v.logoW) }),
-    ...(v?.textTop !== undefined && { ["--left-text-top"]: px(v.textTop) }),
-    ...(v?.textLeft !== undefined && { ["--left-text-left"]: px(v.textLeft) }),
-    ...(v?.textFS !== undefined && { ["--text-fs"]: px(v.textFS) }),
-    ...(v?.textLH !== undefined && { ["--text-lh"]: px(v.textLH) }),
-    ...(v?.textMaxW !== undefined && { ["--text-mw"]: px(v.textMaxW) }),
-    ...(v?.rightImgW !== undefined && { ["--right-img-w"]: px(v.rightImgW) }),
-    ...(v?.rightImgH !== undefined && { ["--right-img-h"]: px(v.rightImgH) }),
-    ...(v?.rightImgTop !== undefined && { ["--right-img-top"]: px(v.rightImgTop) }),
-    ...(v?.rightImgLeft !== undefined && { ["--right-img-left"]: px(v.rightImgLeft) }),
-    ...(v?.ghostOpacity !== undefined && { ["--ghost-opacity"]: v.ghostOpacity }),
-    ...(v?.ghostGray !== undefined && { ["--ghost-gray"]: `${v.ghostGray}%` }),
-  };
-};
-
-/** ----- 프레젠테이션 슬라이드 (swiper 제거) ----- */
+/* ================== 슬라이드 뷰 ================== */
 export function Section3Slide({
-  logo, text, image, rightLogo, rightGhost, layout,
+  id, logo, text, image, rightLogo, rightGhost, layout, layoutSm,
   index, onNext, onPrev, fading,
+  total, onJump,
+  pulsing,
+  onLock,
 }: SlideData & {
   index: number;
+  total: number;
   onNext: () => void;
   onPrev: () => void;
+  onJump: (i: number) => void;
   fading: boolean;
+  pulsing?: 'forward' | 'back' | null;
+  onLock?: (ms?: number) => void;
 }) {
   const meddleRef = useRef<HTMLUListElement>(null);
   const centralImgRef = useRef<HTMLImageElement>(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [active, setActive] = useState(false);
   const [hovering, setHovering] = useState(false);
+
+  const isMobile = useIsMobile(768);
+  const effectiveLayout = isMobile ? mergeLayout(layout, layoutSm) : (layout || {});
 
   const onMove: React.MouseEventHandler<HTMLUListElement> = (e) => {
     const wrap = meddleRef.current;
@@ -171,13 +240,12 @@ export function Section3Slide({
     setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
-  // 우측 흑백 프리뷰 클릭 → 중앙으로 비행 → 다음 콘텐츠로 스왑
   const onGhostClick = (imgEl: HTMLImageElement) => {
     if (!imgEl || !meddleRef.current) return;
+    onLock?.(750); // 클릭 애니 동안 입력 무시
 
     const target = meddleRef.current.getBoundingClientRect();
     const imgRect = imgEl.getBoundingClientRect();
-
     const dx = target.left + target.width / 2 - (imgRect.left + imgRect.width / 2);
     const dy = target.top + target.height / 2 - (imgRect.top + imgRect.height / 2);
     const scale = Math.min(target.width / imgRect.width, target.height / imgRect.height) * 0.9;
@@ -192,31 +260,34 @@ export function Section3Slide({
 
     const flightMs = 500;
     const done = () => {
-      imgEl.style.opacity = "1";
+      (imgEl as HTMLImageElement).style.opacity = "1";
       onNext();
       setTimeout(() => imgEl.classList.remove("is-flying"), 50);
-      setTimeout(() => {
-        if (centralImg) centralImg.style.opacity = "1";
-        imgEl.style.opacity = "0.5";
-      }, 400);
+      setTimeout(() => { if (centralImg) centralImg.style.opacity = "1"; (imgEl as HTMLImageElement).style.opacity = "0.5"; }, 400);
     };
     imgEl.addEventListener("transitionend", done, { once: true });
-    setTimeout(() => {
-      try { imgEl.dispatchEvent(new Event("transitionend")); } catch { }
-    }, flightMs + 60);
+    setTimeout(() => { try { imgEl.dispatchEvent(new Event("transitionend")); } catch { } }, flightMs + 60);
   };
 
+  const rootCls = [
+    "s3-slide",
+    fading ? "is-fading" : "",
+    id ? `s3-${id}` : "",
+    pulsing === "forward" ? "is-pulse-forward" : "",
+    pulsing === "back" ? "is-pulse-back" : "",
+  ].filter(Boolean).join(" ");
+
   return (
-    <div className={`s3-slide ${fading ? "is-fading" : ""}`} style={toVars(layout)}>
+    <div className={rootCls} style={toVars(effectiveLayout)}>
       {/* 좌측 */}
-      <ul className="section3Left" style={toVars(layout)}>
+      <ul className="section3Left">
         <img
-          className={`marvelLogo ${(layout?.logoTop !== undefined || layout?.logoLeft !== undefined) ? "abs" : ""}`}
+          className={`marvelLogo ${(effectiveLayout?.logoTop !== undefined || effectiveLayout?.logoLeft !== undefined) ? "abs" : ""}`}
           src={logo}
           alt="브랜드 로고"
         />
         <p
-          className={`leftText ${(layout?.textTop !== undefined || layout?.textLeft !== undefined) ? "abs" : ""}`}
+          className={`leftText ${(effectiveLayout?.textTop !== undefined || effectiveLayout?.textLeft !== undefined) ? "abs" : ""}`}
           dangerouslySetInnerHTML={{ __html: text }}
         />
       </ul>
@@ -231,94 +302,161 @@ export function Section3Slide({
         onMouseMove={onMove}
       >
         <img ref={centralImgRef} className="marvelImg" src={image} alt="메인 이미지" />
-        <li className={`viewPoint ${hovering ? 'show' : ''}`}><p>VIEW MORE</p></li>
+        <li className={`viewPoint ${hovering ? "show" : ""}`}><p>VIEW MORE</p></li>
       </ul>
 
-      {/* 우측(프리뷰) */}
+      {/* 우측 프리뷰 */}
       <div className="section3Right">
-        <ul className="scroll-hint">
-          <li><span className="mouse" /></li>
-          <li><span className="label">SCROLL TO MOVE</span></li>
-        </ul>
+        {index === 0 && (
+          <ul className="scroll-hint">
+            <li><span className="mouse" /></li>
+            <li><span className="label">SCROLL TO MOVE</span></li>
+          </ul>
+        )}
 
         {(rightLogo || rightGhost) && (
-          <ul className="disneyPoint" style={toVars(layout)}>
-            {rightLogo && (
-              <li className="disneyLogo1"><img src={rightLogo} alt="우측 로고" /></li>
-            )}
+          <ul className="disneyPoint">
+            {rightLogo && <li className="disneyLogo1"><img src={rightLogo} alt="우측 로고" /></li>}
             {rightGhost && (
               <li className="disneyBlock">
-                <img
-                  src={rightGhost}
-                  alt="다음 장 프리뷰"
-                  onClick={(e) => onGhostClick(e.currentTarget)}
-                />
+                <img src={rightGhost} alt="다음 장 프리뷰" onClick={(e) => onGhostClick(e.currentTarget)} />
               </li>
             )}
           </ul>
         )}
+
+        {/* 모바일 점 네비 */}
+        <nav className="MobbleCheek" aria-label="Slides">
+          {Array.from({ length: total }).map((_, i) => {
+            const active = i === index;
+            return (
+              <button
+                key={i}
+                type="button"
+                className={`mc-dot ${active ? "is-active" : ""}`}
+                aria-label={`Go to slide ${i + 1}`}
+                aria-current={active ? "page" : undefined}
+                onClick={() => onJump(i)}
+              >
+                <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                  <circle cx="7" cy="7" r="5.5" className="mc-fg" />
+                </svg>
+              </button>
+            );
+          })}
+        </nav>
       </div>
     </div>
   );
 }
 
-/** ----- 컨트롤러: 인덱스/휠/페이드 관리 ----- */
+/* ================== 컨트롤러 ================== */
 export default function Section3() {
+  const hostRef = useRef<HTMLElement | null>(null);
+
+  const isMobile = useIsMobile(768);
   const [index, setIndex] = useState(0);
-  const [lock, setLock] = useState(false);      // 스크롤 연타 방지
-  const [fading, setFading] = useState(false);  // 교체 시 페이드
+  const [fading, setFading] = useState(false);
+  const [pulsing, setPulsing] = useState<'forward' | 'back' | null>(null);
+
+  const animatingRef = useRef(false);
+  const indexRef = useRef(index);
+  useEffect(() => { indexRef.current = index; }, [index]);
+
+  // 혹시 남아 있던 잠금 해제
+  useEffect(() => {
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
+  }, []);
 
   const max = slides.length - 1;
+  const clamp = (n: number) => Math.max(0, Math.min(max, n));
+
+  // 인덱스 변경(휠/클릭/점네비 공용)
   const goTo = useCallback((i: number) => {
-    const next = Math.max(0, Math.min(max, i));
-    setIndex(next);
-  }, [max]);
+    setIndex(clamp(i));
+  }, []);
+
+  const handoffTo = useCallback((selector: string) => {
+    const el = document.querySelector(selector) as HTMLElement | null;
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   const next = useCallback(() => {
-    if (index >= max) return;
+    const curr = indexRef.current;
+    if (curr >= max) {
+      // 마지막에서 아래 휠 → section4로 핸드오프
+      handoffTo("#section4");
+      return;
+    }
     setFading(true);
-    setTimeout(() => {
-      goTo(index + 1);
-      setTimeout(() => setFading(false), 300);
+    setPulsing("forward");
+    animatingRef.current = true;
+    const ni = clamp(curr + 1);
+    window.setTimeout(() => {
+      goTo(ni);
+      window.setTimeout(() => { setFading(false); setPulsing(null); animatingRef.current = false; }, 300);
     }, 220);
-  }, [index, max, goTo]);
+  }, [goTo, handoffTo, max]);
 
   const prev = useCallback(() => {
-    if (index <= 0) return;
+    const curr = indexRef.current;
+    if (curr <= 0) {
+      // 첫 슬라이드에서 위 휠 → section2로 핸드오프
+      handoffTo("#section2");
+      return;
+    }
     setFading(true);
-    setTimeout(() => {
-      goTo(index - 1);
-      setTimeout(() => setFading(false), 300);
+    setPulsing("back");
+    animatingRef.current = true;
+    const ni = clamp(curr - 1);
+    window.setTimeout(() => {
+      goTo(ni);
+      window.setTimeout(() => { setFading(false); setPulsing(null); animatingRef.current = false; }, 300);
     }, 220);
-  }, [index, goTo]);
+  }, [goTo, handoffTo]);
 
-  // 섹션 내부 휠로만 콘텐츠 전환 (페이지 스크롤 방지)
-  const onWheel: React.WheelEventHandler<HTMLElement> = (e) => {
-    // 트랙패드 작은 움직임 필터링
-    const dy = e.deltaY;
-    if (Math.abs(dy) < 10) return;
-    if (lock) return;
-
-    // 이 섹션 안에서만 스크롤 소비
-    e.preventDefault();
-    setLock(true);
-    if (dy > 0) next(); else prev();
-
-    // 전환 속도와 맞춰 해제
-    setTimeout(() => setLock(false), 750);
-  };
+  const lockFor = useCallback((ms = 700) => {
+    animatingRef.current = true;
+    setPulsing(null);
+    window.setTimeout(() => { animatingRef.current = false; }, ms);
+  }, []);
 
   const s = slides[index];
 
   return (
-    <section id="section3" className="s3-stage" onWheel={onWheel}>
-      <Section3Slide
-        {...s}
-        index={index}
-        onNext={next}
-        onPrev={prev}
-        fading={fading}
-      />
+    <section
+      id="section3"
+      ref={hostRef as any}
+      className="s3-sticky-host"
+      /* wheel-only라서 굳이 섹션 높이를 slides*100vh로 둘 필요 없음 */
+      style={{ ["--slides"]: slides.length } as React.CSSProperties}
+    >
+      <div
+        className="s3-viewport"
+        onWheel={(e) => {
+          if (animatingRef.current) return;
+          // 작은 떨림 무시
+          if (Math.abs(e.deltaY) < 15) return;
+          if (e.deltaY > 0) next(); else prev();
+        }}
+      >
+        <div className="s3-stage">
+          <Section3Slide
+            key={s.id}                 // 강제 리마운트로 전환 체감 확실
+            {...s}
+            index={index}
+            total={slides.length}
+            onNext={next}
+            onPrev={prev}
+            onJump={(i) => { lockFor(450); goTo(i); }}
+            fading={fading}
+            pulsing={pulsing}
+            onLock={lockFor}
+          />
+        </div>
+      </div>
     </section>
   );
 }

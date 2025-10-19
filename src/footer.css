@@ -1,6 +1,6 @@
 #footer {
     width: 100%;
-    height: 446px;
+    height: 100%;
     position: relative;
     background-color: #000000;
     color: #FFFFFF;
@@ -75,7 +75,7 @@
 }
 
 #footer #footerDown ul li:hover {
-  color: #d01012;
+    color: #d01012;
 }
 
 /* footerEnd */
@@ -92,6 +92,10 @@
     line-height: 15px;
 }
 
+#footerEnd .br-m {
+    display: none;
+}
+
 
 /* ---------------------------- */
 
@@ -106,7 +110,10 @@
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
+    #footer {
+        height: 46.4vh;
+    }
     #footer #footerUp .footerLogo {
         margin-left: 5%;
     }
@@ -121,33 +128,42 @@
     #footer #footerDown {
         display: none;
     }
-#footer #footerEnd {
-    width: 305px;
-    height: 100%;
-    text-align: left;
-    font-size: 14px;
-    border-top: none;
-    margin-left: 5%;
-}
 
-#footer #footerEnd p {
-    margin-top: 20px;
-    line-height: 30px;
-}
+    #footer #footerEnd {
+        width: 100%;
+        text-align: left;
+        font-size: 14px;
+        border-top: none;
+        margin-left: 5%;
+    }
+
+    #footer #footerEnd p {
+        margin-top: 20px;
+        line-height: 22px;
+    }
+
+    #footerEnd .br-m {
+        display: block;
+        height: 0;
+    }
+    #footerEnd .br-a {
+    display: none;
+    }        
 
 }
 
 @media (max-width: 500px) {
     #footer {
-    width: 100%;
-    position: relative;
-    background-color: #000000;
-    color: #FFFFFF;
-}
+        width: 100%;
+        position: relative;
+        background-color: #000000;
+        color: #FFFFFF;
+    }
 
     #footer #footerUp {
         height: 110px;
     }
+
     #footer #footerUp .footerLogo {
         width: 63px;
         height: 63px;

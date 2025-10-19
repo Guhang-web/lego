@@ -1,10 +1,10 @@
 # 250913
 
-1. 휠 -> 스크롤 변경
+1. 휠 -> 스크롤 변경 o
 
 2. 헤더 높이값 줄이기  o
 
-3. https://www.jungkwanjang.co.kr/
+3. https://www.jungkwanjang.co.kr/ o
 
 4. hover전에는 안보이게  o
 

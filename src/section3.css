@@ -7,6 +7,22 @@
     position: relative;
 }
 
+/* 섹션 전체 높이: (슬라이드 수 × 100vh) */
+#section3.s3-sticky-host {
+    height: calc(var(--slides, 6) * 100vh);
+    width: 100%;
+    position: relative;
+}
+
+/* 섹션 내부에 화면을 고정시키는 스티키 뷰포트 */
+#section3 .s3-viewport {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
 /* 고정 스테이지 컨테이너 (화면 고정) */
 .s3-stage {
     height: 100vh;
@@ -26,8 +42,8 @@
 /* 기본 변수 */
 .s3-slide {
     --left-top: 231px;
-    --left-left: 140px;
-    --left-width: 585px;
+    --left-left: 3%;
+    --left-width: 37vw;
     --left-gap: 48px;
     --logo-left: auto;
     --center-max-w: 1000px;
@@ -105,9 +121,9 @@
     transform-origin: center;
     will-change: transform, opacity;
     /* ✅ opacity 트랜지션 추가 */
-    transition: opacity 0.2s ease, transform 1.5s ease;
+    transition: opacity .2s ease, transform .6s ease;
     position: relative;
-    z-index: 1;
+    z-index: 6;
     opacity: 1;
 
 }
@@ -170,6 +186,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    pointer-events: none;
 }
 
 #section3 .section3Right .scroll-hint .mouse {
@@ -231,13 +248,13 @@
     height: var(--dlogo-size, 138px);
 }
 
-/* 우측 흑백(다음 장 프리뷰) : 클릭 → 중앙 비행 */
 #section3 .section3Right .disneyPoint .disneyBlock img {
     position: absolute;
     width: var(--right-img-w, 100%);
     height: var(--right-img-h, auto);
     top: var(--right-img-top, 0px);
-    left: var(--right-img-left, 0px);
+    left: var(--right-img-left, auto);
+    right: var(--right-img-right, auto);
     filter: grayscale(var(--ghost-gray, 100%));
     opacity: var(--ghost-opacity, .5);
     display: block;
@@ -245,7 +262,6 @@
     transition: transform 0.5s ease, opacity 0.5s ease;
     transform: translate(0, 0) scale(1);
     z-index: 5;
-    /* 비행 시 다른 요소 위로 */
 }
 
 #section3 .section3Right .disneyPoint .disneyBlock img.is-flying {
@@ -278,4 +294,283 @@
     opacity: 0;
     transition: opacity 0.25s ease;
     /* 이미지에는 이미 transition 있음 */
+}
+
+html.no-scroll,
+body.no-scroll {
+    overflow: hidden;
+}
+
+#section3,
+#section3 .s3-stage,
+#section3 .section3Meddle {
+    overscroll-behavior: contain;
+}
+
+/* 모바일 체크 슬라이드 */
+#section3 .MobbleCheek {
+    gap: 5px;
+    width: 78px;
+    height: 8px;
+    position: absolute;
+    bottom: 0%;
+    right: 140%;
+    margin: 0 auto;
+    display: none;
+}
+
+#section3 .MobbleCheek .mc-dot {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    width: 10px;
+    height: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#section3 .MobbleCheek .mc-dot:focus-visible {
+    outline: 2px solid #999;
+    outline-offset: 2px;
+}
+
+/* SVG 원 배경/전경 */
+#section3 .MobbleCheek .mc-bg {
+    fill: #E3E3E3;
+}
+
+#section3 .MobbleCheek .mc-fg {
+    fill: #E3E3E3;
+    /* 숨김 */
+    transition: stroke-dashoffset .25s ease, stroke .2s ease;
+}
+
+/* 활성 점: 채워진 느낌 */
+#section3 .MobbleCheek .mc-dot.is-active .mc-fg {
+    fill: #A0A0A0;
+}
+
+#section3 .MobbleCheek .mc-dot:hover .mc-fg {
+    fill: #A0A0A0;
+}
+
+#section3 .leftText .br-m {
+    display: none;
+}
+
+/* ===== Scroll→Slide 전환용 펄스 애니 ===== */
+.is-pulse-forward .section3Meddle .marvelImg {
+    animation: s3-pulse-forward 360ms ease both;
+}
+
+.is-pulse-back .section3Meddle .marvelImg {
+    animation: s3-pulse-back 360ms ease both;
+}
+
+/* forward: 살짝 커졌다 돌아오기 (hover 배율 포함) */
+@keyframes s3-pulse-forward {
+    0% {
+        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
+    }
+
+    50% {
+        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1.3));
+    }
+
+    100% {
+        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
+    }
+}
+
+/* back: 살짝 줄었다 돌아오기 (hover 배율 포함) */
+@keyframes s3-pulse-back {
+    0% {
+        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
+    }
+
+    50% {
+        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1.3));
+    }
+
+    100% {
+        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
+    }
+}
+
+.is-pulse-forward .section3Meddle .marvelImg,
+.is-pulse-back .section3Meddle .marvelImg {
+    --hover-zoom: 1;
+}
+
+
+
+/* -------------------------------------------------------------- */
+
+
+
+@media (max-width: 1550px) {
+    .s3-slide {
+        --left-left: 0%;
+        --right-right: 0px;
+        --text-fs: 1em
+    }
+
+    .section3Left {
+        left: 0 !important;
+    }
+
+    .section3Left .marvelLogo {
+        right: 3%;
+    }
+}
+
+#section3 .section3Right {
+    right: 0 !important;
+}
+
+@media (max-width: 1200px) {
+    .section3Left {
+        width: 30vw !important;
+    }
+
+    #section3 .section3Right {
+        width: 30vw;
+        height: 58vh;
+    }
+
+    #section3 .section3Right .disneyPoint .disneyBlock img {
+        width: 30vw;
+        height: 40vh;
+    }
+}
+
+@media (max-width: 768px) {
+
+    #section3 .s3-marvel .section3Left {
+        top: 3%;
+    }
+
+    #section3 .s3-marvel .section3Left .marvelLogo {
+        width: 27vw;
+        height: 49vh;
+        left: 40%;
+    }
+
+    #section3 .s3-marvel .section3Left p {
+        width: 64vw;
+        left: 50%;
+        top: 500px;
+        line-height: 24px;
+        text-align: center;
+    }
+
+    #section3 .s3-marvel .section3Meddle {
+        width: 63vw;
+        height: 60vh;
+        top: 44%;
+        left: 46%;
+    }
+
+    #section3 .s3-marvel .section3Meddle .marvelImg {
+        width: 63vw;
+        height: 58vh;
+    }
+
+    #section3 .s3-marvel .section3Right {
+        top: 35%;
+    }
+
+    #section3 .section3Right .scroll-hint {
+        display: none;
+    }
+
+    #section3 .s3-marvel .section3Right .disneyPoint {
+        top: 0;
+        right: -35%;
+    }
+
+    #section3 .section3Right .disneyPoint .disneyLogo1 {
+        display: none;
+    }
+
+    #section3 .s3-marvel .section3Right .disneyPoint .disneyBlock img {
+        width: 30vw;
+        height: 28vh;
+    }
+
+    #section3 .MobbleCheek {
+        display: flex;
+    }
+
+    /* 마블은 그대로 두고, 나머지 브랜드만 공통 규칙 적용 */
+    #section3 :not(.s3-marvel).s3-slide .section3Left {
+        align-items: center;
+        /* 텍스트 중앙 정렬 배치용 */
+    }
+
+    /* 디즈니 */
+    #section3 .s3-disney .section3Left .leftText {
+        transform: none !important;
+        width: 64vw;
+        text-align: center;
+        line-height: 1.55;
+        top: 140%
+    }
+
+    #section3 .leftText .br-m {
+        display: block;
+        height: 0;
+    }
+
+    /* 중앙/우측 레이어가 텍스트를 가릴 경우만 안전하게 */
+    #section3 :not(.s3-marvel).s3-slide .section3Left {
+        z-index: 1;
+    }
+
+    #section3 :not(.s3-marvel).s3-slide .section3Meddle {
+        z-index: 0;
+    }
+
+    /* 닌자고 */
+    #section3 .s3-ninjago .section3Left .leftText {
+        top: 130%;
+        left: 40%;
+        width: 380px;
+    }
+
+    #section3 .s3-ninjago .section3Right .disneyPoint .disneyBlock img {
+        height: 126px;
+    }
+
+    /* 스타워즈 */
+    #section3 .s3-starwars .section3Meddle .marvelImg {
+        width: 70vw;
+    }
+
+    #section3 .s3-starwars .section3Left .leftText {
+        top: 120%;
+    }
+
+    #section3 .s3-starwars .section3Right .disneyPoint .disneyBlock img {
+        width: 160px;
+        height: 120px;
+    }
+
+    /* 시티  */
+    #section3 .s3-city .section3Left .leftText {
+        top: 140%;
+    }
+
+    #section3 .s3-city .section3Meddle .marvelImg {
+        width: 80vw;
+    }
+
+    /* 해리포터 */
+    #section3 .s3-harry .section3Left .leftText {
+        top: 120%;
+    }
+
 }

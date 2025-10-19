@@ -49,26 +49,3 @@ body {
     font-weight: 800;
     font-display: swap;
 }
-
-.fp-root {
-  /* height: 100vh; */
-  width: 100%;
-  position: relative;
-}
-.fp-track {
-  width: 100%;
-  position: relative;
-  will-change: transform;
-  display: block;
-}
-.fp-section {
-  /* height: 100vh; */
-  width: 100%;
-  position: relative;
-  /* overflow: hidden; */
-}
-.fp-section.fp-last { height: auto; }
-
-body.s3-locked {            /* 섹션3 활성화 동안 페이지 스크롤 잠금 */
-  overflow: hidden;
-}

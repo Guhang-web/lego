@@ -31,7 +31,6 @@ export default function Section1() {
     }, [menuOpen]);
 
 
-
     return (
         <section
             id="section1"
@@ -90,16 +89,16 @@ export default function Section1() {
                     </ul>
                 </div>
             </header>
-                <div id='s2Menu' ref={menuRef} className={menuOpen ? "open" : ""}>
-                    <ul className='s2Menu1' >
-                        <a href="#">1. 제품구매</a>
-                        <li>*시리즈별 세트</li>
-                        <li>*연령별</li>
-                        <li>*가격별</li>
-                        <li>*특별한 날을 위한 세트</li>
-                        <li>*레고&reg; 상품</li>
-                        <li>*레고&reg; 데코</li>
-                        {/* <li>*관심분야</li>
+            <div id='s2Menu' ref={menuRef} className={menuOpen ? "open" : ""}>
+                <ul className='s2Menu1' >
+                    <a href="#">1. 제품구매</a>
+                    <li>*시리즈별 세트</li>
+                    <li>*연령별</li>
+                    <li>*가격별</li>
+                    <li>*특별한 날을 위한 세트</li>
+                    <li>*레고&reg; 상품</li>
+                    <li>*레고&reg; 데코</li>
+                    {/* <li>*관심분야</li>
                         <li>*독점 제품</li>
                         <li>*신제품</li>
                         <li>*베스트셀러</li>
@@ -107,15 +106,15 @@ export default function Section1() {
                         <li>*출시 예정</li>
                         <li>*단종 예정</li>
                         <li>*브릭 액세서리 & 키트</li> */}
-                    </ul>
-                    <ul className='s2Menu1'>
-                        <a href="#">2. 브랜드소개</a>
-                        <li>*기업 가치</li>
-                        <li>*레고 앱</li>
-                        <li>*레고 매거진</li>
-                        <li>*블프 라이브쇼핑</li>
-                        <li>*레고 전 제품</li>
-                        {/* <li>*레고 전체 관심사별</li>
+                </ul>
+                <ul className='s2Menu1'>
+                    <a href="#">2. 브랜드소개</a>
+                    <li>*기업 가치</li>
+                    <li>*레고 앱</li>
+                    <li>*레고 매거진</li>
+                    <li>*블프 라이브쇼핑</li>
+                    <li>*레고 전 제품</li>
+                    {/* <li>*레고 전체 관심사별</li>
                         <li>*특별한 아이디어</li>
                         <li>*어른이 환영</li>
                         <li>*가족 놀이</li>
@@ -123,18 +122,18 @@ export default function Section1() {
                         <li>*레고&reg; Insiders</li>
                         <li>*레고&reg; MOSAIC MAKER </li>
                         <li>*레고&reg; 선물 아이디어</li> */}
-                    </ul>
-                    <ul className='s2Menu1'>
-                        <a href="#">3. 고객지원</a>
-                        <li>*주문 현황 확인</li>
-                        <li>*배송 및 반품</li>
-                        <li>*스토어 검색</li>
-                        {/* <li>*조립설명서 검색</li>
+                </ul>
+                <ul className='s2Menu1'>
+                    <a href="#">3. 고객지원</a>
+                    <li>*주문 현황 확인</li>
+                    <li>*배송 및 반품</li>
+                    <li>*스토어 검색</li>
+                    {/* <li>*조립설명서 검색</li>
                         <li>*일반적인 질문</li>
                         <li>*문의하기</li>
                         <li>*부속품 브릭</li> */}
-                    </ul>
-                </div>
+                </ul>
+            </div>
             <div id='section1Meddle'>
                 <h1>상상 속 세상을<span className='line'></span>현실로 </h1>
                 <p className='p1'>상상으로만 그리던 세상, 이제는 눈앞에 펼쳐집니다.</p>

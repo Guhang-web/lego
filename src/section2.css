@@ -2,45 +2,59 @@
     position: relative;
     height: 100vh;
     width: 100%;
+    overflow: hidden;
+    /* 필요 시 이미지 넘침 방지 */
 }
+
 #section2 #section2Meddle {
     display: block;
     width: 750px;
-    height: 820px;
+    height: 100vh;
     position: relative;
-    top: 45%;
+    top: 50%;
     left: 47.5%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 1;
-    
+
 }
-#section2 #section2Meddle .legoBlock{
+
+/* ✅ 떠있는 레고 이미지 (섹션 기준 절대 배치) */
+.legoFloat {
+    position: absolute;
+    top: 0;
+    left: 51%;
+    transform: translate(-50%, var(--ty)) rotate(-30deg);
+    transform-origin: center center;
+    will-change: transform;
+    pointer-events: none;
+}
+
+#section2 #section2Meddle .legoBlock {
     width: 750px;
     height: 610px;
 }
-#section2 #section2Meddle .legoBlock img {
-  will-change: transform;          /* GPU 최적화 */
-  backface-visibility: hidden;     /* 뒤집혔을 때 뒷면 숨김 */
-  transform-style: preserve-3d;    /* 3D 회전 유지 */
-  transform-origin: center center; /* 회전 기준을 이미지 중앙으로 */
-  transition: none;                /* 느려지지 않게 즉각 반응 */
 
-}
-#section2 #section2Meddle .legoBlock h1{
+#section2 #section2Meddle .legoBlock h1 {
     position: absolute;
     top: 44%;
     left: 56.5%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     font-size: 150px;
+    z-index: 10;
 }
-#section2 #section2Meddle .section2Footer{
+
+#section2 #section2Meddle .section2Footer {
     text-align: center;
+    margin-top: 50px;
 }
+
 #section2 #section2Meddle .section2Footer p {
     font-size: 24px;
     margin-left: 90px;
     line-height: 40px;
+    position: relative;
 }
+
 #section2 #section2Meddle .section2Footer .section2FooterBox {
     width: 182px;
     height: 72px;
@@ -50,28 +64,37 @@
     cursor: pointer;
     transition: all 0.5s ease;
 }
+
 #section2 #section2Meddle .section2Footer .section2FooterBox:hover {
     background-color: #dd9b00;
 }
 
 @media (max-width: 768px) {
+    #section2 .legoFloat{
+        width: 87vw;
+    }
     #section2 #section2Meddle .legoBlock img {
         width: 80%;
         margin: 150px 90px;
     }
-#section2 #section2Meddle .legoBlock h1{
-font-size: 110px;
-left: 52%;
-top: 50%;
-}
 
-#section2 #section2Meddle .section2Footer p {
-    margin-left: 40px;
-    position: relative;
-    bottom: 20px;
-}
-#section2 #section2Meddle .section2Footer .section2FooterBox {
-    margin-left: 310px;
-}
+    #section2 #section2Meddle .legoBlock h1 {
+        font-size: 110px;
+        left: 52%;
+        top: 40%;
+    }
+
+    #section2 #section2Meddle .section2Footer p {
+        margin-left: 40px;
+        bottom: 160px;
+        font-size: 18px;
+    }
+
+    #section2 #section2Meddle .section2Footer .section2FooterBox {
+        margin-left: 330px;
+        width: 120px;
+        height: 40px;
+        line-height: 40px;
+    }
 
 }

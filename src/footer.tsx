@@ -43,8 +43,8 @@ const Footer = () => {
                     </ul>
                 </div>
                 <div id='footerEnd'>
-                    <p>레고코리아(주) 대표이사 : CLAUS KRISTENSEN (크라우스크리스텐션), 정희영 | 주소 : 서울특별시 강남구 강남대로 382, 메리츠타워 12층 우편번호 06232 사업자등록번호 : 126-81-25525
-                    <br/>통신판매업신고 제 2010-서울강남-00549호 사업자등록확인고객센터 무료전화 : 080-880-0166 | 업무시간 : 월요일-금요일 오전9시 ~ 오후6시</p>
+                    <p>레고코리아(주) 대표이사 : CLAUS KRISTENSEN <span className="br-m"></span>(크라우스크리스텐션), 정희영<span className="br-m"></span><span className='br-a'>| </span>주소 : 서울특별시 강남구 강남대로 382, 메리츠타워 12층<span className="br-m"></span> 우편번호 06232 사업자등록번호 : 126-81-25525
+                    <br/>통신판매업신고 제 2010-서울강남-00549호<span className="br-m"></span>사업자등록확인고객센터 무료전화 : 080-880-0166<span className="br-m"></span><span className='br-a'>| </span>업무시간 : 월요일-금요일 오전9시 ~ 오후6시</p>
                 </div>
             </footer>
         </>

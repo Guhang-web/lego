@@ -333,6 +333,7 @@
 
     #section1 #header {
         width: 100%;
+        top: 0;
         border-right: none;
         border-left: none
     }
@@ -364,6 +365,9 @@
         margin-top: 6px;
 
     }
+    #section1 #section1Meddle {
+    top: 62%;
+}
 
     #section1 #section1Meddle .p1 {
         width: 218px;

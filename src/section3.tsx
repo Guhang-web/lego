@@ -112,12 +112,12 @@ export const baseSlides: SlideData[] = [
       dLogoTop: 220, dLogoLeft: -50, dLogoSize: 120,
     },
     layoutSm: {
-      leftTop: "8%", leftLeft: "9%", leftWidth: "40vw", textTop: "150%",
-      centerMaxW: 520, centerMaxH: 520,  centerW: "100%", centerH: "81.1vh",
-       centerX: "38%", centerY: "-15%",
+      leftTop: "8%", leftLeft: "9%", leftWidth: "40vw", textTop: "360%",
+      centerMaxW: 520, centerMaxH: 520,  centerW: "100%", centerH: "50vh",
+       centerX: "34%", centerY: -60,
       vpTop: 360, vpRight: 24, vpSize: 140,
-      rightRight: "-18%", rightWidth: "33vw",rightBottom: "16%",
-      rightImgW: "31vw", rightImgTop: 65, rightImgLeft: 10,
+      rightRight: "-18%", rightWidth: "33vw",rightBottom: 0,
+      rightImgW: "31vw", rightImgH: 150, rightImgTop: 0, rightImgLeft: 10,
     }
   },
   {
@@ -136,7 +136,7 @@ export const baseSlides: SlideData[] = [
     layoutSm: { leftTop: "18%", leftLeft: "6%", leftWidth: "40vw", textTop: "820%", 
       centerMaxW: 520, centerMaxH: 520, centerW: "100%", centerH: "auto",  centerX: "13%", centerY: "-20%", vpTop: 330, 
       vpRight: 20, vpSize: 130, rightRight: "-33%", rightWidth: "50vw",rightImgH: "auto", rightImgW: "34vw", 
-      rightImgTop: 150, rightImgLeft: 10, }
+      rightImgTop: 0, rightImgLeft: 10, }
   },
   {
     id: "starwars",

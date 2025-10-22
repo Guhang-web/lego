@@ -7,7 +7,7 @@
 
 #section4 #section4Head {
     width: 100%;
-    height: 36px;
+    height: 3.8vh;
     display: flex;
     gap: 10%;
     justify-content: center;
@@ -15,6 +15,12 @@
 
 #section4 #section4Head img {
     width: 18.4%;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+}
+
+.M-Box-Head {
+    display: none;
 }
 
 #section4 #section4Main {
@@ -34,7 +40,7 @@
     top: 100px;
 }
 
-#section4 #section4Main .section4Up .col-left img:nth-child(1) {
+#section4 #section4Main .section4Up .col-left .piece-1 {
     position: absolute;
     top: 0px;
     left: 13.2%;
@@ -72,6 +78,11 @@
 #section4 #section4Main .section4Up .col-center p {
     font-size: 24px;
     line-height: 35px;
+}
+
+/* 문장 구조 */
+.br-m {
+    display: none;
 }
 
 #section4 #section4Main .section4Up .col-right {
@@ -203,20 +214,35 @@
 }
 
 #section4 #section4Main .section4Down .section4LeftDown {
-    width: 320px;
-    height: 100%;
-    position: relative;
+    width: 303px;
+    height: 303px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
 #section4 #section4Main .section4Down .section4LeftDown img:nth-child(1) {
-    position: relative;
-    top: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #section4 #section4Main .section4Down .section4LeftDown img:nth-child(2) {
-    position: relative;
-    top: 91px;
+    position: absolute;
+    bottom: 43px;
     right: 87px;
+}
+
+#section4 #section4Main .section4Down .section4LeftDown img:nth-child(3) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#section4 #section4Main .section4Down .section4LeftDown img:nth-child(4) {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 #section4 #section4Main .section4Down .section4RightDown {
@@ -469,7 +495,312 @@
         left: 3%;
     }
 
+}
+
+
+/* ----------------------------------- */
+@media (max-width: 768px) {
+    #section4 {
+        height: 1104px;
+    }
+
+    #section4 #section4Head {
+        height: 12px;
+        gap: 18%;
+    }
+
+    #section4 #section4Head img {
+        width: 17vw;
+    }
+
+    #section4 #section4Main {
+        height: 100%;
+    }
+
+    /* 상단 */
+    #section4 #section4Main .section4Up {
+        top: 0;
+    }
+
+    #section4 #section4Main .section4Up .col-left .piece-1 {
+        top: 4%;
+        left: 18%;
+    }
     #section4 #section4Main .section4Up .col-left img:nth-child(2) {
+        left: 80%;
+        bottom: 230px;
+        width: 25px;
+        height: 25px;
+}
+
+    .piece-1-img {
+        width: 24.594px;
+        height: 25px;
+        transform: rotate(55deg);
+    }
+
+    #section4 #section4Main .section4Up .col-center {
+        height: 400px;
+        width: 100%;
+        top: 76px;
+        left: 5%;
+    }
+
+    #section4 #section4Main .section4Up .col-center .eyebrow {
+        width: 28vw;
+        height: 34px;
+        font-size: 16px;
+        line-height: 34px;
+    }
+
+    #section4 #section4Main .section4Up .col-center h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+
+    #section4 #section4Main .section4Up .col-center p {
+        font-size: 16px;
+        line-height: 25px;
+    }
+
+    .br-m {
+        display: block;
+    }
+
+    #section4 #section4Main .section4Up .col-right {
+        top: -1.5%;
+        right: 0;
+        width: 43vw;
+    }
+
+    #section4 #section4Main .section4Up .col-right img:nth-child(1) {
+        width: 54.12px;
+        height: auto;
+        position: absolute;
+        top: 54px;
+        left: 10%;
+    }
+
+    #section4 #section4Main .section4Up .col-right img:nth-child(2) {
+        width: 59px;
+        height: auto;
+    }
+
+    /* 센터 */
+    /* section4 Meddle */
+    #section4 #section4Main .section4Meddle {
+        display: block;
+        width: 100%;
+        height: 800px;
+        top: 170px;
+        left: 52%;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box {
+        width: 95%;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+
+    #section4 #section4Main .section4Meddle .greenBox,
+    .redBox {
+        top: 0;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .boxHead {
         display: none;
     }
+
+    .M-Box-Head {
+        display: flex;
+        width: 100%;
+        height: 12px;
+        position: absolute;
+        list-style: none;
+        top: 30px;
+        left: 0;
+    }
+
+    .mobbleBox {
+        background-color: black;
+        width: 15vw;
+        height: 12px;
+        margin: 0 auto;
+        border-top-left-radius: 50px;
+        border-top-right-radius: 50px;
+    }
+
+    .mobbleBox1 {
+        background-color: #28AA1A;
+        border: 1px solid #0E8F01;
+    }
+
+    .mobbleBox2 {
+        background-color: #1980CE;
+        border: 1px solid #0067C0;
+    }
+
+    .mobbleBox3 {
+        background-color: #ED392F;
+        border: 1px solid #C61501;
+    }
+
+    .mobbleBox4 {
+        background-color: #FFD85A;
+        border: 1px solid #FFCB09;
+    }
+
+
+    #section4 #section4Main .section4Meddle .section4Box .boxBody {
+        width: 100%;
+        height: 146px;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .darkEffet {
+        bottom: 0;
+        left: 0;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .overBox {
+        width: 98%;
+        height: 138px;
+        overflow: hidden;
+        top: 45px;
+        left: 5px;
+
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .boxImg {
+        width: 100%;
+        left: 50%;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .greenImg {
+        height: 220px;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .blueImg {
+        top: 142px;
+        left: 63%;
+        width: 117.5vw;
+        height: 300px;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .redImg {
+        height: 138px;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .yellowImg {
+        height: 160px;
+
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .boxPage h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        letter-spacing: 1.5px;
+
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .boxPage p {
+        display: none;
+    }
+
+
+
+
+    /* section4 Down */
+    #section4 #section4Main .section4Down {
+        width: 100%;
+        height: 94px;
+    }
+
+    #section4 #section4Main .section4Down .section4LeftDown {
+        width: 92px;
+        height: 100%;
+    }
+
+    #section4 #section4Main .section4Down .section4LeftDown img:nth-child(1) {
+        width: 39.36px;
+        height: 52.672px;
+    }
+
+    #section4 #section4Main .section4Down .section4LeftDown img:nth-child(2) {
+        bottom: 14px;
+        right: 30px;
+        width: 49.188px;
+        height: 26.656px;
+    }
+
+    #section4 #section4Main .section4Down .section4LeftDown img:nth-child(3) {
+        width: 54.109px;
+        height: 40.656px;
+    }
+
+    #section4 #section4Main .section4Down .section4LeftDown img:nth-child(4) {
+        width: 39.359px;
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown {
+        width: 121px;
+        height: 58px;
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown img:nth-child(1) {
+        width: 44.13px;
+        height: 11.07px;
+        bottom: 0;
+        left: 0;
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown img:nth-child(2) {
+        position: absolute;
+        bottom: 0;
+        right: 33px;
+        width: 44.12px;
+        height: 33.24px;
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown img:nth-child(3) {
+        position: absolute;
+        bottom: 11px;
+        left: 33px;
+        width: 22.06px;
+        height: 11.07px;
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown img:nth-child(4) {
+        position: absolute;
+        top: 3px;
+        left: 55px;
+        width: 22.06px;
+        height: 44.27px;
+
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown img:nth-child(5) {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 33.14px;
+        height: 44.27px;
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown img:nth-child(6) {
+        position: absolute;
+        top: 4px;
+        right: 11px;
+        width: 11.03px;
+        height: 44.27px;
+    }
+
+    #section4 #section4Main .section4Down .section4RightDown img:nth-child(7) {
+        position: absolute;
+        bottom: 10px;
+        right: 0;
+        width: 11.03px;
+        height: 11.07px;
+    }
+
 }

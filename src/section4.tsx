@@ -107,7 +107,9 @@ const Section4 = () => {
                 <div id="section4Main">
                     <div className="section4Up">
                         <div className="col col-left">
-                            <img key={`fall-${fallTick}-1`} className="fall piece-1" src="/section4Img/lego1.png" alt="레고 세트 1" />
+                            <div key={`fall-${fallTick}-1`} className="fall piece-1">
+                                <img className="piece-1-img" src="/section4Img/lego1.png" alt="레고 세트 1" />
+                            </div>
                             <img key={`fall-${fallTick}-2`} className="fall piece-2" src="/section4Img/lego2.png" alt="레고 세트 2" />
                         </div>
 
@@ -115,7 +117,7 @@ const Section4 = () => {
                             <p className="eyebrow">연령별 레고</p>
                             <h2>나이에 딱 맞는 LEGO</h2>
                             <p>
-                                나이에 따라 달라지는 관심과 호기심, 레고는 그 모든 순간에 함께합니다.<br />
+                                나이에 따라 달라지는 관심과 호기심,<span className="br-m"></span> 레고는 그 모든 순간에 함께합니다.<br />
                                 즐겁게 놀고, 배우고, 성장하는 완벽한 선택!
                             </p>
                         </div>
@@ -129,9 +131,23 @@ const Section4 = () => {
                     <div className='section4Meddle'>
                         <div className='greenBox section4Box'>
                             <img className='boxHead' src="/section4Img/greenLego1.png" alt="초록레고 머리" />
+                            <div className='M-Box-Head mobbleBoxHeadGreen'>
+                                <li className='mobbleBox mobbleBox1'></li>
+                                <li className='mobbleBox mobbleBox1'></li>
+                                <li className='mobbleBox mobbleBox1'></li>
+                            </div>
                             <img className='boxBody' src="/section4Img/greenLego2.png" alt="초록레고 몸통" />
                             <ul className='overBox'>
-                                <li><img className='darkEffet' src="/section4Img/darkEffet.png" alt="그림자효과" /></li>
+                                <li>
+                                    <picture>
+                                        <source media="(max-width: 768px)" srcSet="/section4Img/darkEffetMb.png" />
+                                        <img
+                                            className="darkEffet"
+                                            src="/section4Img/darkEffet.png"
+                                            alt="그림자효과"
+                                        />
+                                    </picture>
+                                </li>
                                 <li><img className='boxImg greenImg' src="/section4Img/greenImg.png" alt="초록레고 이미지"
                                     role="button"
                                     tabIndex={0}
@@ -145,9 +161,23 @@ const Section4 = () => {
                         </div>
                         <div className='blueBox section4Box'>
                             <img className='boxHead' src="/section4Img/blueLego1.png" alt="블루레고 머리" />
+                            <div className='M-Box-Head mobbleBoxHeadGreen'>
+                                <li className='mobbleBox mobbleBox2'></li>
+                                <li className='mobbleBox mobbleBox2'></li>
+                                <li className='mobbleBox mobbleBox2'></li>
+                            </div>
                             <img className='boxBody' src="/section4Img/blueLego2.png" alt="블루레고 몸통" />
                             <ul className='overBox'>
-                                <li><img className='darkEffet' src="/section4Img/darkEffet.png" alt="그림자효과" /></li>
+                                <li>
+                                    <picture>
+                                        <source media="(max-width: 768px)" srcSet="/section4Img/darkEffetMb.png" />
+                                        <img
+                                            className="darkEffet"
+                                            src="/section4Img/darkEffet.png"
+                                            alt="그림자효과"
+                                        />
+                                    </picture>
+                                </li>
                                 <li><img className='boxImg blueImg' src="/section4Img/blueImg.png" alt="블루레고 이미지"
                                     role="button"
                                     tabIndex={0}
@@ -160,30 +190,94 @@ const Section4 = () => {
                         </div>
                         <div className='redBox section4Box'>
                             <img className='boxHead' src="/section4Img/redLego1.png" alt="레드레고 머리" />
+                            <div className='M-Box-Head mobbleBoxHeadGreen'>
+                                <li className='mobbleBox mobbleBox3'></li>
+                                <li className='mobbleBox mobbleBox3'></li>
+                                <li className='mobbleBox mobbleBox3'></li>
+                            </div>
                             <img className='boxBody' src="/section4Img/redLego2.png" alt="레드레고 몸통" />
                             <ul className='overBox'>
-                                <li><img className='darkEffet' src="/section4Img/darkEffet.png" alt="그림자효과" /></li>
-                                <li><img className='boxImg redImg' src="/section4Img/redImg.png" alt="레드레고 이미지"
-                                    role="button"
-                                    tabIndex={0}
-                                    onClick={(e) => openSpot(e.currentTarget)}                 // ★ 캐스팅 불필요
-                                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openSpot(e.currentTarget)}
-                                /></li>
+                                <li>
+                                    <picture>
+                                        <source media="(max-width: 768px)" srcSet="/section4Img/darkEffetMb.png" />
+                                        <img
+                                            className="darkEffet"
+                                            src="/section4Img/darkEffet.png"
+                                            alt="그림자효과"
+                                        />
+                                    </picture>
+                                </li>
+                                <li>
+                                    <picture>
+                                        {/* 모바일 */}
+                                        <source
+                                            media="(max-width: 768px)"
+                                            srcSet="/section4Img/redImgMb.png"
+                                        />
+                                        {/* 기본(데스크톱) */}
+                                        <img
+                                            className="boxImg redImg"
+                                            src="/section4Img/redImg.png"
+                                            alt="레드레고 이미지"
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={(e) => openSpot(e.currentTarget)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter' || e.key === ' ') {
+                                                    e.preventDefault(); // 스페이스 스크롤 방지(모바일 키보드 대비)
+                                                    openSpot(e.currentTarget);
+                                                }
+                                            }}
+                                        />
+                                    </picture>
+                                </li>
                                 <li className='boxPage'><h3>청소년</h3>
                                     <p>구조와 기능을 탐구하며<br />성장하는 조립 경험</p></li>
                             </ul>
                         </div>
                         <div className='yellowBox section4Box'>
                             <img className='boxHead' src="/section4Img/yellowLego1.png" alt="옐로우레고 머리" />
+                            <div className='M-Box-Head mobbleBoxHeadGreen'>
+                                <li className='mobbleBox mobbleBox4'></li>
+                                <li className='mobbleBox mobbleBox4'></li>
+                                <li className='mobbleBox mobbleBox4'></li>
+                            </div>
                             <img className='boxBody' src="/section4Img/yellowLego2.png" alt="옐로우레고 몸통" />
                             <ul className='overBox'>
-                                <li><img className='darkEffet' src="/section4Img/darkEffet.png" alt="그림자효과" /></li>
-                                <li><img className='boxImg yellowImg' src="/section4Img/yellowImg.png" alt="옐로우레고 이미지"
-                                    role="button"
-                                    tabIndex={0}
-                                    onClick={(e) => openSpot(e.currentTarget)}                 // ★ 캐스팅 불필요
-                                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openSpot(e.currentTarget)}
-                                /></li>
+                                <li>
+                                    <picture>
+                                        <source media="(max-width: 768px)" srcSet="/section4Img/darkEffetMb.png" />
+                                        <img
+                                            className="darkEffet"
+                                            src="/section4Img/darkEffet.png"
+                                            alt="그림자효과"
+                                        />
+                                    </picture>
+                                </li>
+                                <li>
+                                    <picture>
+                                        {/* 모바일 */}
+                                        <source
+                                            media="(max-width: 768px)"
+                                            srcSet="/section4Img/yellowImgMb.png"
+                                        />
+                                        {/* 기본(데스크톱)*/}
+                                        <img
+                                            className="boxImg yellowImg"
+                                            src="/section4Img/yellowImg.png"
+                                            alt="옐로우레고 이미지"
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={(e) => openSpot(e.currentTarget)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter' || e.key === ' ') {
+                                                    e.preventDefault(); // 스페이스 스크롤 방지
+                                                    openSpot(e.currentTarget);
+                                                }
+                                            }}
+                                        />
+                                    </picture>
+                                </li>
                                 <li className='boxPage'><h3>성인</h3>
                                     <p>고급 모델과 감성적인<br />수집용 시리즈</p></li>
                             </ul>

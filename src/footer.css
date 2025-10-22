@@ -112,15 +112,16 @@
 
 @media (max-width: 768px) {
     #footer {
-        height: 46.4vh;
+        height: 311px;
     }
     #footer #footerUp .footerLogo {
         margin-left: 5%;
+        margin-top: 30px;
     }
 
     #footer #footerUp ul {
         display: flex;
-        margin-top: 40px;
+        margin-top: 30px;
         margin-right: 4%;
         gap: 20px;
     }
@@ -138,7 +139,7 @@
     }
 
     #footer #footerEnd p {
-        margin-top: 20px;
+        margin-top: 10px;
         line-height: 22px;
     }
 

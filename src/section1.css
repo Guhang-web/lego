@@ -154,7 +154,7 @@
 #section1 #s2Menu {
     background-color: rgb(255, 255, 1,0.9);
     width: 100%;
-    height: 300px;
+    height: 320px;
     position: relative;
     top: 50px;
     z-index: 10;
@@ -178,13 +178,13 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    height: 85px;
+    height: 80px;
     overflow: hidden;
     transition: height 1s ease;
 }
 
 #section1 #s2Menu .s2Menu1:hover {
-    height: 120px;
+    height: 140px;
 }
 
 #section1 #s2Menu .s2Menu1 a {
@@ -336,6 +336,12 @@
         top: 0;
         border-right: none;
         border-left: none
+    }
+    #section1 #s2Menu {
+        top: 0;
+    }
+    #section1 #s2Menu .s2Menu1 {
+
     }
 
     #section1 #header:hover {

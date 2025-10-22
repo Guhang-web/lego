@@ -57,7 +57,7 @@ const Section5 = () => {
             <ul className='section5UpRight'>
               <li className='s5UpRightP1'><p>레고 작품</p></li>
               <li><h2>함께 만드는 LEGO 세상</h2></li>
-              <li className='s5UpRightP2'><p>누구나 창작자가 되고, 나만의 세계를 표현할 수 있는 공간,
+              <li className='s5UpRightP2'><p>누구나 창작자가 되고,<span className="br-m"></span>나만의 세계를 표현할 수 있는 공간,
                 <br />이곳은 함께 만드는 레고 유니버스입니다.</p></li>
             </ul>
           </div>
@@ -69,7 +69,19 @@ const Section5 = () => {
               <li className='section5Lego8'><img src="/section5Img/section5Lego8.png" alt="섹션5 레고이미지 8" /></li>
             </ul>
             <ul className='section5DownRight'>
-              <li className='section5Lego4'><img key={`lego4-${animTick}`} src="/section5Img/section5Lego4.png" alt="섹션5 레고이미지 4" /></li>
+              <li className="section5Lego4">
+                <picture>
+                  <source
+                    media="(max-width: 768px)"
+                    srcSet="/section5Img/section5Lego4Mb.png"
+                  />
+                  <img
+                    key={`lego4-${animTick}`}
+                    src="/section5Img/section5Lego4.png"
+                    alt="섹션5 레고이미지 4"
+                  />
+                </picture>
+              </li>
               <li className='section5Lego6'><img key={`lego6-${animTick}`} src="/section5Img/section5Lego6.png" alt="섹션5 레고이미지 6" /></li>
               <li className='section5Lego7'><img key={`lego7-${animTick}`} src="/section5Img/section5Lego7.png" alt="섹션5 레고이미지 7" /></li>
               <li className='section5Box8'>

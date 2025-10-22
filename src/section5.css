@@ -363,7 +363,7 @@
 
     #section5 #section5Up .section5UpRight {
         width: 79vw;
-        top: 80px;
+        top: 70px;
         right: 20px;
         height: auto;
     }
@@ -393,8 +393,8 @@
     /* section5Down */
     #section5 #section5Down {
         width: 90%;
-        height: 50vh;
-        margin: 0 auto;
+        height: 54vh;
+        margin: -20px auto;
         overflow: hidden;
     }
 
@@ -481,11 +481,10 @@
 
     #section5 #section5Down .section5DownRight .section5Lego1 {
         position: absolute;
-        bottom: 0;
+        bottom: -10px;
         right: 0;
-        width: 550px;
-        height: 460px;
-        display: none;
+        min-width: 247.58px;
+        height: 207px;
     }
 
 }

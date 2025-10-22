@@ -104,19 +104,20 @@ export const baseSlides: SlideData[] = [
     image: "/section3Img/disneyImg.png",
     rightLogo: "/section3Img/ninjagoLogo1.png",
     layout: {
-      leftTop: 160, leftLeft: 10, leftWidth: 460,
-      leftGap: 20, textTop: 220, centerW: 548, centerH: 780,
+      leftTop: "14%", leftLeft: "13%", leftWidth: "24vw",
+      leftGap: 20, textTop: 220, centerW: "28.7vw", centerH: "81.1vh",
       centerX: -30, centerY: 0, vpTop: 620, vpRight: 440, vpSize: 200,
-      rightBottom: 80, rightRight: 120, rightWidth: 413, rightImgW: 413,
-      rightImgH: 413, rightImgTop: 130, rightImgLeft: 0, disneyTop: 110,
+      rightBottom: 80, rightRight: 0, rightWidth: "21.6vw", rightImgW: "21.6vw",
+      rightImgH: "43.3vh", rightImgTop: 130, rightImgRight: "6%", disneyTop: 110,
       dLogoTop: 220, dLogoLeft: -50, dLogoSize: 120,
     },
     layoutSm: {
-      leftTop: "0%", leftLeft: 10, leftWidth: 400, textTop: 180,
-      centerMaxW: 520, centerMaxH: 520, centerX: "0%", centerY: 10,
+      leftTop: "8%", leftLeft: "9%", leftWidth: "40vw", textTop: "150%",
+      centerMaxW: 520, centerMaxH: 520,  centerW: "100%", centerH: "81.1vh",
+       centerX: "38%", centerY: "-15%",
       vpTop: 360, vpRight: 24, vpSize: 140,
-      rightRight: 16, rightWidth: 300,
-      rightImgW: 260, rightImgTop: 65, rightImgLeft: 10,
+      rightRight: "-18%", rightWidth: "33vw",rightBottom: "16%",
+      rightImgW: "31vw", rightImgTop: 65, rightImgLeft: 10,
     }
   },
   {
@@ -132,9 +133,9 @@ export const baseSlides: SlideData[] = [
       rightImgW: 442, rightImgH: 372, rightImgTop: 210, rightImgLeft: 0,
       disneyTop: 160, dLogoTop: 120, dLogoLeft: -10, dLogoSize: 120,
     },
-    layoutSm: { leftTop: "38%", leftLeft: 18, leftWidth: 380, textTop: 110, 
-      centerMaxW: 520, centerMaxH: 520, centerX: 0, centerY: 10, vpTop: 330, 
-      vpRight: 20, vpSize: 130, rightRight: 14, rightWidth: 280, rightImgW: 240, 
+    layoutSm: { leftTop: "18%", leftLeft: "6%", leftWidth: "40vw", textTop: "820%", 
+      centerMaxW: 520, centerMaxH: 520, centerW: "100%", centerH: "auto",  centerX: "13%", centerY: "-20%", vpTop: 330, 
+      vpRight: 20, vpSize: 130, rightRight: "-33%", rightWidth: "50vw",rightImgH: "auto", rightImgW: "34vw", 
       rightImgTop: 150, rightImgLeft: 10, }
   },
   {
@@ -152,12 +153,12 @@ export const baseSlides: SlideData[] = [
       disneyTop: 20, dLogoTop: 280, dLogoLeft: -20, dLogoSize: 131,
     },
     layoutSm: {
-      leftTop: "38%", leftLeft: 24, leftWidth: 380, textTop: 132,
-      centerMaxW: 520, centerMaxH: 520, centerW: 520, centerH: 420,
-      centerX: 0, centerY: 80, centerScale: 1,
+      leftTop: "20%", leftLeft: "10%", leftWidth: 380, textTop: "600%",
+      centerMaxW: 520, centerMaxH: 520, centerW: "auto", centerH: "auto",
+      centerX: 0, centerY: "5%", centerScale: 1,
       vpTop: 360, vpRight: 24, vpSize: 140,
-      rightRight: 16, rightWidth: 280,
-      rightImgW: 240, rightImgTop: 80, rightImgLeft: 0,
+      rightRight: 16, rightWidth: "20vw",
+      rightImgW: "45vw",rightImgH: "26vh", rightImgTop: 0, rightImgLeft: 0,
     }
   },
   {
@@ -175,8 +176,8 @@ export const baseSlides: SlideData[] = [
       disneyTop: 10, dLogoTop: 320, dLogoLeft: 50, dLogoSize: 131,
     },
     layoutSm: {
-      leftTop: "36%", leftLeft: 18, leftWidth: 380, textTop: 140, textLeft: 40,
-      centerMaxW: 600, centerMaxH: 600, centerX: -30, centerY: 0,
+      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textTop: "400%", textLeft: 40,
+      centerMaxW: 600, centerMaxH: 600, centerX: "3%", centerY: "-12%", centerW: "auto", centerH: "auto",
       vpTop: 340, vpRight: 24, vpSize: 140,
       rightRight: 12, rightWidth: 280,
       rightImgW: 240, rightImgTop: 60, rightImgLeft: 40,
@@ -194,8 +195,8 @@ export const baseSlides: SlideData[] = [
       rightBottom: 120, rightRight: 80,
     },
     layoutSm: {
-      leftTop: "38%", leftLeft: 24, leftWidth: 380, textTop: 120, textLeft: 40,
-      centerMaxW: 520, centerMaxH: 520, centerX: 20, centerY: 0,
+      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textTop: "530%", textLeft: 40,
+      centerMaxW: 520, centerMaxH: 520,centerW: "auto", centerH: "auto", centerX: 0, centerY: "-20%",
       vpTop: 320, vpRight: 20, vpSize: 130,
       rightRight: 16,
     }
@@ -324,19 +325,21 @@ export function Section3Slide({
             )}
           </ul>
         )}
-
+        </div>
+          <div>
+            
         {/* 모바일 점 네비 */}
         <nav className="MobbleCheek" aria-label="Slides">
           {Array.from({ length: total }).map((_, i) => {
             const active = i === index;
             return (
               <button
-                key={i}
-                type="button"
-                className={`mc-dot ${active ? "is-active" : ""}`}
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={active ? "page" : undefined}
-                onClick={() => onJump(i)}
+              key={i}
+              type="button"
+              className={`mc-dot ${active ? "is-active" : ""}`}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={active ? "page" : undefined}
+              onClick={() => onJump(i)}
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
                   <circle cx="7" cy="7" r="5.5" className="mc-fg" />
@@ -345,7 +348,7 @@ export function Section3Slide({
             );
           })}
         </nav>
-      </div>
+            </div>
     </div>
   );
 }

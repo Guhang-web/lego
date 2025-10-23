@@ -155,7 +155,7 @@
 }
 
 #section5 #section5Down .section5DownLeft .section5Lego5 {
-    margin-left: 30.8vw;
+    margin-left: 30.9vw;
 }
 
 #section5 #section5Down .section5DownLeft .section5Lego8 {
@@ -396,6 +396,7 @@
         height: 54vh;
         margin: -20px auto;
         overflow: hidden;
+        min-height: 470px;
     }
 
     /* section5DownLeft */

@@ -316,7 +316,7 @@ body.no-scroll {
     position: absolute;
     bottom: 10%;
     right: 46%;
-    transform: (-50% , -50%);
+    transform: (-50%, -50%);
     display: none;
 }
 
@@ -426,7 +426,7 @@ body.no-scroll {
 
     #section3 .section3Left .leftText {
         text-align: center;
-         line-height: 1.55;
+        line-height: 1.55;
     }
 
     #section3 .s3-marvel .section3Left {
@@ -512,11 +512,12 @@ body.no-scroll {
         height: 0;
     }
 
-    #section3 .s3-disney .section3Meddle .marvelImg{
-    width: 55vw;
-    min-width: 246px;
+    #section3 .s3-disney .section3Meddle .marvelImg {
+        width: 55vw;
+        min-width: 246px;
     }
-      #section3 .s3-disney .section3Right {
+
+    #section3 .s3-disney .section3Right {
         height: 64%;
     }
 
@@ -532,24 +533,27 @@ body.no-scroll {
     /* 닌자고 */
     #section3 .s3-ninjago .section3Left .leftText {
         left: 0%;
-        width: 79vw;
+        width: 80vw;
     }
 
     #section3 .s3-ninjago .section3Left .marvelLogo {
         width: 32vw;
         height: 6vh;
     }
-      #section3 .s3-ninjago .section3Meddle .marvelImg{
-    width: 67vw;
-    min-width: 306px;
+
+    #section3 .s3-ninjago .section3Meddle .marvelImg {
+        width: 67vw;
+        min-width: 306px;
     }
-   #section3 .s3-ninjago .section3Right {
+
+    #section3 .s3-ninjago .section3Right {
         height: 59%;
     }
+
     /* 스타워즈 */
     #section3 .s3-starwars .section3Left .leftText {
         left: 0%;
-        width: 79vw;
+        width: 80vw;
     }
 
     #section3 .s3-starwars .section3Left .marvelLogo {
@@ -563,20 +567,23 @@ body.no-scroll {
         height: 46vh;
         min-width: 382.3px;
     }
-       #section3 .s3-starwars .section3Right {
+
+    #section3 .s3-starwars .section3Right {
         height: 48%;
     }
+
     /* 시티  */
-     #section3 .s3-city .section3Left .leftText {
+    #section3 .s3-city .section3Left .leftText {
         left: 0%;
-        width: 79vw;
+        width: 80vw;
     }
-    
+
     #section3 .s3-city .section3Left .marvelLogo {
         width: 40vw;
         height: 14vh;
         left: -30%;
     }
+
     #section3 .s3-city .section3Meddle .marvelImg {
         width: 85vw;
         min-width: 338.67px;
@@ -587,9 +594,9 @@ body.no-scroll {
     }
 
     /* 해리포터 */
-      #section3 .s3-harry .section3Left .leftText {
+    #section3 .s3-harry .section3Left .leftText {
         left: 0%;
-        width: 79vw;
+        width: 80vw;
     }
 
     #section3 .s3-harry .section3Left .marvelLogo {
@@ -598,7 +605,7 @@ body.no-scroll {
         left: -30%;
     }
 
-        #section3 .s3-harry .section3Meddle .marvelImg {
+    #section3 .s3-harry .section3Meddle .marvelImg {
         min-width: 308.57px;
         width: 82vw;
     }

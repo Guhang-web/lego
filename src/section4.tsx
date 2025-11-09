@@ -155,7 +155,7 @@ const Section4 = () => {
                                     onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openSpot(e.currentTarget)}
                                 /></li>
                                 <li className='boxPage'><h3>유아</h3>
-                                    <p>브릭을 처음 만나는 유아들을 위한<br />안전하고 즐거운 조립</p></li>
+                                    <p>브릭을 처음 만나는<span className='p-1100'> 유아들을 위한</span><span className='p-s4'>안전하고 즐거운 조립</span></p></li>
                             </ul>
 
                         </div>

@@ -116,6 +116,9 @@
 #section1 #header #headerNav .menu1:nth-child(1) {
     margin-left: 50px;
 }
+#section1 #header #headerNav .menu1:nth-child(3) {
+    margin-left: 15px;
+}
 
 #section1 #header #headerNav a {
     font-weight: bold;

@@ -31,7 +31,7 @@
 
 #section2 #section2Meddle .legoBlock {
     width: 750px;
-    height: 610px;
+    height: 70vh;
 }
 
 #section2 #section2Meddle .legoBlock h1 {
@@ -71,7 +71,7 @@
 
 @media (max-width: 768px) {
     #section2 .legoFloat{
-        width: 87vw;
+        width: 60vw;
     }
     #section2 #section2Meddle .legoBlock img {
         width: 80%;

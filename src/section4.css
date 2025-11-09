@@ -113,7 +113,7 @@
     height: 740px;
     position: relative;
     top: 26%;
-    left: 52%;
+    left: 50%;
     transform: translate(-50%, -50%);
 }
 
@@ -199,6 +199,9 @@
 
 #section4 #section4Main .section4Meddle .section4Box .boxPage p {
     font-size: 15px;
+}
+#section4 #section4Main .section4Meddle .section4Box .boxPage .p-s4 {
+    display: block;
 }
 
 
@@ -495,6 +498,45 @@
         left: 3%;
     }
 
+    #section4 #section4Main .section4Meddle {
+        width: 95%;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .boxHead {
+        width: 17vw;
+        top: 1%;
+        min-width: 190px;
+    }
+    #section4 #section4Main .section4Meddle .section4Box .boxBody {
+        width: 100%;
+        height: 552px;
+
+    }
+    #section4 #section4Main .section4Meddle .section4Box .overBox {
+        width: 96%;
+    }
+}
+
+/* ---------------------------------------------------------- */
+@media (max-width: 1100px) {
+    #section4 #section4Main .section4Up .col-center h2 {
+        font-size: 60px;
+    }
+      #section4 #section4Main .section4Up .col-right {
+        right: 20px;
+    }
+    #section4 #section4Main .section4Meddle .section4Box .boxHead {
+        top: 3%;
+        min-width: 0;
+    }
+        #section4 #section4Main .section4Meddle .section4Box .boxPage {
+          left: 26px;  
+
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .boxPage .p-1100 {
+    display: block;
+    }
 }
 
 
@@ -526,16 +568,15 @@
         top: 4%;
         left: 18%;
     }
+
     #section4 #section4Main .section4Up .col-left img:nth-child(2) {
         left: 80%;
         bottom: 230px;
-        width: 25px;
-        height: 25px;
-}
+        width: 36px;
+    }
 
     .piece-1-img {
-        width: 24.594px;
-        height: 25px;
+        width: 31px;
         transform: rotate(55deg);
     }
 
@@ -574,16 +615,14 @@
     }
 
     #section4 #section4Main .section4Up .col-right img:nth-child(1) {
-        width: 54.12px;
-        height: auto;
+        width: 58px;
         position: absolute;
         top: 54px;
-        left: 10%;
+        left: 21px;
     }
 
     #section4 #section4Main .section4Up .col-right img:nth-child(2) {
-        width: 59px;
-        height: auto;
+        width: 62px;
     }
 
     /* 센터 */
@@ -662,11 +701,10 @@
     }
 
     #section4 #section4Main .section4Meddle .section4Box .overBox {
-        width: 98%;
+        width: 98.5%;
         height: 138px;
         overflow: hidden;
         top: 45px;
-        left: 5px;
 
     }
 
@@ -674,27 +712,9 @@
         width: 100%;
         left: 50%;
     }
-
-    #section4 #section4Main .section4Meddle .section4Box .greenImg {
-        height: 220px;
-    }
-
     #section4 #section4Main .section4Meddle .section4Box .blueImg {
-        top: 142px;
-        left: 63%;
-        width: 117.5vw;
-        height: 300px;
+        top: 160px;
     }
-
-    #section4 #section4Main .section4Meddle .section4Box .redImg {
-        height: 138px;
-    }
-
-    #section4 #section4Main .section4Meddle .section4Box .yellowImg {
-        height: 160px;
-
-    }
-
     #section4 #section4Main .section4Meddle .section4Box .boxPage h3 {
         font-size: 24px;
         margin-bottom: 20px;
@@ -707,9 +727,6 @@
         display: none;
     }
 
-
-
-
     /* section4 Down */
     #section4 #section4Main .section4Down {
         width: 100%;
@@ -717,39 +734,35 @@
     }
 
     #section4 #section4Main .section4Down .section4LeftDown {
-        width: 92px;
-        height: 100%;
+        width: 117px;
+        height: 118px;
     }
 
     #section4 #section4Main .section4Down .section4LeftDown img:nth-child(1) {
-        width: 39.36px;
-        height: 52.672px;
+        width: 50px;
     }
 
     #section4 #section4Main .section4Down .section4LeftDown img:nth-child(2) {
-        bottom: 14px;
-        right: 30px;
-        width: 49.188px;
-        height: 26.656px;
+        bottom: 17px;
+        right: 33px;
+        width: 67px;
     }
 
     #section4 #section4Main .section4Down .section4LeftDown img:nth-child(3) {
-        width: 54.109px;
-        height: 40.656px;
+        width: 68px;
     }
 
     #section4 #section4Main .section4Down .section4LeftDown img:nth-child(4) {
-        width: 39.359px;
+        width: 50px;
     }
 
     #section4 #section4Main .section4Down .section4RightDown {
-        width: 121px;
-        height: 58px;
+        width: 180px;
+        height: 81px;
     }
 
     #section4 #section4Main .section4Down .section4RightDown img:nth-child(1) {
-        width: 44.13px;
-        height: 11.07px;
+        width: 66px;
         bottom: 0;
         left: 0;
     }
@@ -757,25 +770,22 @@
     #section4 #section4Main .section4Down .section4RightDown img:nth-child(2) {
         position: absolute;
         bottom: 0;
-        right: 33px;
-        width: 44.12px;
-        height: 33.24px;
+        right: 48px;
+        width: 66px;
     }
 
     #section4 #section4Main .section4Down .section4RightDown img:nth-child(3) {
         position: absolute;
-        bottom: 11px;
-        left: 33px;
-        width: 22.06px;
-        height: 11.07px;
+        bottom: 16px;
+        left: 51px;
+        width: 32px;
     }
 
     #section4 #section4Main .section4Down .section4RightDown img:nth-child(4) {
         position: absolute;
-        top: 3px;
-        left: 55px;
-        width: 22.06px;
-        height: 44.27px;
+        top: 0px;
+        left: 83px;
+        width: 33px;
 
     }
 
@@ -783,24 +793,37 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        width: 33.14px;
-        height: 44.27px;
+        width: 48px;
     }
 
     #section4 #section4Main .section4Down .section4RightDown img:nth-child(6) {
         position: absolute;
-        top: 4px;
-        right: 11px;
-        width: 11.03px;
-        height: 44.27px;
+        top: 3px;
+        right: 16px;
+        width: 16px;
     }
 
     #section4 #section4Main .section4Down .section4RightDown img:nth-child(7) {
         position: absolute;
-        bottom: 10px;
+        bottom: 15px;
         right: 0;
-        width: 11.03px;
-        height: 11.07px;
+        width: 16px;
+    }
+
+}
+
+@media (max-width:500px) {
+ #section4 #section4Main .section4Meddle .section4Box .blueImg {
+        top: 142px;
+        left: 63%;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .redImg {
+        height: 138px;
+    }
+
+    #section4 #section4Main .section4Meddle .section4Box .yellowImg {
+        height: 160px;
     }
 
 }

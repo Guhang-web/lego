@@ -1,313 +1,250 @@
 @import 'swiper/css';
+/* .page가 실제 스크롤 컨테이너라면(선택사항) */
+#section3 .page {
+  height: 100vh;           /* 보통 이렇게 쓰고 */
+  overflow-y: auto;        /* 실제 스크롤 주체가 됨 */
+}
+
 
 #section3 {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  position: relative;
 }
 
-/* 섹션 전체 높이: (슬라이드 수 × 100vh) */
+/* (슬라이드 수 × 100vh) 높이 제거 → 정적 100vh */
 #section3.s3-sticky-host {
-    height: calc(var(--slides, 6) * 100vh);
-    width: 100%;
-    position: relative;
+  height: calc(var(--s3-steps, 1) * 100vh + var(--s3-tail, 90vh));
+  width: 100%;
+  position: relative;
 }
 
-/* 섹션 내부에 화면을 고정시키는 스티키 뷰포트 */
+/* 스티키 뷰포트(레이아웃 유지용) */
 #section3 .s3-viewport {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
 
-/* 고정 스테이지 컨테이너 (화면 고정) */
+/* 고정 스테이지 컨테이너 */
 .s3-stage {
-    height: 100vh;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    /* 내부에서만 비행/연출 */
-    overscroll-behavior: contain;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+/* [추가] 슬라이드 스택 컨테이너 (겹치기 레이어) */
+.s3-stack {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* [추가] 각 슬라이드는 스테이지 안에서 "전부 겹쳐진 절대 배치" */
+.s3-stack .s3-slide {
+  position: absolute;
+  inset: 0;
+  /* top/right/bottom/left: 0 */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s ease;
+}
+
+/* [추가] 현재 슬라이드만 보이게 */
+.s3-stack .s3-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 
 .section3Left .abs {
-    position: absolute;
+  position: absolute;
 }
-
 
 /* 기본 변수 */
 .s3-slide {
-    --left-top: 231px;
-    --left-left: 3%;
-    --left-width: 37vw;
-    --left-gap: 48px;
-    --logo-left: auto;
-    --center-max-w: 1000px;
-    --center-max-h: 1000px;
-    --vp-top: 297px;
-    --vp-right: -34px;
-    --vp-size: 200px;
-    --right-bottom: 80px;
-    --right-right: 10%;
-    --right-width: 21vw;
-    --disney-top: 80px;
-    --dlogo-top: 230px;
-    --dlogo-left: -35px;
-    --dlogo-size: 138px;
-    --hover-zoom: 1;
-    /* 호버 시에만 1.2로 바뀔 변수 */
-    width: 100%;
-    height: 100%;
+  --left-top: 231px;
+  --left-left: 3%;
+  --left-width: 37vw;
+  --left-gap: 48px;
+  --logo-left: auto;
+  --center-max-w: 1000px;
+  --center-max-h: 1000px;
+  --vp-top: 297px;
+  --vp-right: -34px;
+  --vp-size: 200px;
+  --right-bottom: 80px;
+  --right-right: 10%;
+  --right-width: 21vw;
+  --disney-top: 80px;
+  --dlogo-top: 230px;
+  --dlogo-left: -35px;
+  --dlogo-size: 138px;
+  --hover-zoom: 1;
+  width: 100%;
+  height: 100%;
 }
 
 /* 좌측 */
 #section3 .section3Left {
-    width: var(--left-width);
-    height: auto;
-    position: relative;
-    top: var(--left-top);
-    left: var(--left-left);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--left-gap);
+  width: var(--left-width);
+  height: auto;
+  position: relative;
+  top: var(--left-top);
+  left: var(--left-left);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--left-gap);
 }
 
 .section3Left .marvelLogo {
-    width: auto;
-    height: auto;
-    max-width: var(--center-max-w, 600px);
-    max-height: var(--center-max-h, 80vh);
-    object-fit: contain;
-    position: relative;
-    left: var(--left-logo-left, 0px);
-    top: var(--left-logo-top, 0px);
+  width: auto;
+  max-width: var(--center-max-w, 600px);
+  max-height: var(--center-max-h, 80vh);
+  object-fit: contain;
+  position: relative;
+  left: var(--left-logo-left, 0px);
+  top: var(--left-logo-top, 0px);
 }
 
 .section3Left p {
-    font-size: var(--text-fs, 20px);
-    line-height: var(--text-lh, 33px);
-    max-width: var(--text-mw, none);
-    text-align: right;
-    position: absolute;
-    top: var(--left-text-top, auto);
-    left: var(--left-text-left, auto);
+  font-size: var(--text-fs, 20px);
+  line-height: var(--text-lh, 33px);
+  max-width: var(--text-mw, none);
+  text-align: right;
+  position: absolute;
+  top: var(--left-text-top, auto);
+  left: var(--left-text-left, auto);
 }
 
 /* 가운데 */
 #section3 .section3Meddle {
-    width: var(--center-w);
-    height: var(--center-h);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
+  width: var(--center-w);
+  height: var(--center-h);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
 }
 
 #section3 .section3Meddle .marvelImg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    max-width: var(--center-max-w, 600px);
-    max-height: var(--center-max-h, 80vh);
-    min-width: 400px;
-    object-fit: contain;
-    transform:
-        translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1)));
-    transform-origin: center;
-    will-change: transform, opacity;
-    /* ✅ opacity 트랜지션 추가 */
-    transition: opacity .2s ease, transform .6s ease;
-    position: relative;
-    z-index: 6;
-    opacity: 1;
-
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: var(--center-max-w, 600px);
+  max-height: var(--center-max-h, 80vh);
+  min-width: 400px;
+  object-fit: contain;
+  transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1)));
+  transform-origin: center;
+  will-change: transform, opacity;
+  transition: opacity .2s ease, transform .6s ease;
+  position: relative;
+  z-index: 6;
+  opacity: 1;
 }
 
 #section3 .section3Meddle .marvelImg:hover {
-    --hover-zoom: 1.2;
+  --hover-zoom: 1.2;
 }
 
 /* VIEW MORE 커서 */
 #section3 .section3Meddle .viewPoint {
-    width: var(--vp-size);
-    height: var(--vp-size);
-    border-radius: 50%;
-    background-color: #FFD700;
-    position: absolute;
-    top: var(--vp-top);
-    right: var(--vp-right);
-    text-align: center;
-    font-size: 24px;
-    line-height: var(--vp-size);
-    transition: transform .06s linear, opacity .2s ease;
-    pointer-events: none;
-    z-index: 2;
-    opacity: 0;
+  width: var(--vp-size);
+  height: var(--vp-size);
+  border-radius: 50%;
+  background-color: #FFD700;
+  position: absolute;
+  top: var(--vp-top);
+  right: var(--vp-right);
+  text-align: center;
+  font-size: 24px;
+  line-height: var(--vp-size);
+  transition: transform .06s linear, opacity .2s ease;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
 }
 
 /* 가운데 이미지 영역에 마우스 올라올 때만 */
 .section3Meddle:hover .viewPoint {
-    opacity: 1;
+  opacity: 1;
 }
 
 #section3 .section3Meddle.cursor-mode {
-    cursor: none;
+  cursor: none;
 }
 
 #section3 .section3Meddle.cursor-mode .viewPoint {
-    left: var(--cursor-x);
-    top: var(--cursor-y);
-    right: auto;
-    transform: translate(-50%, -50%);
-    opacity: .5;
+  left: var(--cursor-x);
+  top: var(--cursor-y);
+  right: auto;
+  transform: translate(-50%, -50%);
+  opacity: .5;
 }
 
 /* 우측(프리뷰) */
 #section3 .section3Right {
-    position: absolute;
-    bottom: var(--right-bottom);
-    right: var(--right-right);
-    width: var(--right-width);
-    height: 600px;
+  position: absolute;
+  bottom: var(--right-bottom);
+  right: var(--right-right);
+  width: var(--right-width);
+  height: 600px;
 }
 
-#section3 .section3Right .scroll-hint {
-    height: 170px;
-    width: 20px;
-    color: #444;
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 80px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-}
 
-#section3 .section3Right .scroll-hint .mouse {
-    width: 18px;
-    height: 28px;
-    border: 2px solid currentColor;
-    border-radius: 12px;
-    display: inline-block;
-    position: relative;
-}
-
-.scroll-hint .mouse::after {
-    content: "";
-    position: absolute;
-    left: 47%;
-    top: 6px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: currentColor;
-    transform: translateX(-50%);
-    animation: wheel 2s ease-in-out infinite;
-}
-
-@keyframes wheel {
-    0% {
-        transform: translate(-50%, 0);
-        opacity: 1
-    }
-
-    70% {
-        transform: translate(-50%, 8px);
-        opacity: .35
-    }
-
-    100% {
-        transform: translate(-50%, 0);
-        opacity: 1
-    }
-}
-
-#section3 .section3Right .scroll-hint .label {
-    writing-mode: vertical-rl;
-    font-size: 14px;
-}
-
+/* 우측 영역 콘텐츠 */
 #section3 .section3Right .disneyPoint {
-    width: 100%;
-    position: absolute;
-    top: var(--disney-top);
+  width: 100%;
+  position: absolute;
+  top: var(--disney-top);
 }
 
 #section3 .section3Right .disneyPoint .disneyLogo1 {
-    position: absolute;
-    opacity: .5;
-    top: var(--dlogo-top, 210px);
-    left: var(--dlogo-left, -30px);
-    width: var(--dlogo-size, 138px);
-    height: var(--dlogo-size, 138px);
+  position: absolute;
+  opacity: .5;
+  top: var(--dlogo-top, 210px);
+  left: var(--dlogo-left, -30px);
+  width: var(--dlogo-size, 138px);
+  height: var(--dlogo-size, 138px);
 }
 
 #section3 .section3Right .disneyPoint .disneyBlock img {
-    position: absolute;
-    width: var(--right-img-w, 100%);
-    height: var(--right-img-h, auto);
-    top: var(--right-img-top, 0px);
-    left: var(--right-img-left, auto);
-    right: var(--right-img-right, auto);
-    filter: grayscale(var(--ghost-gray, 100%));
-    opacity: var(--ghost-opacity, .3);
-    display: block;
-    cursor: pointer;
-    transition: transform 0.5s ease, opacity 0.5s ease;
-    transform: translate(0, 0) scale(1);
-    z-index: 5;
+  position: absolute;
+  width: var(--right-img-w, 100%);
+  height: var(--right-img-h, auto);
+  top: var(--right-img-top, 0px);
+  left: var(--right-img-left, auto);
+  right: var(--right-img-right, auto);
+  filter: grayscale(var(--ghost-gray, 100%));
+  opacity: var(--ghost-opacity, .3);
+  display: block;
+  transition: opacity 0.5s ease;
+  transform: none;
+  z-index: 5;
 }
 
-#section3 .section3Right .disneyPoint .disneyBlock img.is-flying {
-    transform: translate(var(--fly-x, 0px), var(--fly-y, 0px)) scale(var(--fly-scale, 1));
-    pointer-events: none;
-    /* 클릭 불가능하게 */
-    z-index: 9;
-    transition: transform 0.5s ease;
-}
-
-/* 흑백 이미지 이동 */
-#section3 .section3Right .disneyBlock.is-flying img {
-    transform: translateX(var(--fly-x)) translateY(var(--fly-y)) scale(var(--fly-scale));
-
-    transition: transform 0.5s ease;
-    /* 애니메이션 */
-}
 
 /* 공통 */
 #section3 ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* 콘텐츠 교체 시 페이드 아웃 */
-.s3-slide.is-fading .marvelLogo,
-.s3-slide.is-fading .leftText,
-.s3-slide.is-fading .marvelImg {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-    /* 이미지에는 이미 transition 있음 */
-}
-
-html.no-scroll,
-body.no-scroll {
-    overflow: hidden;
-}
-
+/* overscroll 제어 유지(버벅임 방지) */
 #section3,
 #section3 .s3-stage,
 #section3 .section3Meddle {
-    overscroll-behavior: contain;
+  overscroll-behavior: contain;
 }
-
 /* 모바일 체크 슬라이드 */
 #section3 .MobbleCheek {
     gap: 5px;
@@ -359,254 +296,236 @@ body.no-scroll {
 }
 
 #section3 .leftText .br-m {
-    display: none;
+  display: none;
 }
-
-/* ===== Scroll→Slide 전환용 펄스 애니 ===== */
-.is-pulse-forward .section3Meddle .marvelImg {
-    animation: s3-pulse-forward 360ms ease both;
-}
-
-.is-pulse-back .section3Meddle .marvelImg {
-    animation: s3-pulse-back 360ms ease both;
-}
-
-/* forward: 살짝 커졌다 돌아오기 (hover 배율 포함) */
-@keyframes s3-pulse-forward {
-    0% {
-        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
-    }
-
-    50% {
-        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1.3));
-    }
-
-    100% {
-        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
-    }
-}
-
-/* back: 살짝 줄었다 돌아오기 (hover 배율 포함) */
-@keyframes s3-pulse-back {
-    0% {
-        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
-    }
-
-    50% {
-        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1.3));
-    }
-
-    100% {
-        transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1) * 1));
-    }
-}
-
-.is-pulse-forward .section3Meddle .marvelImg,
-.is-pulse-back .section3Meddle .marvelImg {
-    --hover-zoom: 1;
-}
-
-
 
 /* -------------------------------------------------------------- */
-
-
-
-@media (max-width: 1550px) {
-    .s3-slide {
-        --left-left: 0%;
-        --right-right: 0px;
-        --text-fs: 1em
+@media (max-width: 1600px) {
+  .s3-slide {
+    --left-left: 0%;
+    --right-right: 0px;
+    --text-fs: 1em;
+  }
+    #section3 .section3Left .marvelLogo {
+    width: 16vw;
+    min-width: 200px;
+  }
+    #section3 .s3-disney .section3Left{
+      min-width: 332px;
+  }
+    #section3 .s3-city .section3Left{
+      min-width: 400px;
+  }
+  
+    #section3 .s3-harry .section3Left{
+      min-width: 348px;
+  }
+  
+  #section3 .s3-ninjago .section3Meddle .marvelImg {
+    min-width: 600px;
+  }
+    #section3 .s3-starwars .section3Meddle .marvelImg {
+      min-width: 600px;
     }
+    #section3 .s3-city .section3Meddle .marvelImg {
+      min-width: 600px;
+    }
+    #section3 .s3-harry .section3Meddle .marvelImg {
+      min-width: 600px;
+    }
+  }
+  @media (max-width: 1300px) {
+    #section3 .section3Right {
+  display: none;
+}
+  #section3 .s3-ninjago .section3Left{
+      min-width: 333px;
+  }
+  #section3 .s3-starwars .section3Left{
+      min-width: 320px;
+  }
+}
+@media (max-width: 768px) {
+  #section3 .section3Left .leftText {
+    text-align: center;
+    line-height: 1.55;
+  }
 
+  #section3 .s3-marvel .section3Left {
+    width: 40vw;
+    height: 40vh;
+    top: 11%;
+  }
 
+  #section3 .s3-marvel .section3Left .marvelLogo {
+    width: 25vw;
+    left: 8%;
+  }
+
+  #section3 .s3-marvel .section3Left p {
+    width: 64vw;
+    left: 46%;
+    top: 150%;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  #section3 .s3-marvel .section3Meddle {
+    width: 100%;
+    top: 41%;
+    left: 54%;
+  }
+
+  #section3 .s3-marvel .section3Meddle .marvelImg {
+    width: 63vw;
+    height: 56vh;
+    min-width: 349px;
+  }
+#section3 .section3Right {
+  display: block;
 }
 
-@media (max-width: 768px) {
-
-    #section3 .section3Left .leftText {
-        text-align: center;
-        line-height: 1.55;
-    }
-
-    #section3 .s3-marvel .section3Left {
-        width: 40vw;
-        height: 40vh;
-        top: 11%;
-    }
-
-    #section3 .s3-marvel .section3Left .marvelLogo {
-        width: 27vw;
-        left: 8%;
-    }
-
-    #section3 .s3-marvel .section3Left p {
-        width: 64vw;
-        left: 46%;
-        top: 150%;
-        line-height: 24px;
-        text-align: center;
-    }
-
-    #section3 .s3-marvel .section3Meddle {
-        width: 100%;
-        top: 41%;
-        left: 54%;
-    }
-
-    #section3 .s3-marvel .section3Meddle .marvelImg {
-        width: 63vw;
-        height: 56vh;
-        min-width: 349px;
-    }
-
-    #section3 .s3-marvel .section3Right {
-        top: 35%;
-    }
-
-    #section3 .section3Right .scroll-hint {
-        display: none;
-    }
-
-    #section3 .s3-marvel .section3Right .disneyPoint {
-        top: -20px;
-        right: -8%;
-    }
-
-    #section3 .section3Right .disneyPoint .disneyLogo1 {
-        display: none;
-    }
-
-    #section3 .s3-marvel .section3Right .disneyPoint .disneyBlock img {
-        width: 30vw;
-        height: 28vh;
-    }
-
+  #section3 .s3-marvel .section3Right {
+    top: 35%;
+  }
     #section3 .MobbleCheek {
         display: flex;
     }
 
-    /* 마블은 그대로 두고, 나머지 브랜드만 공통 규칙 적용 */
-    #section3 :not(.s3-marvel).s3-slide .section3Left {
-        align-items: center;
-        /* 텍스트 중앙 정렬 배치용 */
-    }
+  #section3 .s3-marvel .section3Right .disneyPoint {
+    top: -20px;
+    right: -8%;
+  }
 
-    /* 디즈니 */
-    #section3 .s3-disney .section3Left {
-        height: auto;
-    }
+  #section3 .section3Right .disneyPoint .disneyLogo1 {
+    display: none;
+  }
 
-    #section3 .s3-disney .section3Left .leftText {
-        width: 309px;
-        left: 14%;
-    }
+  #section3 .s3-marvel .section3Right .disneyPoint .disneyBlock img {
+    width: 30vw;
+    height: 28vh;
+    cursor: default;
+  }
 
-    #section3 .s3-disney .section3Left .marvelLogo {
-        width: 30vw;
-        height: 17vh;
-    }
+  /* 마블 외 공통 */
+  #section3 :not(.s3-marvel).s3-slide .section3Left {
+    align-items: center;
+  }
 
-    #section3 .leftText .br-m {
-        display: block;
-        height: 0;
-    }
+  /* 디즈니 */
+  #section3 .s3-disney .section3Left {
+    height: auto;
+  }
 
-    #section3 .s3-disney .section3Meddle .marvelImg {
-        width: 55vw;
-        min-width: 246px;
-    }
+  #section3 .s3-disney .section3Left .leftText {
+    width: 309px;
+    left: 14%;
+  }
 
-    #section3 .s3-disney .section3Right {
-        height: 64%;
-    }
+  #section3 .s3-disney .section3Left .marvelLogo {
+    width: 30vw;
+    height: 17vh;
+  }
 
+  #section3 .leftText .br-m {
+    display: block;
+    height: 0;
+  }
 
-    #section3 :not(.s3-marvel).s3-slide .section3Left {
-        z-index: 1;
-    }
+  #section3 .s3-disney .section3Meddle .marvelImg {
+    width: 55vw;
+    min-width: 246px;
+  }
 
-    #section3 :not(.s3-marvel).s3-slide .section3Meddle {
-        z-index: 0;
-    }
+  #section3 .s3-disney .section3Right {
+    height: 64%;
+  }
 
-    /* 닌자고 */
-    #section3 .s3-ninjago .section3Left .leftText {
-        left: 0%;
-        width: 80vw;
-    }
+  #section3 :not(.s3-marvel).s3-slide .section3Left {
+    z-index: 1;
+  }
 
-    #section3 .s3-ninjago .section3Left .marvelLogo {
-        width: 32vw;
-        height: 6vh;
-    }
+  #section3 :not(.s3-marvel).s3-slide .section3Meddle {
+    z-index: 0;
+  }
 
-    #section3 .s3-ninjago .section3Meddle .marvelImg {
-        width: 67vw;
-        min-width: 306px;
-    }
+  /* 닌자고 */
+  #section3 .s3-ninjago .section3Left .leftText {
+    left: 0%;
+    width: 80vw;
+  }
 
-    #section3 .s3-ninjago .section3Right {
-        height: 59%;
-    }
+  #section3 .s3-ninjago .section3Left .marvelLogo {
+    width: 32vw;
+    height: 6vh;
+  }
 
-    /* 스타워즈 */
-    #section3 .s3-starwars .section3Left .leftText {
-        left: 0%;
-        width: 80vw;
-    }
+  #section3 .s3-ninjago .section3Meddle .marvelImg {
+    width: 67vw;
+    min-width: 306px;
+  }
 
-    #section3 .s3-starwars .section3Left .marvelLogo {
-        width: 32vw;
-        height: 8vh;
-        left: -30%;
-    }
+  #section3 .s3-ninjago .section3Right {
+    height: 59%;
+  }
 
-    #section3 .s3-starwars .section3Meddle .marvelImg {
-        width: 82vw;
-        height: 46vh;
-        min-width: 382.3px;
-    }
+  /* 스타워즈 */
+  #section3 .s3-starwars .section3Left .leftText {
+    left: 0%;
+    width: 80vw;
+  }
 
-    #section3 .s3-starwars .section3Right {
-        height: 48%;
-    }
+  #section3 .s3-starwars .section3Left .marvelLogo {
+    width: 32vw;
+    height: 8vh;
+    left: -30%;
+  }
 
-    /* 시티  */
-    #section3 .s3-city .section3Left .leftText {
-        left: 0%;
-        width: 80vw;
-    }
+  #section3 .s3-starwars .section3Meddle .marvelImg {
+    width: 82vw;
+    height: 46vh;
+    min-width: 382.3px;
+  }
 
-    #section3 .s3-city .section3Left .marvelLogo {
-        width: 40vw;
-        height: 14vh;
-        left: -30%;
-    }
+  #section3 .s3-starwars .section3Right {
+    height: 48%;
+  }
 
-    #section3 .s3-city .section3Meddle .marvelImg {
-        width: 85vw;
-        min-width: 338.67px;
-    }
+  /* 시티 */
+  #section3 .s3-city .section3Left .leftText {
+    left: 0%;
+    width: 80vw;
+  }
 
-    #section3 .s3-city .section3Right {
-        display: none;
-    }
+  #section3 .s3-city .section3Left .marvelLogo {
+    width: 40vw;
+    height: 14vh;
+    left: -30%;
+  }
 
-    /* 해리포터 */
-    #section3 .s3-harry .section3Left .leftText {
-        left: 0%;
-        width: 80vw;
-    }
+  #section3 .s3-city .section3Meddle .marvelImg {
+    width: 85vw;
+    min-width: 338.67px;
+  }
 
-    #section3 .s3-harry .section3Left .marvelLogo {
-        width: 40vw;
-        height: 10vh;
-        left: -30%;
-    }
+  #section3 .s3-city .section3Right {
+    display: none;
+  }
 
-    #section3 .s3-harry .section3Meddle .marvelImg {
-        min-width: 308.57px;
-        width: 82vw;
-    }
+  /* 해리포터 */
+  #section3 .s3-harry .section3Left .leftText {
+    left: 0%;
+    width: 80vw;
+  }
+
+  #section3 .s3-harry .section3Left .marvelLogo {
+    width: 40vw;
+    height: 10vh;
+    left: -30%;
+  }
+
+  #section3 .s3-harry .section3Meddle .marvelImg {
+    min-width: 308.57px;
+    width: 82vw;
+  }
 }

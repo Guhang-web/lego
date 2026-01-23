@@ -2,9 +2,19 @@ body {
     font-family: 'Daeojamjil', sans-serif;
 }
 
-html,
-body {
-    overflow-x: hidden;
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.vs {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.vs__content {
+  will-change: transform;
 }
 
 

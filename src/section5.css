@@ -4,20 +4,14 @@
     background-color: #FFDD60;
     overflow-x: hidden;
     overflow-y: hidden;
-    overscroll-behavior: contain;
+    overscroll-behavior: auto;
     --s5-dur: 1.5s;
     --s5-ease: cubic-bezier(.22, 1, .36, 1);
-    /* 순서: 1 → 3 → 4 → 6 → 7 */
     --s5-d2: 0s;
-    /* lego2 (맨 먼저) */
     --s5-d3: .35s;
-    /* lego3 */
     --s5-d4: .60s;
-    /* lego4 */
     --s5-d6: .95s;
-    /* lego6 */
     --s5-d7: 1.20s;
-    /* lego7 */
 }
 
 #section5Inner {
@@ -245,7 +239,7 @@
 }
 
 #section5 #section5Down .section5DownRight .section5Lego1:hover {
-    transform: scale(1.1);
+    transform: translateX(50px);
 }
 
 /* 초기: s5-in 아닐 때 왼쪽으로 숨기기 */

@@ -1,8 +1,10 @@
 @import 'swiper/css';
+
 /* .page가 실제 스크롤 컨테이너라면(선택사항) */
 #section3 .page {
-  height: 100vh;           /* 보통 이렇게 쓰고 */
-  overflow-y: auto;        /* 실제 스크롤 주체가 됨 */
+  height: 100vh;
+  /* 보통 이렇게 쓰고 */
+  overflow-y: auto;
 }
 
 
@@ -15,34 +17,28 @@
 
 /* (슬라이드 수 × 100vh) 높이 제거 → 정적 100vh */
 #section3.s3-sticky-host {
-  height: calc(var(--s3-steps, 1) * 100vh + var(--s3-tail, 90vh));
-  width: 100%;
+  height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 
 /* 스티키 뷰포트(레이아웃 유지용) */
 #section3 .s3-viewport {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  height: 100%;
+  position: relative;
   width: 100%;
-  overflow: hidden;
 }
 
 /* 고정 스테이지 컨테이너 */
 .s3-stage {
-  height: 100vh;
-  width: 100%;
+  height: 100%;
   position: relative;
-  overflow: hidden;
-  overscroll-behavior: contain;
 }
 
 /* [추가] 슬라이드 스택 컨테이너 (겹치기 레이어) */
 .s3-stack {
-  position: relative;
   height: 100%;
-  width: 100%;
+  position: relative;
 }
 
 /* [추가] 각 슬라이드는 스테이지 안에서 "전부 겹쳐진 절대 배치" */
@@ -169,7 +165,7 @@
   line-height: var(--vp-size);
   transition: transform .06s linear, opacity .2s ease;
   pointer-events: none;
-  z-index: 2;
+  z-index: 200;
   opacity: 0;
 }
 
@@ -245,54 +241,55 @@
 #section3 .section3Meddle {
   overscroll-behavior: contain;
 }
+
 /* 모바일 체크 슬라이드 */
 #section3 .MobbleCheek {
-    gap: 5px;
-    width: 78px;
-    height: 8px;
-    position: absolute;
-    bottom: 10%;
-    right: 46%;
-    transform: (-50%, -50%);
-    display: none;
+  gap: 5px;
+  width: 78px;
+  height: 8px;
+  position: absolute;
+  bottom: 10%;
+  left: clamp(150px, 42vw, 400px);
+  transform: (-50%, -50%);
+  display: none;
 }
 
 #section3 .MobbleCheek .mc-dot {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    padding: 0;
-    width: 10px;
-    height: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 10px;
+  height: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 #section3 .MobbleCheek .mc-dot:focus-visible {
-    outline: 2px solid #999;
-    outline-offset: 2px;
+  outline: 2px solid #999;
+  outline-offset: 2px;
 }
 
 /* SVG 원 배경/전경 */
 #section3 .MobbleCheek .mc-bg {
-    fill: #E3E3E3;
+  fill: #E3E3E3;
 }
 
 #section3 .MobbleCheek .mc-fg {
-    fill: #E3E3E3;
-    /* 숨김 */
-    transition: stroke-dashoffset .25s ease, stroke .2s ease;
+  fill: #E3E3E3;
+  /* 숨김 */
+  transition: stroke-dashoffset .25s ease, stroke .2s ease;
 }
 
 /* 활성 점: 채워진 느낌 */
 #section3 .MobbleCheek .mc-dot.is-active .mc-fg {
-    fill: #A0A0A0;
+  fill: #A0A0A0;
 }
 
 #section3 .MobbleCheek .mc-dot:hover .mc-fg {
-    fill: #A0A0A0;
+  fill: #A0A0A0;
 }
 
 #section3 .leftText .br-m {
@@ -306,45 +303,55 @@
     --right-right: 0px;
     --text-fs: 1em;
   }
-    #section3 .section3Left .marvelLogo {
+
+  #section3 .section3Left .marvelLogo {
     width: 16vw;
     min-width: 200px;
   }
-    #section3 .s3-disney .section3Left{
-      min-width: 332px;
+
+  #section3 .s3-disney .section3Left {
+    min-width: 332px;
   }
-    #section3 .s3-city .section3Left{
-      min-width: 400px;
+
+  #section3 .s3-city .section3Left {
+    min-width: 400px;
   }
-  
-    #section3 .s3-harry .section3Left{
-      min-width: 348px;
+
+  #section3 .s3-harry .section3Left {
+    min-width: 348px;
   }
-  
+
   #section3 .s3-ninjago .section3Meddle .marvelImg {
     min-width: 600px;
   }
-    #section3 .s3-starwars .section3Meddle .marvelImg {
-      min-width: 600px;
-    }
-    #section3 .s3-city .section3Meddle .marvelImg {
-      min-width: 600px;
-    }
-    #section3 .s3-harry .section3Meddle .marvelImg {
-      min-width: 600px;
-    }
+
+  #section3 .s3-starwars .section3Meddle .marvelImg {
+    min-width: 600px;
   }
-  @media (max-width: 1300px) {
-    #section3 .section3Right {
-  display: none;
-}
-  #section3 .s3-ninjago .section3Left{
-      min-width: 333px;
+
+  #section3 .s3-city .section3Meddle .marvelImg {
+    min-width: 600px;
   }
-  #section3 .s3-starwars .section3Left{
-      min-width: 320px;
+
+  #section3 .s3-harry .section3Meddle .marvelImg {
+    min-width: 600px;
   }
 }
+
+@media (max-width: 1300px) {
+  #section3 .section3Right {
+    display: none;
+  }
+
+  #section3 .s3-ninjago .section3Left {
+    min-width: 333px;
+  }
+
+  #section3 .s3-starwars .section3Left {
+    min-width: 320px;
+  }
+}
+
 @media (max-width: 768px) {
   #section3 .section3Left .leftText {
     text-align: center;
@@ -373,7 +380,7 @@
   #section3 .s3-marvel .section3Meddle {
     width: 100%;
     top: 41%;
-    left: 54%;
+    left: clamp(100px,62vw,500px);
   }
 
   #section3 .s3-marvel .section3Meddle .marvelImg {
@@ -381,16 +388,18 @@
     height: 56vh;
     min-width: 349px;
   }
-#section3 .section3Right {
-  display: block;
-}
+
+  #section3 .section3Right {
+    display: block;
+  }
 
   #section3 .s3-marvel .section3Right {
     top: 35%;
   }
-    #section3 .MobbleCheek {
-        display: flex;
-    }
+
+  #section3 .MobbleCheek {
+    display: flex;
+  }
 
   #section3 .s3-marvel .section3Right .disneyPoint {
     top: -20px;
@@ -419,7 +428,9 @@
 
   #section3 .s3-disney .section3Left .leftText {
     width: 309px;
-    left: 14%;
+    left: clamp(0px, 25vw, 180px);
+    top: 650px;
+    transform: translate(0, -50%);
   }
 
   #section3 .s3-disney .section3Left .marvelLogo {
@@ -451,7 +462,7 @@
 
   /* 닌자고 */
   #section3 .s3-ninjago .section3Left .leftText {
-    left: 0%;
+    left: 3%;
     width: 80vw;
   }
 
@@ -527,5 +538,22 @@
   #section3 .s3-harry .section3Meddle .marvelImg {
     min-width: 308.57px;
     width: 82vw;
+  }
+}
+
+@media (max-width:660px) {
+    #section3 .s3-disney .section3Left .leftText {
+    left: clamp(0px, 20vw, 140px);
+  }
+}
+@media (max-width:565px) {
+    #section3 .s3-disney .section3Left .leftText {
+    left: clamp(0px, 15vw, 120px);
+    top: 620px;
+  }
+}
+@media (max-width:500px) {
+   #section3 .section3Left .marvelLogo {
+    min-width: 150px;
   }
 }

@@ -1,5 +1,4 @@
 // section3.tsx
-// (모바일 점 네비 + 데스크톱 wheel-swipe(100vh 고정) + 가상스크롤(App) 연동: lock/unlock + vscroll:to 핸드오프)
 
 import React, { useRef, useState, useEffect } from "react";
 import "./section3.css";
@@ -366,13 +365,13 @@ export default function Section3() {
   const lockRef = useRef(false);
   const accRef = useRef(0);
 
-  // ✅ 가상 스크롤 현재 y
+  //  가상 스크롤 현재 y
   const vYRef = useRef(0);
 
-  // ✅ 스냅/핸드오프 중복 방지
+  //  스냅/핸드오프 중복 방지
   const handoffLockRef = useRef(false);
 
-  // ✅ IO ratio 저장 (훅은 컴포넌트 최상단에!)
+  //  IO ratio 저장 (훅은 컴포넌트 최상단에!)
   const ratioRef = useRef(0);
 
   // 가상 y 구독

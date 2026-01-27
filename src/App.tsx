@@ -1,5 +1,5 @@
 // App.tsx
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./App.css";
 import FullPageNav from "./FullPageNav";
 
@@ -8,16 +8,16 @@ const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(ma
 export default function App() {
   const [ready, setReady] = useState(false);
 
-  // ✅ 실제로 transform 될 컨텐츠
+  //  실제로 transform 될 컨텐츠
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ 가상 스크롤 상태
+  //  가상 스크롤 상태
   const targetYRef = useRef(0);
   const currentYRef = useRef(0);
   const maxYRef = useRef(0);
   const rafRef = useRef<number | null>(null);
 
-  // ✅ wheel 잠금(Section3 같은 “내부 전환 구간”에서 App이 wheel을 먹지 않게)
+  //  wheel 잠금(Section3 같은 “내부 전환 구간”에서 App이 wheel을 먹지 않게)
   const wheelLockRef = useRef(false);
 
   // 측정 + maxY 갱신
@@ -48,10 +48,10 @@ export default function App() {
       // 거의 도달하면 스냅
       currentYRef.current = Math.abs(next - t) < 0.1 ? t : next;
 
-      // ✅ 실제 이동
+      //  실제 이동
       el.style.transform = `translate3d(0, ${-currentYRef.current}px, 0)`;
 
-      // ✅ section3가 기다리는 이벤트
+      //  section3가 기다리는 이벤트
       window.dispatchEvent(new CustomEvent("vscroll", { detail: { y: currentYRef.current } }));
 
       rafRef.current = requestAnimationFrame(tick);
@@ -74,7 +74,7 @@ export default function App() {
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
 
-      // ✅ Section3 등이 wheel 잠금 걸면 App은 y를 업데이트하지 않음
+      //  Section3 등이 wheel 잠금 걸면 App은 y를 업데이트하지 않음
       if (wheelLockRef.current) return;
 
       const delta = e.deltaY;
@@ -91,7 +91,7 @@ export default function App() {
       targetYRef.current = clamp(y, 0, maxYRef.current);
     };
 
-    // ✅ 외부(Section3)에서 App wheel 제어
+    //  외부(Section3)에서 App wheel 제어
     const onLock = () => {
       wheelLockRef.current = true;
     };
@@ -108,7 +108,7 @@ export default function App() {
     window.addEventListener("resize", onResize);
     window.addEventListener("vscroll:to", onVscrollTo as EventListener);
 
-    // ✅ lock/unlock 이벤트
+    //  lock/unlock 이벤트
     window.addEventListener("vscroll:lock", onLock);
     window.addEventListener("vscroll:unlock", onUnlock);
 
@@ -129,12 +129,12 @@ export default function App() {
 
   return (
     <div className="vs">
-      {/* ✅ 이 안이 가상 스크롤로 움직이는 실제 컨텐츠 */}
+      {/*  이 안이 가상 스크롤로 움직이는 실제 컨텐츠 */}
       <div className="vs__content" ref={contentRef}>
         <FullPageNav />
       </div>
 
-      {/* ✅ 스크롤바 유지(선택) : 필요 없으면 제거해도 됨 */}
+      {/*  스크롤바 유지(선택) : 필요 없으면 제거해도 됨 */}
       <div
         className="vs__spacer"
         aria-hidden="true"

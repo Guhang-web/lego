@@ -21,12 +21,12 @@ function resetSlideAlpha(slideEl: HTMLElement | null) {
   });
 }
 
-// ✅ App(가상스크롤)로 특정 y 이동
+//  App(가상스크롤)로 특정 y 이동
 function vscrollTo(y: number) {
   window.dispatchEvent(new CustomEvent("vscroll:to", { detail: { y } }));
 }
 
-// ✅ App(가상스크롤) 잠금/해제
+//  App(가상스크롤) 잠금/해제
 function vscrollLock() {
   window.dispatchEvent(new Event("vscroll:lock"));
 }
@@ -34,7 +34,7 @@ function vscrollUnlock() {
   window.dispatchEvent(new Event("vscroll:unlock"));
 }
 
-// ✅ 가상스크롤 기준 섹션 스냅 이동(상단/하단 정렬)
+//  가상스크롤 기준 섹션 스냅 이동(상단/하단 정렬)
 function scrollToSectionEdgeVirtual(selector: string, edge: "top" | "bottom", currentY: number) {
   const el = document.querySelector<HTMLElement>(selector);
   if (!el) return;
@@ -281,7 +281,7 @@ export function Section3Slide({
   const isMobile = useIsMobile(768);
   const effectiveLayout = isMobile ? mergeLayout(layout, layoutSm) : (layout || {});
 
-    const logoAbs =
+  const logoAbs =
     !isMobile && (effectiveLayout?.logoTop !== undefined || effectiveLayout?.logoLeft !== undefined);
   const textAbs =
     !isMobile && (effectiveLayout?.textTop !== undefined || effectiveLayout?.textLeft !== undefined);
@@ -399,8 +399,7 @@ export default function Section3() {
     resetSlideAlpha(items[idx]);
   };
 
-  /* ------------------------- ✅ 데스크톱: wheel-swipe + lock/unlock + vscroll:to 핸드오프 ------------------------- */
-  /* ------------------------- ✅ 데스크톱: wheel-swipe + lock/unlock + vscroll:to 핸드오프 (FIXED) ------------------------- */
+  /* -------------------------  데스크톱: wheel-swipe + lock/unlock + vscroll:to 핸드오프 (FIXED) ------------------------- */
   useEffect(() => {
     const root = rootRef.current;
     const stack = stackRef.current;
@@ -416,10 +415,11 @@ export default function Section3() {
     applyDesktopIndex(idxRef.current ?? 0);
 
     // === 튜닝값 ===
-    const ENTER_ZONE = 110;     // ⬅️ 진입 스냅 감지(너무 크면 '도입 전'에 걸림)
-    const ALIGN_EPS = 18;       // ⬅️ top 정렬 허용 오차
-    const EDGE_ACC_TH = 70;     // ⬅️ 첫/마지막에서 섹션 핸드오프 누적 임계값
-    const SLIDE_ACC_TH = 60;    // ⬅️ 내부 슬라이드 전환 누적 임계값
+    const ENTER_ZONE = 200;
+    const ALIGN_EPS = 18;
+    const EDGE_ACC_TH = 140;
+    const SLIDE_ACC_TH = 60;
+    const PRELOCK_ZONE = Math.min(360, window.innerHeight * 0.45);
 
     // section3 wheel 개입 여부를 "엄격하게" 판단
     const canHandleHere = () => {
@@ -432,29 +432,45 @@ export default function Section3() {
       // top 근처(스냅/전환을 허용할 영역)
       const nearTop = rect.top > -ENTER_ZONE && rect.top < ENTER_ZONE;
 
-      // (옵션) 바닥 근처도 허용하고 싶으면 사용
-      // const nearBottom = rect.bottom > vh - ENTER_ZONE && rect.bottom < vh + ENTER_ZONE;
-
       // 완전히 화면을 덮고 있는 상태(정상적으로 섹션3 안에 있는 상태)
       const covering = rect.top <= 0 && rect.bottom >= vh;
 
-      // ✅ 핵심: 보이는 상태 + (top근처 or 완전덮음)일 때만
       return visible && (nearTop || covering);
     };
 
     const onWheel = (e: WheelEvent) => {
       if (clickingLockRef.current) return;
 
-      // ✅ section3가 실제로 보일 때만 개입
-      if (!canHandleHere()) {
-        // 다른 섹션이면 App이 처리하도록 풀어줌
-        vscrollUnlock();
-        return;
-      }
-
       const dy = e.deltaY;
       const rect = root.getBoundingClientRect();
       const vh = window.innerHeight;
+
+      //  (1) PRE-LOCK: "진입 직전" 스킵 방지 (canHandleHere()보다 먼저!)
+      const approachingFromTop = dy > 0 && rect.top > 0 && rect.top < PRELOCK_ZONE;
+      const approachingFromBottom = dy < 0 && rect.bottom < vh && rect.bottom > vh - PRELOCK_ZONE;
+
+      if (approachingFromTop || approachingFromBottom) {
+        e.preventDefault();
+        vscrollLock();
+
+        if (!handoffLockRef.current) {
+          handoffLockRef.current = true;
+
+          // section3 top으로 강제 정렬
+          scrollToSectionEdgeVirtual("#section3", "top", vYRef.current);
+
+          window.setTimeout(() => {
+            handoffLockRef.current = false;
+          }, 520);
+        }
+        return;
+      }
+
+      //  (2) 여기서부터 "section3 내부/근처"일 때만 개입
+      if (!canHandleHere()) {
+        vscrollUnlock();
+        return;
+      }
 
       // 여기부터 section3가 개입
       vscrollLock();
@@ -467,10 +483,8 @@ export default function Section3() {
 
       const alignedTop = Math.abs(rect.top) <= ALIGN_EPS;
 
-      // ✅ 진입 스냅: "실제로 section3가 화면에 들어와 있고" + "top 근처"일 때만
-      // (위 canHandleHere()가 이미 visible+nearTop을 보장)
+      //  진입 스냅(기존 로직)
       if (!alignedTop) {
-        // 위에서 내려와 들어오는 경우
         if (dy > 0 && rect.top > 0 && rect.top < ENTER_ZONE) {
           e.preventDefault();
           handoffLockRef.current = true;
@@ -483,7 +497,6 @@ export default function Section3() {
           return;
         }
 
-        // 아래에서 위로 올라오며 재진입하는 경우도 top 정렬
         if (dy < 0 && rect.top < 0 && rect.top > -ENTER_ZONE) {
           e.preventDefault();
           handoffLockRef.current = true;
@@ -501,7 +514,7 @@ export default function Section3() {
       const atFirstOut = idx === 0 && dy < 0;
       const atLastOut = idx === count - 1 && dy > 0;
 
-      // ✅ 첫/마지막에서 밖으로 나가려면: top 정렬일 때만 섹션 핸드오프
+      //  첫/마지막 핸드오프
       if (alignedTop && (atFirstOut || atLastOut)) {
         e.preventDefault();
 
@@ -519,13 +532,13 @@ export default function Section3() {
 
         window.setTimeout(() => {
           handoffLockRef.current = false;
-          vscrollUnlock(); // ✅ 다음 섹션으로 넘긴 뒤 반드시 해제
+          vscrollUnlock();
         }, 900);
 
         return;
       }
 
-      // ✅ 내부 슬라이드 전환(여기서부터는 무조건 preventDefault)
+      //  내부 슬라이드 전환
       e.preventDefault();
 
       if (lockRef.current) return;
@@ -537,6 +550,8 @@ export default function Section3() {
       accRef.current = 0;
 
       lockRef.current = true;
+
+      accRef.current = 0;
       applyDesktopIndex(idx + dir);
 
       window.setTimeout(() => {
@@ -544,7 +559,8 @@ export default function Section3() {
       }, 520);
     };
 
-    // ✅ capture:true로 App보다 먼저 wheel을 잡음
+
+    //  capture:true로 App보다 먼저 wheel을 잡음
     window.addEventListener("wheel", onWheel, { passive: false, capture: true });
 
     return () => {

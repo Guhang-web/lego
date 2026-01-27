@@ -387,6 +387,7 @@
     width: 63vw;
     height: 56vh;
     min-width: 349px;
+    pointer-events: none;
   }
 
   #section3 .section3Right {
@@ -539,6 +540,9 @@
     min-width: 308.57px;
     width: 82vw;
   }
+}
+#section3 .section3Meddle .viewPoint {
+  display: none;
 }
 
 @media (max-width:660px) {

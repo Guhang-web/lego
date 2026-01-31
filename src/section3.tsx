@@ -1,5 +1,4 @@
 // section3.tsx
-
 import React, { useRef, useState, useEffect } from "react";
 import "./section3.css";
 import { gsap } from "gsap";
@@ -160,7 +159,7 @@ export const baseSlides: SlideData[] = [
     rightLogo: "/section3Img/ninjagoLogo1.png",
     layout: {
       leftTop: "14%", leftLeft: "13%", leftWidth: "24vw",
-      leftGap: 20, textTop: "80%", centerW: "28.7vw", centerH: "81.1vh",
+      leftGap: 20, textTop: "80%", centerH: "81.1vh",
       centerX: -30, centerY: 0, vpTop: 620, vpRight: 440, vpSize: 200,
       rightBottom: 80, rightRight: 0, rightWidth: "21.6vw", rightImgW: "21.6vw",
       rightImgTop: 130, rightImgRight: "6%", disneyTop: 110,
@@ -168,8 +167,8 @@ export const baseSlides: SlideData[] = [
     },
     layoutSm: {
       leftTop: "8%", leftLeft: "3%", leftWidth: "40vw",
-      centerMaxW: 520, centerMaxH: 520, centerW: "100%", centerH: "50vh",
-      centerX: "38%", centerY: -60,
+      centerH: "50vh",
+      centerX: 0, centerY: -40,
       vpTop: 360, vpRight: 24, vpSize: 140,
       rightRight: "-18%", rightWidth: "33vw", rightBottom: 0,
       rightImgW: "31vw", rightImgH: 150, rightImgTop: 30, rightImgLeft: "-20px",
@@ -183,14 +182,14 @@ export const baseSlides: SlideData[] = [
     rightLogo: "/section3Img/starwarsLogo1.png",
     layout: {
       leftTop: "20%", leftLeft: "5%", leftWidth: "27vw", textTop: "160%",
-      centerW: "36vw", centerX: -100, centerY: 20, vpTop: 200,
+      centerY: 20, vpTop: 200,
       vpRight: 0, vpSize: 200, rightBottom: 80, rightRight: 0, rightWidth: "30vw",
       rightImgW: "22vw", rightImgTop: 210, rightImgLeft: 0,
       disneyTop: 160, dLogoTop: 120, dLogoLeft: -10, dLogoSize: 120,
     },
     layoutSm: {
-      leftTop: "18%", leftLeft: "6%", leftWidth: "40vw", textTop: "820%",
-      centerMaxW: 520, centerMaxH: 520, centerW: "100%", centerX: "13%", centerY: "-20%", vpTop: 330,
+      leftTop: "13%", leftLeft: "6%", leftWidth: "40vw",
+      centerY: "-20%", vpTop: 330,
       vpRight: 20, vpSize: 130, rightRight: "-33%", rightWidth: "50vw", rightImgH: "auto", rightImgW: "34vw",
       rightImgTop: 0, rightImgLeft: 10,
     },
@@ -211,7 +210,7 @@ export const baseSlides: SlideData[] = [
     },
     layoutSm: {
       leftTop: "20%", leftLeft: "10%", leftWidth: 380, textTop: "600%",
-      centerMaxW: 520, centerW: "auto", centerH: "auto",
+      centerW: "auto", centerH: "auto",
       centerX: 0, centerY: "5%", centerScale: 1,
       vpTop: 360, vpRight: 24, vpSize: 140,
       rightRight: 10, rightWidth: "20vw",
@@ -233,8 +232,8 @@ export const baseSlides: SlideData[] = [
       disneyTop: 10, dLogoTop: 320, dLogoLeft: 50, dLogoSize: 131,
     },
     layoutSm: {
-      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textTop: "400%", textLeft: 40,
-      centerMaxW: 600, centerMaxH: 600, centerX: "3%", centerY: "-12%", centerW: "auto", centerH: "auto",
+      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textTop: "430%", textLeft: 40,
+      centerX: "3%", centerY: "-12%", centerW: "auto", centerH: "auto",
       vpTop: 340, vpRight: 24, vpSize: 140,
       rightRight: 12, rightWidth: 280,
       rightImgW: 240, rightImgTop: 60, rightImgLeft: 40,
@@ -252,8 +251,8 @@ export const baseSlides: SlideData[] = [
       rightBottom: 120, rightRight: 80,
     },
     layoutSm: {
-      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textTop: "530%", textLeft: 40,
-      centerMaxW: 520, centerW: "auto", centerH: "auto", centerX: 0, centerY: "-20%",
+      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textLeft: 40,
+      centerW: "auto", centerH: "auto", centerX: 0, centerY: "-20%",
       vpTop: 320, vpRight: 20, vpSize: 130,
       rightRight: 16,
     },
@@ -353,6 +352,16 @@ export default function Section3() {
   const [mIndex, setMIndex] = useState(0);
   const mobStageRef = useRef<HTMLDivElement>(null);
 
+  // ✅ 스와이프 refs (조건문 밖! 훅 규칙 준수)
+  const swipeRef = useRef({
+    active: false,
+    startX: 0,
+    startY: 0,
+    locked: false,   // 가로 스와이프 확정 여부
+    fired: false,    // 한 번 넘겼는지(중복 방지)
+    pid: -1,
+  });
+
   // 데스크톱 refs
   const rootRef = useRef<HTMLElement>(null);
   const stackRef = useRef<HTMLDivElement>(null);
@@ -361,7 +370,6 @@ export default function Section3() {
   const count = slides.length;
 
   const idxRef = useRef(0);
-  const inViewRef = useRef(false);
   const lockRef = useRef(false);
   const accRef = useRef(0);
 
@@ -370,9 +378,6 @@ export default function Section3() {
 
   //  스냅/핸드오프 중복 방지
   const handoffLockRef = useRef(false);
-
-  //  IO ratio 저장 (훅은 컴포넌트 최상단에!)
-  const ratioRef = useRef(0);
 
   // 가상 y 구독
   useEffect(() => {
@@ -425,13 +430,8 @@ export default function Section3() {
       const rect = root.getBoundingClientRect();
       const vh = window.innerHeight;
 
-      // 화면과 겹치는지(조금이라도 보이는지)
       const visible = rect.bottom > 0 && rect.top < vh;
-
-      // top 근처(스냅/전환을 허용할 영역)
       const nearTop = rect.top > -ENTER_ZONE && rect.top < ENTER_ZONE;
-
-      // 완전히 화면을 덮고 있는 상태(정상적으로 섹션3 안에 있는 상태)
       const covering = rect.top <= 0 && rect.bottom >= vh;
 
       return visible && (nearTop || covering);
@@ -444,7 +444,7 @@ export default function Section3() {
       const rect = root.getBoundingClientRect();
       const vh = window.innerHeight;
 
-      //  (1) PRE-LOCK: "진입 직전" 스킵 방지 (canHandleHere()보다 먼저!)
+      // (1) PRE-LOCK: "진입 직전" 스킵 방지
       const approachingFromTop = dy > 0 && rect.top > 0 && rect.top < PRELOCK_ZONE;
       const approachingFromBottom = dy < 0 && rect.bottom < vh && rect.bottom > vh - PRELOCK_ZONE;
 
@@ -454,8 +454,6 @@ export default function Section3() {
 
         if (!handoffLockRef.current) {
           handoffLockRef.current = true;
-
-          // section3 top으로 강제 정렬
           scrollToSectionEdgeVirtual("#section3", "top", vYRef.current);
 
           window.setTimeout(() => {
@@ -465,16 +463,14 @@ export default function Section3() {
         return;
       }
 
-      //  (2) 여기서부터 "section3 내부/근처"일 때만 개입
+      // (2) section3 내부/근처일 때만 개입
       if (!canHandleHere()) {
         vscrollUnlock();
         return;
       }
 
-      // 여기부터 section3가 개입
       vscrollLock();
 
-      // 스냅/핸드오프 중이면 입력 먹고 종료
       if (handoffLockRef.current) {
         e.preventDefault();
         return;
@@ -482,29 +478,21 @@ export default function Section3() {
 
       const alignedTop = Math.abs(rect.top) <= ALIGN_EPS;
 
-      //  진입 스냅(기존 로직)
+      // 진입 스냅
       if (!alignedTop) {
         if (dy > 0 && rect.top > 0 && rect.top < ENTER_ZONE) {
           e.preventDefault();
           handoffLockRef.current = true;
-
           scrollToSectionEdgeVirtual("#section3", "top", vYRef.current);
-
-          window.setTimeout(() => {
-            handoffLockRef.current = false;
-          }, 520);
+          window.setTimeout(() => (handoffLockRef.current = false), 520);
           return;
         }
 
         if (dy < 0 && rect.top < 0 && rect.top > -ENTER_ZONE) {
           e.preventDefault();
           handoffLockRef.current = true;
-
           scrollToSectionEdgeVirtual("#section3", "top", vYRef.current);
-
-          window.setTimeout(() => {
-            handoffLockRef.current = false;
-          }, 520);
+          window.setTimeout(() => (handoffLockRef.current = false), 520);
           return;
         }
       }
@@ -513,7 +501,7 @@ export default function Section3() {
       const atFirstOut = idx === 0 && dy < 0;
       const atLastOut = idx === count - 1 && dy > 0;
 
-      //  첫/마지막 핸드오프
+      // 첫/마지막 핸드오프
       if (alignedTop && (atFirstOut || atLastOut)) {
         e.preventDefault();
 
@@ -537,7 +525,7 @@ export default function Section3() {
         return;
       }
 
-      //  내부 슬라이드 전환
+      // 내부 슬라이드 전환
       e.preventDefault();
 
       if (lockRef.current) return;
@@ -549,8 +537,6 @@ export default function Section3() {
       accRef.current = 0;
 
       lockRef.current = true;
-
-      accRef.current = 0;
       applyDesktopIndex(idx + dir);
 
       window.setTimeout(() => {
@@ -558,8 +544,6 @@ export default function Section3() {
       }, 520);
     };
 
-
-    //  capture:true로 App보다 먼저 wheel을 잡음
     window.addEventListener("wheel", onWheel, { passive: false, capture: true });
 
     return () => {
@@ -628,33 +612,103 @@ export default function Section3() {
       .to(imgEl, { x: dx, y: dy, autoAlpha: 0, duration: 1.05 }, 0);
   };
 
-  /* ------------------------- 모바일 전용 ------------------------- */
+  /* ------------------------- 모바일 전용: 점 클릭 + 스와이프 ------------------------- */
+  const mobileJump = (to: number) => {
+    if (to === mIndex) return;
+
+    const slideEl = mobStageRef.current?.querySelector(".s3-slide") as HTMLElement | null;
+    const centerImg = slideEl?.querySelector(".section3Meddle .marvelImg");
+    const leftGroup = slideEl?.querySelector(".section3Left");
+    const rightLogo = slideEl?.querySelector(".disneyLogo1");
+
+    gsap.timeline()
+      .to([centerImg, leftGroup, rightLogo].filter(Boolean), { autoAlpha: 0, duration: 0.25, ease: "power2.out" })
+      .add(() => setMIndex(to))
+      .add(() => {
+        const next = mobStageRef.current?.querySelector(".s3-slide") as HTMLElement | null;
+        const nCenter = next?.querySelector(".section3Meddle .marvelImg");
+        const nLeft = next?.querySelector(".section3Left");
+        const nRight = next?.querySelector(".disneyLogo1");
+        gsap.fromTo([nCenter, nLeft, nRight].filter(Boolean),
+          { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, ease: "power2.out" });
+      });
+  };
+
+  // ✅ 모바일 스와이프 핸들러 (훅 아님, 그냥 함수)
+  const SWIPE_MIN_PX = 42;    // 이 이상 움직이면 넘김
+  const SWIPE_EDGE_LOCK = 8; // 방향 판단용
+
+  const onPointerDown: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    if (!isMobile) return;
+    if (e.pointerType === "mouse") return;
+
+    const s = swipeRef.current;
+    s.active = true;
+    s.locked = false;
+    s.fired = false;
+    s.startX = e.clientX;
+    s.startY = e.clientY;
+    s.pid = e.pointerId;
+
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+
+  const onPointerMove: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    if (!isMobile) return;
+
+    const s = swipeRef.current;
+    if (!s.active || s.fired) return;
+
+    const dx = e.clientX - s.startX;
+    const dy = e.clientY - s.startY;
+    const adx = Math.abs(dx);
+    const ady = Math.abs(dy);
+
+    // 아직 방향 확정 전이면 의도 판단
+    if (!s.locked) {
+      if (adx < SWIPE_EDGE_LOCK && ady < SWIPE_EDGE_LOCK) return;
+
+      if (adx > ady) {
+        s.locked = true; // 가로 스와이프 확정
+      } else {
+        // 세로 스크롤 의도
+        s.active = false;
+        return;
+      }
+    }
+
+    // 가로 스와이프 확정이면 브라우저 동작 방지
+    e.preventDefault();
+
+    // 임계값 넘으면 한 번만 전환
+    if (adx >= SWIPE_MIN_PX) {
+      s.fired = true;
+      if (dx < 0) mobileJump(Math.min(mIndex + 1, count - 1)); // 왼쪽 밀기 = 다음
+      else mobileJump(Math.max(mIndex - 1, 0));               // 오른쪽 밀기 = 이전
+    }
+  };
+
+  const onPointerUp: React.PointerEventHandler<HTMLDivElement> = () => {
+    const s = swipeRef.current;
+    s.active = false;
+    s.locked = false;
+    s.fired = false;
+    s.pid = -1;
+  };
+
+  /* ------------------------- 모바일 ------------------------- */
   if (isMobile) {
-    const mobileJump = (to: number) => {
-      if (to === mIndex) return;
-
-      const slideEl = mobStageRef.current?.querySelector(".s3-slide") as HTMLElement | null;
-      const centerImg = slideEl?.querySelector(".section3Meddle .marvelImg");
-      const leftGroup = slideEl?.querySelector(".section3Left");
-      const rightLogo = slideEl?.querySelector(".disneyLogo1");
-
-      gsap.timeline()
-        .to([centerImg, leftGroup, rightLogo].filter(Boolean), { autoAlpha: 0, duration: 0.25, ease: "power2.out" })
-        .add(() => setMIndex(to))
-        .add(() => {
-          const next = mobStageRef.current?.querySelector(".s3-slide") as HTMLElement | null;
-          const nCenter = next?.querySelector(".section3Meddle .marvelImg");
-          const nLeft = next?.querySelector(".section3Left");
-          const nRight = next?.querySelector(".disneyLogo1");
-          gsap.fromTo([nCenter, nLeft, nRight].filter(Boolean),
-            { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, ease: "power2.out" });
-        });
-    };
-
     return (
       <section id="section3" className="s3-sticky-host">
         <div className="s3-viewport">
-          <div className="s3-stage" ref={mobStageRef}>
+          <div
+            className="s3-stage"
+            ref={mobStageRef}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+          >
             <Section3Slide {...slides[mIndex]} index={mIndex} />
           </div>
 

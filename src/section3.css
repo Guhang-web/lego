@@ -136,7 +136,6 @@
   height: 100%;
   max-width: var(--center-max-w, 600px);
   max-height: var(--center-max-h, 80vh);
-  min-width: 400px;
   object-fit: contain;
   transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1)));
   transform-origin: center;
@@ -252,6 +251,7 @@
   left: clamp(150px, 42vw, 400px);
   transform: (-50%, -50%);
   display: none;
+  z-index: 500;
 }
 
 #section3 .MobbleCheek .mc-dot {
@@ -377,17 +377,22 @@
     text-align: center;
   }
 
-  #section3 .s3-marvel .section3Meddle {
-    width: 100%;
-    top: 41%;
-    left: clamp(100px,62vw,500px);
+  #section3 .s3-stage {
+    touch-action: pan-y;
   }
 
-  #section3 .s3-marvel .section3Meddle .marvelImg {
-    width: 63vw;
-    height: 56vh;
-    min-width: 349px;
-    pointer-events: none;
+  #section3 .s3-marvel .section3Meddle {
+    top: 41%;
+    left: 50%;
+    width: min(92vw, var(--center-max-w, 520px));
+    height: auto;
+  }
+
+  #section3 .section3Meddle .marvelImg {
+    width: 100%;
+    height: auto;
+    max-height: 55vh;
+    object-fit: contain;
   }
 
   #section3 .section3Right {
@@ -430,7 +435,7 @@
   #section3 .s3-disney .section3Left .leftText {
     width: 309px;
     left: clamp(0px, 25vw, 180px);
-    top: 650px;
+    top: 660px;
     transform: translate(0, -50%);
   }
 
@@ -442,11 +447,6 @@
   #section3 .leftText .br-m {
     display: block;
     height: 0;
-  }
-
-  #section3 .s3-disney .section3Meddle .marvelImg {
-    width: 55vw;
-    min-width: 246px;
   }
 
   #section3 .s3-disney .section3Right {
@@ -463,6 +463,7 @@
 
   /* 닌자고 */
   #section3 .s3-ninjago .section3Left .leftText {
+    top: 520px;
     left: 3%;
     width: 80vw;
   }
@@ -473,8 +474,7 @@
   }
 
   #section3 .s3-ninjago .section3Meddle .marvelImg {
-    width: 67vw;
-    min-width: 306px;
+    min-width: 350px;
   }
 
   #section3 .s3-ninjago .section3Right {
@@ -494,9 +494,7 @@
   }
 
   #section3 .s3-starwars .section3Meddle .marvelImg {
-    width: 82vw;
-    height: 46vh;
-    min-width: 382.3px;
+    min-width: 300px;
   }
 
   #section3 .s3-starwars .section3Right {
@@ -516,16 +514,16 @@
   }
 
   #section3 .s3-city .section3Meddle .marvelImg {
-    width: 85vw;
-    min-width: 338.67px;
+    min-width: 300px;
   }
 
   #section3 .s3-city .section3Right {
     display: none;
   }
-
+  
   /* 해리포터 */
   #section3 .s3-harry .section3Left .leftText {
+    top: 500px;
     left: 0%;
     width: 80vw;
   }
@@ -537,27 +535,66 @@
   }
 
   #section3 .s3-harry .section3Meddle .marvelImg {
-    min-width: 308.57px;
-    width: 82vw;
+    min-width: 350px;
   }
 }
+#section3 .s3-harry .section3Right {
+  display: none;
+}
+
 #section3 .section3Meddle .viewPoint {
   display: none;
 }
 
 @media (max-width:660px) {
-    #section3 .s3-disney .section3Left .leftText {
+  #section3 .s3-disney .section3Left .leftText {
     left: clamp(0px, 20vw, 140px);
   }
 }
+
 @media (max-width:565px) {
-    #section3 .s3-disney .section3Left .leftText {
+  #section3 .s3-disney .section3Left .leftText {
     left: clamp(0px, 15vw, 120px);
-    top: 620px;
   }
 }
+
 @media (max-width:500px) {
-   #section3 .section3Left .marvelLogo {
+  #section3 .section3Left .marvelLogo {
     min-width: 150px;
+  }
+  #section3 .section3Left .leftText{
+    font-size: 14px;
+  }
+}
+@media (max-width:768px) and (min-height:1020px){
+    #section3 .s3-marvel .section3Left .leftText {
+    left: 120px;
+      top: 650px;
+  }
+    #section3 .s3-disney .section3Left .leftText {
+    left: 200px;
+      top: 760px;
+  }
+    #section3 .s3-ninjago .section3Left .leftText {
+      top: 600px;
+  }
+}
+
+@media (max-height:900px){
+  #section3 .s3-disney .section3Left .leftText {
+    left: 40px;
+    top: 560px;
+  }
+}
+@media (max-height:800px){
+  #section3 .s3-disney .section3Left .leftText {
+    left: 20px;
+    top: 480px;
+  }
+  #section3 .s3-ninjago .section3Left .leftText {
+    top: 400px;
+  }
+   #section3 .s3-harry .section3Left .leftText {
+    top: 400px;
   }
 }

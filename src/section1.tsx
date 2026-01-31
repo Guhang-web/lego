@@ -1,15 +1,66 @@
-import bg from './assets/section1/image108.png'
-import { useEffect, useRef, useState } from 'react'
-import './section1.css'
+import bg from "./assets/section1/image108.png";
+import { useEffect, useMemo, useRef, useState } from "react";
+import "./section1.css";
 
-// https://youtu.be/TEnKuXbeEwA 배경 영상 참조.
+function useInView<T extends Element>(options?: IntersectionObserverInit) {
+    const ref = useRef<T | null>(null);
+    const [inView, setInView] = useState(false);
+
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+
+        const io = new IntersectionObserver(([entry]) => {
+            setInView(entry.isIntersecting);
+        }, options);
+
+        io.observe(el);
+        return () => io.disconnect();
+    }, [options]);
+
+    return { ref, inView };
+}
+
+function shouldAutoplayVideo() {
+    // 1) 사용자/OS 설정 (모션 줄이기) 존중
+    const reduceMotion =
+        typeof window !== "undefined" &&
+        window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+    // 2) 데이터 절약 모드 / 느린망
+    const navAny = navigator as any;
+    const conn = navAny.connection || navAny.mozConnection || navAny.webkitConnection;
+    const saveData = !!conn?.saveData;
+    const effectiveType = (conn?.effectiveType as string | undefined) ?? "";
+    const slowNet = ["slow-2g", "2g", "3g"].includes(effectiveType);
+
+    // 3) 저사양 힌트 (대략적인 가드)
+    const deviceMemory = (navAny.deviceMemory as number | undefined) ?? 8; // GB 힌트(지원 안하면 8로 가정)
+    const cores = navigator.hardwareConcurrency ?? 8;
+    const lowSpec = deviceMemory <= 4 || cores <= 4;
+
+    // 영상 자동재생 허용 여부
+    return !(reduceMotion || saveData || slowNet || lowSpec);
+}
 
 export default function Section1() {
-
     const [menuOpen, setMenuOpen] = useState(false);
     const btnRef = useRef<HTMLImageElement | null>(null);
     const menuRef = useRef<HTMLDivElement | null>(null);
+    // 섹션이 보일 때만 영상 로드
+    const { ref: sectionRef, inView } = useInView<HTMLElement>({
+        root: null,
+        threshold: 0.15,
+    });
 
+    // 환경이 괜찮을 때만 자동재생
+    const canAutoplay = useMemo(() => shouldAutoplayVideo(), []);
+
+    // “한 번이라도 inView가 되면” iframe을 붙여서 다시 스크롤해도 재로딩 최소화
+    const [mountVideo, setMountVideo] = useState(false);
+    useEffect(() => {
+        if (inView && canAutoplay) setMountVideo(true);
+    }, [inView, canAutoplay]);
 
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
@@ -17,34 +68,41 @@ export default function Section1() {
         return () => window.removeEventListener("keydown", onKey);
     }, []);
 
-    // 메뉴 밖 클릭 시 닫기 (선택)
     useEffect(() => {
         if (!menuOpen) return;
         const onDown = (e: MouseEvent) => {
             const t = e.target as Node;
-            if (btnRef.current?.contains(t)) return;  // 버튼은 제외
-            if (menuRef.current?.contains(t)) return; // 메뉴 내부는 제외
+            if (btnRef.current?.contains(t)) return;
+            if (menuRef.current?.contains(t)) return;
             setMenuOpen(false);
         };
         window.addEventListener("mousedown", onDown);
         return () => window.removeEventListener("mousedown", onDown);
     }, [menuOpen]);
 
-
     return (
         <section
+            ref={sectionRef}
             id="section1"
-            style={{ backgroundImage: `url(${bg})` }}>
+            style={{ backgroundImage: `url(${bg})` }}
+        >
+            {/* 조건 충족 + 화면에 들어온 뒤에만 영상 마운트 */}
+            {mountVideo && (
+                <div className="bg-video" aria-hidden="true">
+                    <iframe
+                        title="레고 포트나이트 | 미지의 섬을 탐험해볼까요?"
+                        loading="lazy"
+                        // vq=small 은 비공식이지만 “가볍게 시작”에 도움되는 경우가 많음(환경마다 다름)
+                        src="https://www.youtube.com/embed/TEnKuXbeEwA?autoplay=1&mute=1&controls=0&loop=1&playlist=TEnKuXbeEwA&modestbranding=1&rel=0&playsinline=1&vq=small"
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                    />
+                    <div className="bg-overlay" />
+                </div>
+            )}
 
-            <div className="bg-video" aria-hidden="true">
-                <iframe
-                    title="레고 포트나이트 | 미지의 섬을 탐험해볼까요?"
-                    src="https://www.youtube.com/embed/TEnKuXbeEwA?autoplay=1&mute=1&controls=0&loop=1&playlist=TEnKuXbeEwA&modestbranding=1&rel=0&playsinline=1"
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                />
-                <div className="bg-overlay" />
-            </div>
+            {/* 자동재생 비권장 환경에서는 bg 이미지만 보여주고 끝 (렉 방지) */}
+            {!canAutoplay && <div className="bg-overlay" aria-hidden="true" />}
 
 
             <header id='header'>

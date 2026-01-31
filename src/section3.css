@@ -353,6 +353,15 @@
 }
 
 @media (max-width: 768px) {
+
+  #section3,
+  #section3.s3-sticky-host,
+  #section3 .s3-viewport,
+  #section3 .s3-stage,
+  #section3 .section3Meddle {
+    overscroll-behavior: auto;
+  }
+
   #section3 .section3Left .leftText {
     text-align: center;
     line-height: 1.55;
@@ -379,6 +388,7 @@
 
   #section3 .s3-stage {
     touch-action: pan-y;
+    -ms-touch-action: pan-y;
   }
 
   #section3 .s3-marvel .section3Meddle {
@@ -520,7 +530,7 @@
   #section3 .s3-city .section3Right {
     display: none;
   }
-  
+
   /* 해리포터 */
   #section3 .s3-harry .section3Left .leftText {
     top: 500px;
@@ -538,6 +548,7 @@
     min-width: 350px;
   }
 }
+
 #section3 .s3-harry .section3Right {
   display: none;
 }
@@ -562,39 +573,60 @@
   #section3 .section3Left .marvelLogo {
     min-width: 150px;
   }
-  #section3 .section3Left .leftText{
+
+  #section3 .section3Left .leftText {
     font-size: 14px;
   }
-}
-@media (max-width:768px) and (min-height:1020px){
-    #section3 .s3-marvel .section3Left .leftText {
-    left: 120px;
-      top: 650px;
-  }
-    #section3 .s3-disney .section3Left .leftText {
-    left: 200px;
-      top: 760px;
-  }
-    #section3 .s3-ninjago .section3Left .leftText {
-      top: 600px;
+
+  #section3 .s3-disney .section3Left .leftText {
+    top: 600px;
   }
 }
 
-@media (max-height:900px){
+@media (max-width:768px) and (min-height:1020px) {
+  #section3 .s3-marvel .section3Left .leftText {
+    left: 120px;
+    top: 650px;
+  }
+
+  #section3 .s3-disney .section3Left .leftText {
+    left: 200px;
+    top: 760px;
+  }
+
+  #section3 .s3-ninjago .section3Left .leftText {
+    top: 600px;
+  }
+}
+
+@media (max-height:900px) {
   #section3 .s3-disney .section3Left .leftText {
     left: 40px;
     top: 560px;
   }
 }
-@media (max-height:800px){
+
+@media (max-height:800px) {
   #section3 .s3-disney .section3Left .leftText {
     left: 20px;
     top: 480px;
   }
+
   #section3 .s3-ninjago .section3Left .leftText {
     top: 400px;
   }
-   #section3 .s3-harry .section3Left .leftText {
+
+  #section3 .s3-harry .section3Left .leftText {
     top: 400px;
+  }
+}
+
+@media (max-width:345px) {
+  #section3 .s3-disney .section3Left .leftText {
+    left: 0;
+  }
+
+  #section3 .MobbleCheek {
+    left: 120px;
   }
 }

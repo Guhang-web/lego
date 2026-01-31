@@ -352,7 +352,8 @@ export default function Section3() {
   const [mIndex, setMIndex] = useState(0);
   const mobStageRef = useRef<HTMLDivElement>(null);
 
-  // ✅ 스와이프 refs (조건문 밖! 훅 규칙 준수)
+  //  스와이프 refs (조건문 밖! 훅 규칙 준수)
+  // ★ 변경: captured 추가
   const swipeRef = useRef({
     active: false,
     startX: 0,
@@ -360,6 +361,7 @@ export default function Section3() {
     locked: false,   // 가로 스와이프 확정 여부
     fired: false,    // 한 번 넘겼는지(중복 방지)
     pid: -1,
+    captured: false, //  가로 확정 후에만 capture
   });
 
   // 데스크톱 refs
@@ -634,10 +636,11 @@ export default function Section3() {
       });
   };
 
-  // ✅ 모바일 스와이프 핸들러 (훅 아님, 그냥 함수)
+  // ✅ 모바일 스와이프 핸들러
   const SWIPE_MIN_PX = 42;    // 이 이상 움직이면 넘김
   const SWIPE_EDGE_LOCK = 8; // 방향 판단용
 
+  // ★ 변경: onPointerDown에서 capture 제거
   const onPointerDown: React.PointerEventHandler<HTMLDivElement> = (e) => {
     if (!isMobile) return;
     if (e.pointerType === "mouse") return;
@@ -646,13 +649,15 @@ export default function Section3() {
     s.active = true;
     s.locked = false;
     s.fired = false;
+    s.captured = false;
     s.startX = e.clientX;
     s.startY = e.clientY;
     s.pid = e.pointerId;
 
-    e.currentTarget.setPointerCapture?.(e.pointerId);
+    // ✅ 여기서 setPointerCapture 하지 않음 (세로 스크롤을 브라우저가 잡게)
   };
 
+  // ★ 변경: 가로 스와이프 "확정" 시에만 capture + preventDefault
   const onPointerMove: React.PointerEventHandler<HTMLDivElement> = (e) => {
     if (!isMobile) return;
 
@@ -669,15 +674,28 @@ export default function Section3() {
       if (adx < SWIPE_EDGE_LOCK && ady < SWIPE_EDGE_LOCK) return;
 
       if (adx > ady) {
-        s.locked = true; // 가로 스와이프 확정
+        //  가로 스와이프 확정
+        s.locked = true;
+
+        //  이때만 capture
+        if (!s.captured) {
+          e.currentTarget.setPointerCapture?.(s.pid);
+          s.captured = true;
+        }
       } else {
-        // 세로 스크롤 의도
+        //  세로 스크롤 의도 → 브라우저 스크롤에 맡기기
         s.active = false;
+
+        // 혹시 capture 됐으면 풀기
+        if (s.captured) {
+          try { e.currentTarget.releasePointerCapture?.(s.pid); } catch {}
+        }
+        s.captured = false;
         return;
       }
     }
 
-    // 가로 스와이프 확정이면 브라우저 동작 방지
+    // 가로 스와이프 확정된 경우에만 브라우저 동작 방지
     e.preventDefault();
 
     // 임계값 넘으면 한 번만 전환
@@ -688,16 +706,27 @@ export default function Section3() {
     }
   };
 
-  const onPointerUp: React.PointerEventHandler<HTMLDivElement> = () => {
+  // ★ 변경: capture 해제까지 처리
+  const onPointerUp: React.PointerEventHandler<HTMLDivElement> = (e) => {
     const s = swipeRef.current;
+
+    if (s.captured) {
+      try { e.currentTarget.releasePointerCapture?.(s.pid); } catch {}
+    }
+
     s.active = false;
     s.locked = false;
     s.fired = false;
     s.pid = -1;
+    s.captured = false;
   };
 
   /* ------------------------- 모바일 ------------------------- */
   if (isMobile) {
+    // ✅ 혹시 데스크톱 로직에서 lock이 남았을 가능성 차단
+    // (원치 않으면 지워도 되지만, "모바일 잠금 풀기"엔 이게 안전함)
+    vscrollUnlock();
+
     return (
       <section id="section3" className="s3-sticky-host">
         <div className="s3-viewport">

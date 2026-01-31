@@ -1,13 +1,11 @@
 // App.tsx
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import "./App.css";
 import FullPageNav from "./FullPageNav";
 
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
 export default function App() {
-  const [ready, setReady] = useState(false);
-
   //  실제로 transform 될 컨텐츠
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -24,7 +22,7 @@ export default function App() {
   const measure = () => {
     const el = contentRef.current;
     if (!el) return;
-    const contentH = el.scrollHeight;
+    const contentH = el.getBoundingClientRect().height;
     const maxY = Math.max(0, contentH - window.innerHeight);
     maxYRef.current = maxY;
     targetYRef.current = clamp(targetYRef.current, 0, maxY);
@@ -67,7 +65,6 @@ export default function App() {
       window.history.scrollRestoration = "manual";
     }
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    setReady(true);
   }, []);
 
   useEffect(() => {
@@ -103,18 +100,15 @@ export default function App() {
     measure();
     startRAF();
 
+    requestAnimationFrame(() => measure());
+    setTimeout(() => measure(), 0);
+
     // 이벤트 바인딩
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("resize", onResize);
     window.addEventListener("vscroll:to", onVscrollTo as EventListener);
-
-    //  lock/unlock 이벤트
     window.addEventListener("vscroll:lock", onLock);
     window.addEventListener("vscroll:unlock", onUnlock);
-
-    // 로드 후 이미지/폰트 반영되면 높이 바뀔 수 있으니 한번 더
-    const onLoad = () => measure();
-    window.addEventListener("load", onLoad);
 
     return () => {
       window.removeEventListener("wheel", onWheel as any);
@@ -122,7 +116,6 @@ export default function App() {
       window.removeEventListener("vscroll:to", onVscrollTo as EventListener);
       window.removeEventListener("vscroll:lock", onLock);
       window.removeEventListener("vscroll:unlock", onUnlock);
-      window.removeEventListener("load", onLoad);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
@@ -133,13 +126,6 @@ export default function App() {
       <div className="vs__content" ref={contentRef}>
         <FullPageNav />
       </div>
-
-      {/*  스크롤바 유지(선택) : 필요 없으면 제거해도 됨 */}
-      <div
-        className="vs__spacer"
-        aria-hidden="true"
-        style={{ height: maxYRef.current + window.innerHeight }}
-      />
     </div>
   );
 }

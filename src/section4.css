@@ -410,16 +410,6 @@
     --dur: 14.2s;
     --delay: 2.5s;
 }
-
-/* 접근성: 사용자가 모션 감소 선호 시 정지 */
-@media (prefers-reduced-motion: reduce) {
-    .fall {
-        /* animation: none !important; */
-        /* opacity: 1 !important; */
-        /* transform: none !important; */
-    }
-}
-
 #section4.force-anim .fall {
     animation-play-state: running !important;
 }

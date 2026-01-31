@@ -285,7 +285,14 @@ const Section4 = () => {
                         {spot && (
                             <div className="spotlight" onClick={() => setSpot(null)}>
                                 <div className="spotlightInner" onClick={(e) => e.stopPropagation()}>
-                                    <img ref={spotImgRef} className="spotlightImg" src={spot.src} alt={spot.alt} />
+                                    <img ref={spotImgRef} className="spotlightImg" src={spot.src} alt={spot.alt}
+                                        onClick={() => setSpot(null)}
+                                        role="button"
+                                        tabIndex={0}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter" || e.key === " ") setSpot(null);
+                                        }}
+                                    />
                                 </div>
                             </div>
                         )}

@@ -6,10 +6,12 @@ html,
 body {
     height: 100%;
     overflow: hidden;
+    overscroll-behavior: none;
 }
 
 .vs {
     position: relative;
+    width: 100%;
     height: 100vh;
     overflow-x: hidden;
     overflow-y: hidden;

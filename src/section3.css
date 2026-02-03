@@ -1,4 +1,4 @@
-@import 'swiper/css';
+@import "swiper/css";
 
 /* .page가 실제 스크롤 컨테이너라면(선택사항) */
 #section3 .page {
@@ -6,7 +6,6 @@
   /* 보통 이렇게 쓰고 */
   overflow-y: auto;
 }
-
 
 #section3 {
   height: 100vh;
@@ -48,7 +47,7 @@
   /* top/right/bottom/left: 0 */
   opacity: 0;
   pointer-events: none;
-  transition: opacity .5s ease;
+  transition: opacity 0.5s ease;
 }
 
 /* [추가] 현재 슬라이드만 보이게 */
@@ -56,7 +55,6 @@
   opacity: 1;
   pointer-events: auto;
 }
-
 
 .section3Left .abs {
   position: absolute;
@@ -137,10 +135,13 @@
   max-width: var(--center-max-w, 600px);
   max-height: var(--center-max-h, 80vh);
   object-fit: contain;
-  transform: translate(var(--center-x, 0px), var(--center-y, 0px)) scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1)));
+  transform: translate(var(--center-x, 0px), var(--center-y, 0px))
+    scale(calc(var(--center-scale, 1) * var(--hover-zoom, 1)));
   transform-origin: center;
   will-change: transform, opacity;
-  transition: opacity .2s ease, transform .6s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.6s ease;
   position: relative;
   z-index: 6;
   opacity: 1;
@@ -155,14 +156,16 @@
   width: var(--vp-size);
   height: var(--vp-size);
   border-radius: 50%;
-  background-color: #FFD700;
+  background-color: #ffd700;
   position: absolute;
   top: var(--vp-top);
   right: var(--vp-right);
   text-align: center;
   font-size: 24px;
   line-height: var(--vp-size);
-  transition: transform .06s linear, opacity .2s ease;
+  transition:
+    transform 0.06s linear,
+    opacity 0.2s ease;
   pointer-events: none;
   z-index: 200;
   opacity: 0;
@@ -182,7 +185,7 @@
   top: var(--cursor-y);
   right: auto;
   transform: translate(-50%, -50%);
-  opacity: .5;
+  opacity: 0.5;
 }
 
 /* 우측(프리뷰) */
@@ -194,7 +197,6 @@
   height: 600px;
 }
 
-
 /* 우측 영역 콘텐츠 */
 #section3 .section3Right .disneyPoint {
   width: 100%;
@@ -204,7 +206,7 @@
 
 #section3 .section3Right .disneyPoint .disneyLogo1 {
   position: absolute;
-  opacity: .5;
+  opacity: 0.5;
   top: var(--dlogo-top, 210px);
   left: var(--dlogo-left, -30px);
   width: var(--dlogo-size, 138px);
@@ -219,13 +221,12 @@
   left: var(--right-img-left, auto);
   right: var(--right-img-right, auto);
   filter: grayscale(var(--ghost-gray, 100%));
-  opacity: var(--ghost-opacity, .3);
+  opacity: var(--ghost-opacity, 0.3);
   display: block;
   transition: opacity 0.5s ease;
   transform: none;
   z-index: 5;
 }
-
 
 /* 공통 */
 #section3 ul {
@@ -274,22 +275,24 @@
 
 /* SVG 원 배경/전경 */
 #section3 .MobbleCheek .mc-bg {
-  fill: #E3E3E3;
+  fill: #e3e3e3;
 }
 
 #section3 .MobbleCheek .mc-fg {
-  fill: #E3E3E3;
+  fill: #e3e3e3;
   /* 숨김 */
-  transition: stroke-dashoffset .25s ease, stroke .2s ease;
+  transition:
+    stroke-dashoffset 0.25s ease,
+    stroke 0.2s ease;
 }
 
 /* 활성 점: 채워진 느낌 */
 #section3 .MobbleCheek .mc-dot.is-active .mc-fg {
-  fill: #A0A0A0;
+  fill: #a0a0a0;
 }
 
 #section3 .MobbleCheek .mc-dot:hover .mc-fg {
-  fill: #A0A0A0;
+  fill: #a0a0a0;
 }
 
 #section3 .leftText .br-m {
@@ -353,7 +356,6 @@
 }
 
 @media (max-width: 768px) {
-
   #section3,
   #section3.s3-sticky-host,
   #section3 .s3-viewport,
@@ -557,19 +559,19 @@
   display: none;
 }
 
-@media (max-width:660px) {
+@media (max-width: 660px) {
   #section3 .s3-disney .section3Left .leftText {
     left: clamp(0px, 20vw, 140px);
   }
 }
 
-@media (max-width:565px) {
+@media (max-width: 565px) {
   #section3 .s3-disney .section3Left .leftText {
     left: clamp(0px, 15vw, 120px);
   }
 }
 
-@media (max-width:500px) {
+@media (max-width: 500px) {
   #section3 .section3Left .marvelLogo {
     min-width: 150px;
   }
@@ -583,7 +585,7 @@
   }
 }
 
-@media (max-width:768px) and (min-height:1020px) {
+@media (max-width: 768px) and (min-height: 1020px) {
   #section3 .s3-marvel .section3Left .leftText {
     left: 120px;
     top: 650px;
@@ -599,34 +601,66 @@
   }
 }
 
-@media (max-height:900px) {
+@media (max-height: 900px) {
   #section3 .s3-disney .section3Left .leftText {
     left: 40px;
     top: 560px;
   }
 }
 
-@media (max-height:800px) {
+@media (max-width: 768px) and (max-height: 800px) {
   #section3 .s3-disney .section3Left .leftText {
-    left: 20px;
-    top: 480px;
+    left: clamp(0px, 26vw, 300px);
+    top: clamp(0px, 100vh, 580px);
+  }
+
+  #section3 .s3-ninjago .section3Left .leftText {
+    top: 450px;
+  }
+}
+@media (max-width: 541px) and (max-height: 721px) {
+  #section3 .s3-disney .section3Left .leftText {
+    left: clamp(0px, 20vw, 200px);
+    top: clamp(0px, 100vh, 500px);
   }
 
   #section3 .s3-ninjago .section3Left .leftText {
     top: 400px;
   }
-
   #section3 .s3-harry .section3Left .leftText {
     top: 400px;
   }
 }
 
-@media (max-width:345px) {
+@media (max-width: 376px) {
   #section3 .s3-disney .section3Left .leftText {
-    left: 0;
+    left: 20px;
+    top: 450px;
   }
-
+}
+@media (max-width: 345px) {
+  #section3 .s3-disney .section3Left .leftText {
+    top: 500px;
+  }
   #section3 .MobbleCheek {
     left: 120px;
+  }
+}
+@media (min-width: 1279px) and (max-height: 801px) {
+  #section3 .s3-disney .section3Left {
+    left: 100px;
+  }
+  #section3 .s3-disney .section3Left .leftText {
+    left: 0;
+    top: 140px;
+  }
+}
+@media (min-width: 1023px) and (max-height: 601px) {
+  #section3 .s3-disney .section3Left {
+    left: 20px;
+  }
+  #section3 .s3-disney .section3Left .leftText {
+    left: 0;
+    top: 140px;
   }
 }

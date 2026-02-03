@@ -71,10 +71,6 @@ const Section5 = () => {
             <ul className='section5DownRight'>
               <li className="section5Lego4">
                 <picture>
-                  {/* <source
-                    media="(max-width: 768px)"
-                    srcSet="/section5Img/section5Lego4Mb.png"
-                  /> */}
                   <img
                     key={`lego4-${animTick}`}
                     src="/section5Img/section5Lego4.png"

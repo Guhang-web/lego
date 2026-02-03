@@ -1,5 +1,5 @@
 // section3.tsx
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./section3.css";
 import { gsap } from "gsap";
 
@@ -9,22 +9,24 @@ const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(ma
 // 활성 슬라이드가 될 때 내부 요소들의 α를 복구 (클릭 전환 후 하얀 화면 방지)
 function resetSlideAlpha(slideEl: HTMLElement | null) {
   if (!slideEl) return;
+
   const centerImg = slideEl.querySelector<HTMLElement>(".section3Meddle .marvelImg");
   const leftGroup = slideEl.querySelector<HTMLElement>(".section3Left");
   const rightLogo = slideEl.querySelector<HTMLElement>(".disneyLogo1");
   const rightGhostImg = slideEl.querySelector<HTMLElement>(".disneyBlock img");
+
   gsap.set([centerImg, leftGroup, rightLogo, rightGhostImg], {
     clearProps: "opacity,visibility",
     autoAlpha: 1,
   });
 }
 
-//  App(가상스크롤)로 특정 y 이동
+// App(가상스크롤)로 특정 y 이동
 function vscrollTo(y: number) {
   window.dispatchEvent(new CustomEvent("vscroll:to", { detail: { y } }));
 }
 
-//  App(가상스크롤) 잠금/해제
+// App(가상스크롤) 잠금/해제
 function vscrollLock() {
   window.dispatchEvent(new Event("vscroll:lock"));
 }
@@ -32,7 +34,7 @@ function vscrollUnlock() {
   window.dispatchEvent(new Event("vscroll:unlock"));
 }
 
-//  가상스크롤 기준 섹션 스냅 이동(상단/하단 정렬)
+// 가상스크롤 기준 섹션 스냅 이동(상단/하단 정렬)
 function scrollToSectionEdgeVirtual(selector: string, edge: "top" | "bottom", currentY: number) {
   const el = document.querySelector<HTMLElement>(selector);
   if (!el) return;
@@ -49,20 +51,55 @@ function scrollToSectionEdgeVirtual(selector: string, edge: "top" | "bottom", cu
 }
 
 /* ================== 타입 ================== */
-export type LayoutVars = {
-  leftTop?: number | string; leftLeft?: number | string; leftWidth?: number | string; leftGap?: number | string;
-  centerW?: number | string; centerH?: number | string;
-  vpTop?: number | string; vpRight?: number | string; vpSize?: number | string;
-  rightBottom?: number | string; rightRight?: number | string; rightWidth?: number | string;
-  disneyTop?: number | string; dLogoTop?: number | string; dLogoLeft?: number | string; dLogoSize?: number | string;
-  logoW?: number | string; textFS?: number | string; textLH?: number | string; textMaxW?: number | string;
-  logoTop?: number | string; logoLeft?: number | string; textTop?: number | string; textLeft?: number | string;
-  centerMaxW?: number | string; centerMaxH?: number | string; centerX?: number | string; centerY?: number | string; centerScale?: number | string;
-  rightImgW?: number | string; rightImgH?: number | string; rightImgTop?: number | string; rightImgLeft?: number | string; rightImgRight?: number | string;
-  ghostOpacity?: number | string; ghostGray?: number | string;
+type LayoutVars = {
+  leftTop?: number | string;
+  leftLeft?: number | string;
+  leftWidth?: number | string;
+  leftGap?: number | string;
+
+  centerW?: number | string;
+  centerH?: number | string;
+
+  vpTop?: number | string;
+  vpRight?: number | string;
+  vpSize?: number | string;
+
+  rightBottom?: number | string;
+  rightRight?: number | string;
+  rightWidth?: number | string;
+
+  disneyTop?: number | string;
+  dLogoTop?: number | string;
+  dLogoLeft?: number | string;
+  dLogoSize?: number | string;
+
+  logoW?: number | string;
+  textFS?: number | string;
+  textLH?: number | string;
+  textMaxW?: number | string;
+
+  logoTop?: number | string;
+  logoLeft?: number | string;
+  textTop?: number | string;
+  textLeft?: number | string;
+
+  centerMaxW?: number | string;
+  centerMaxH?: number | string;
+  centerX?: number | string;
+  centerY?: number | string;
+  centerScale?: number | string;
+
+  rightImgW?: number | string;
+  rightImgH?: number | string;
+  rightImgTop?: number | string;
+  rightImgLeft?: number | string;
+  rightImgRight?: number | string;
+
+  ghostOpacity?: number | string;
+  ghostGray?: number | string;
 };
 
-export type SlideData = {
+type SlideData = {
   id?: string;
   logo: string;
   text: string;
@@ -73,10 +110,11 @@ export type SlideData = {
   layoutSm?: LayoutVars;
 };
 
-export type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
+type CSSVarStyle = React.CSSProperties & Record<`--${string}`, string | number>;
 
 const toVars = (v?: LayoutVars): CSSVarStyle => {
   const unit = (n?: number | string) => (n === undefined ? undefined : typeof n === "number" ? `${n}px` : n);
+
   return {
     ...(v?.leftTop !== undefined && { ["--left-top"]: unit(v.leftTop) }),
     ...(v?.leftLeft !== undefined && { ["--left-left"]: unit(v.leftLeft) }),
@@ -128,21 +166,56 @@ const toVars = (v?: LayoutVars): CSSVarStyle => {
 };
 
 /* ================== 유틸 ================== */
+type LegacyMQL = {
+  addListener: (listener: (ev: MediaQueryListEvent) => void) => void;
+  removeListener: (listener: (ev: MediaQueryListEvent) => void) => void;
+};
+
 function useIsMobile(bp = 768) {
   const [is, setIs] = useState(false);
+
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const m = window.matchMedia(`(max-width:${bp}px)`);
-    const on = () => setIs(m.matches);
-    on();
-    m.addEventListener?.("change", on);
-    return () => m.removeEventListener?.("change", on);
+
+    const onChange = (ev?: MediaQueryListEvent) => {
+      // ev가 있으면 ev.matches, 없으면 현재 m.matches
+      setIs(ev?.matches ?? m.matches);
+    };
+
+    // 최초 1회 동기화
+    onChange();
+
+    //  modern (표준)
+    if (typeof m.addEventListener === "function" && typeof m.removeEventListener === "function") {
+      m.addEventListener("change", onChange);
+      return () => m.removeEventListener("change", onChange);
+    }
+
+    //  legacy Safari fallback (deprecated지만 호환)
+    const legacy = m as unknown as Partial<LegacyMQL>;
+    const add = legacy.addListener;
+    const remove = legacy.removeListener;
+
+    if (typeof add === "function" && typeof remove === "function") {
+      add.call(m, onChange);
+      return () => remove.call(m, onChange);
+    }
+
+    return;
   }, [bp]);
+
   return is;
 }
-const mergeLayout = (base?: LayoutVars, override?: LayoutVars): LayoutVars => ({ ...(base || {}), ...(override || {}) });
+
+const mergeLayout = (base?: LayoutVars, override?: LayoutVars): LayoutVars => ({
+  ...(base || {}),
+  ...(override || {}),
+});
 
 /* ================== 데이터 ================== */
-export const baseSlides: SlideData[] = [
+const baseSlides: SlideData[] = [
   {
     id: "marvel",
     logo: "/section3Img/marvelLogo.png",
@@ -158,20 +231,45 @@ export const baseSlides: SlideData[] = [
     image: "/section3Img/disneyImg.png",
     rightLogo: "/section3Img/ninjagoLogo1.png",
     layout: {
-      leftTop: "14%", leftLeft: "13%", leftWidth: "24vw",
-      leftGap: 20, textTop: "80%", centerH: "81.1vh",
-      centerX: -30, centerY: 0, vpTop: 620, vpRight: 440, vpSize: 200,
-      rightBottom: 80, rightRight: 0, rightWidth: "21.6vw", rightImgW: "21.6vw",
-      rightImgTop: 130, rightImgRight: "6%", disneyTop: 110,
-      dLogoTop: 220, dLogoLeft: -50, dLogoSize: 120,
+      leftTop: "14%",
+      leftLeft: "13%",
+      leftWidth: "24vw",
+      leftGap: 20,
+      textTop: "80%",
+      centerH: "81.1vh",
+      centerX: -30,
+      centerY: 0,
+      vpTop: 620,
+      vpRight: 440,
+      vpSize: 200,
+      rightBottom: 80,
+      rightRight: 0,
+      rightWidth: "21.6vw",
+      rightImgW: "21.6vw",
+      rightImgTop: 130,
+      rightImgRight: "6%",
+      disneyTop: 110,
+      dLogoTop: 220,
+      dLogoLeft: -50,
+      dLogoSize: 120,
     },
     layoutSm: {
-      leftTop: "8%", leftLeft: "3%", leftWidth: "40vw",
+      leftTop: "8%",
+      leftLeft: "3%",
+      leftWidth: "40vw",
       centerH: "50vh",
-      centerX: 0, centerY: -40,
-      vpTop: 360, vpRight: 24, vpSize: 140,
-      rightRight: "-18%", rightWidth: "33vw", rightBottom: 0,
-      rightImgW: "31vw", rightImgH: 150, rightImgTop: 30, rightImgLeft: "-20px",
+      centerX: 0,
+      centerY: -40,
+      vpTop: 360,
+      vpRight: 24,
+      vpSize: 140,
+      rightRight: "-18%",
+      rightWidth: "33vw",
+      rightBottom: 0,
+      rightImgW: "31vw",
+      rightImgH: 150,
+      rightImgTop: 30,
+      rightImgLeft: "-20px",
     },
   },
   {
@@ -181,17 +279,39 @@ export const baseSlides: SlideData[] = [
     image: "/section3Img/ninjagoImg.png",
     rightLogo: "/section3Img/starwarsLogo1.png",
     layout: {
-      leftTop: "20%", leftLeft: "5%", leftWidth: "27vw", textTop: "160%",
-      centerY: 20, vpTop: 200,
-      vpRight: 0, vpSize: 200, rightBottom: 80, rightRight: 0, rightWidth: "30vw",
-      rightImgW: "22vw", rightImgTop: 210, rightImgLeft: 0,
-      disneyTop: 160, dLogoTop: 120, dLogoLeft: -10, dLogoSize: 120,
+      leftTop: "20%",
+      leftLeft: "5%",
+      leftWidth: "27vw",
+      textTop: "160%",
+      centerY: 20,
+      vpTop: 200,
+      vpRight: 0,
+      vpSize: 200,
+      rightBottom: 80,
+      rightRight: 0,
+      rightWidth: "30vw",
+      rightImgW: "22vw",
+      rightImgTop: 210,
+      rightImgLeft: 0,
+      disneyTop: 160,
+      dLogoTop: 120,
+      dLogoLeft: -10,
+      dLogoSize: 120,
     },
     layoutSm: {
-      leftTop: "13%", leftLeft: "6%", leftWidth: "40vw",
-      centerY: "-20%", vpTop: 330,
-      vpRight: 20, vpSize: 130, rightRight: "-33%", rightWidth: "50vw", rightImgH: "auto", rightImgW: "34vw",
-      rightImgTop: 0, rightImgLeft: 10,
+      leftTop: "13%",
+      leftLeft: "6%",
+      leftWidth: "40vw",
+      centerY: "-20%",
+      vpTop: 330,
+      vpRight: 20,
+      vpSize: 130,
+      rightRight: "-33%",
+      rightWidth: "50vw",
+      rightImgH: "auto",
+      rightImgW: "34vw",
+      rightImgTop: 0,
+      rightImgLeft: 10,
     },
   },
   {
@@ -201,20 +321,45 @@ export const baseSlides: SlideData[] = [
     image: "/section3Img/starwarsImg.png",
     rightLogo: "/section3Img/cityLogo1.png",
     layout: {
-      leftTop: 180, leftLeft: "5%", leftWidth: "27vw", textTop: 160,
-      centerW: "43vw", centerX: 20, centerY: 170,
-      vpTop: 460, vpRight: 85, vpSize: 200,
-      rightBottom: 100, rightRight: -20, rightWidth: "30vw",
-      rightImgW: "24vw", rightImgTop: 260, rightImgLeft: 0,
-      disneyTop: 20, dLogoTop: 280, dLogoLeft: -20, dLogoSize: 131,
+      leftTop: 180,
+      leftLeft: "5%",
+      leftWidth: "27vw",
+      textTop: 160,
+      centerW: "43vw",
+      centerX: 20,
+      centerY: 170,
+      vpTop: 460,
+      vpRight: 85,
+      vpSize: 200,
+      rightBottom: 100,
+      rightRight: -20,
+      rightWidth: "30vw",
+      rightImgW: "24vw",
+      rightImgTop: 260,
+      rightImgLeft: 0,
+      disneyTop: 20,
+      dLogoTop: 280,
+      dLogoLeft: -20,
+      dLogoSize: 131,
     },
     layoutSm: {
-      leftTop: "20%", leftLeft: "10%", leftWidth: 380, textTop: "600%",
-      centerW: "auto", centerH: "auto",
-      centerX: 0, centerY: "5%", centerScale: 1,
-      vpTop: 360, vpRight: 24, vpSize: 140,
-      rightRight: 10, rightWidth: "20vw",
-      rightImgW: "45vw", rightImgTop: 0, rightImgLeft: 0,
+      leftTop: "20%",
+      leftLeft: "10%",
+      leftWidth: 380,
+      textTop: "600%",
+      centerW: "auto",
+      centerH: "auto",
+      centerX: 0,
+      centerY: "5%",
+      centerScale: 1,
+      vpTop: 360,
+      vpRight: 24,
+      vpSize: 140,
+      rightRight: 10,
+      rightWidth: "20vw",
+      rightImgW: "45vw",
+      rightImgTop: 0,
+      rightImgLeft: 0,
     },
   },
   {
@@ -224,19 +369,46 @@ export const baseSlides: SlideData[] = [
     image: "/section3Img/cityImg.png",
     rightLogo: "/section3Img/harryPotterLogo1.png",
     layout: {
-      leftTop: 150, leftLeft: "5%", leftWidth: "24vw", textTop: 160, textLeft: 80,
-      centerW: "41vw", centerX: "-50px", centerY: 30,
-      vpTop: 450, vpRight: 580, vpSize: 200,
-      rightBottom: 130, rightRight: -20, rightWidth: "30vw",
-      rightImgW: "23vw", rightImgTop: 260, rightImgLeft: -10,
-      disneyTop: 10, dLogoTop: 320, dLogoLeft: 50, dLogoSize: 131,
+      leftTop: 150,
+      leftLeft: "5%",
+      leftWidth: "24vw",
+      textTop: 160,
+      textLeft: 80,
+      centerW: "41vw",
+      centerX: "-50px",
+      centerY: 30,
+      vpTop: 450,
+      vpRight: 580,
+      vpSize: 200,
+      rightBottom: 130,
+      rightRight: -20,
+      rightWidth: "30vw",
+      rightImgW: "23vw",
+      rightImgTop: 260,
+      rightImgLeft: -10,
+      disneyTop: 10,
+      dLogoTop: 320,
+      dLogoLeft: 50,
+      dLogoSize: 131,
     },
     layoutSm: {
-      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textTop: "430%", textLeft: 40,
-      centerX: "3%", centerY: "-12%", centerW: "auto", centerH: "auto",
-      vpTop: 340, vpRight: 24, vpSize: 140,
-      rightRight: 12, rightWidth: 280,
-      rightImgW: 240, rightImgTop: 60, rightImgLeft: 40,
+      leftTop: "16%",
+      leftLeft: "10%",
+      leftWidth: 380,
+      textTop: "430%",
+      textLeft: 40,
+      centerX: "3%",
+      centerY: "-12%",
+      centerW: "auto",
+      centerH: "auto",
+      vpTop: 340,
+      vpRight: 24,
+      vpSize: 140,
+      rightRight: 12,
+      rightWidth: 280,
+      rightImgW: 240,
+      rightImgTop: 60,
+      rightImgLeft: 40,
     },
   },
   {
@@ -245,21 +417,38 @@ export const baseSlides: SlideData[] = [
     text: "수많은 마법사의 꿈이 머물렀던 곳, 호그와트.<br/>신비로운 마법의 세계로 모험을 떠나보세요.",
     image: "/section3Img/harryPotterImg.png",
     layout: {
-      leftTop: 180, leftLeft: "5%", leftWidth: "23vw", textTop: 100, textLeft: "17%",
-      centerW: "40vw", centerX: -100, centerY: 0,
-      vpTop: 402, vpRight: -125, vpSize: 200,
-      rightBottom: 120, rightRight: 80,
+      leftTop: 180,
+      leftLeft: "5%",
+      leftWidth: "23vw",
+      textTop: 100,
+      textLeft: "17%",
+      centerW: "40vw",
+      centerX: -100,
+      centerY: 0,
+      vpTop: 402,
+      vpRight: -125,
+      vpSize: 200,
+      rightBottom: 120,
+      rightRight: 80,
     },
     layoutSm: {
-      leftTop: "16%", leftLeft: "10%", leftWidth: 380, textLeft: 40,
-      centerW: "auto", centerH: "auto", centerX: 0, centerY: "-20%",
-      vpTop: 320, vpRight: 20, vpSize: 130,
+      leftTop: "16%",
+      leftLeft: "10%",
+      leftWidth: 380,
+      textLeft: 40,
+      centerW: "auto",
+      centerH: "auto",
+      centerX: 0,
+      centerY: "-20%",
+      vpTop: 320,
+      vpRight: 20,
+      vpSize: 130,
       rightRight: 16,
     },
   },
 ];
 
-export const slides: SlideData[] = baseSlides.map((s, i, arr) => ({
+const slides: SlideData[] = baseSlides.map((s, i, arr) => ({
   ...s,
   rightGhost: i < arr.length - 1 ? arr[i + 1].image : undefined,
 }));
@@ -267,22 +456,28 @@ export const slides: SlideData[] = baseSlides.map((s, i, arr) => ({
 /* ================== 슬라이드 뷰 ================== */
 type GhostClick = (imgEl: HTMLImageElement, index: number) => void;
 
-export function Section3Slide({
-  id, logo, text, image, rightLogo, rightGhost, layout, layoutSm,
-  onGhostClick, index,
-}: SlideData & { onGhostClick?: GhostClick; index?: number }) {
+function Section3Slide({
+  id,
+  logo,
+  text,
+  image,
+  rightLogo,
+  rightGhost,
+  layout,
+  layoutSm,
+  onGhostClick,
+  index,
+}: SlideData & { onGhostClick?: GhostClick; index: number }) {
   const meddleRef = useRef<HTMLUListElement>(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [active, setActive] = useState(false);
   const [hovering, setHovering] = useState(false);
 
   const isMobile = useIsMobile(768);
-  const effectiveLayout = isMobile ? mergeLayout(layout, layoutSm) : (layout || {});
+  const effectiveLayout = isMobile ? mergeLayout(layout, layoutSm) : layout || {};
 
-  const logoAbs =
-    !isMobile && (effectiveLayout?.logoTop !== undefined || effectiveLayout?.logoLeft !== undefined);
-  const textAbs =
-    !isMobile && (effectiveLayout?.textTop !== undefined || effectiveLayout?.textLeft !== undefined);
+  const logoAbs = !isMobile && (effectiveLayout.logoTop !== undefined || effectiveLayout.logoLeft !== undefined);
+  const textAbs = !isMobile && (effectiveLayout.textTop !== undefined || effectiveLayout.textLeft !== undefined);
 
   const onMove: React.MouseEventHandler<HTMLUListElement> = (e) => {
     const wrap = meddleRef.current;
@@ -293,36 +488,47 @@ export function Section3Slide({
 
   const rootCls = ["s3-slide", id ? `s3-${id}` : ""].filter(Boolean).join(" ");
 
+  const cursorStyle: CSSVarStyle = {
+    ["--cursor-x"]: `${cursor.x}px`,
+    ["--cursor-y"]: `${cursor.y}px`,
+  };
+
   return (
     <div className={rootCls} style={toVars(effectiveLayout)}>
       <ul className="section3Left">
-        <img
-          className={`marvelLogo ${logoAbs ? "abs" : ""}`}
-          src={logo}
-          alt="브랜드 로고"
-        />
-        <p
-          className={`leftText ${textAbs ? "abs" : ""}`}
-          dangerouslySetInnerHTML={{ __html: text }}
-        />
+        <img className={`marvelLogo ${logoAbs ? "abs" : ""}`} src={logo} alt="브랜드 로고" />
+        <p className={`leftText ${textAbs ? "abs" : ""}`} dangerouslySetInnerHTML={{ __html: text }} />
       </ul>
 
       <ul
         ref={meddleRef}
         className={`section3Meddle ${active ? "cursor-mode" : ""}`}
-        style={{ ["--cursor-x"]: `${cursor.x}px`, ["--cursor-y"]: `${cursor.y}px` } as CSSVarStyle}
-        onMouseEnter={() => { setActive(true); setHovering(true); }}
-        onMouseLeave={() => { setActive(false); setHovering(false); }}
+        style={cursorStyle}
+        onMouseEnter={() => {
+          setActive(true);
+          setHovering(true);
+        }}
+        onMouseLeave={() => {
+          setActive(false);
+          setHovering(false);
+        }}
         onMouseMove={onMove}
       >
         <img className="marvelImg" src={image} alt="메인 이미지" />
-        <li className={`viewPoint ${hovering ? "show" : ""}`}><p>VIEW MORE</p></li>
+        <li className={`viewPoint ${hovering ? "show" : ""}`}>
+          <p>VIEW MORE</p>
+        </li>
       </ul>
 
       <div className="section3Right">
         {(rightLogo || rightGhost) && (
           <ul className="disneyPoint">
-            {rightLogo && <li className="disneyLogo1"><img src={rightLogo} alt="우측 로고" /></li>}
+            {rightLogo && (
+              <li className="disneyLogo1">
+                <img src={rightLogo} alt="우측 로고" />
+              </li>
+            )}
+
             {rightGhost && (
               <li className="disneyBlock">
                 {isMobile ? (
@@ -331,7 +537,7 @@ export function Section3Slide({
                   <img
                     src={rightGhost}
                     alt="다음 장 프리뷰(표시용)"
-                    onClick={(e) => onGhostClick?.(e.currentTarget as HTMLImageElement, index ?? 0)}
+                    onClick={(e: React.MouseEvent<HTMLImageElement>) => onGhostClick?.(e.currentTarget, index)}
                     style={{ cursor: "pointer" }}
                   />
                 )}
@@ -352,16 +558,15 @@ export default function Section3() {
   const [mIndex, setMIndex] = useState(0);
   const mobStageRef = useRef<HTMLDivElement>(null);
 
-  //  스와이프 refs (조건문 밖! 훅 규칙 준수)
-  // ★ 변경: captured 추가
+  // 스와이프 refs (훅 규칙 준수)
   const swipeRef = useRef({
     active: false,
     startX: 0,
     startY: 0,
-    locked: false,   // 가로 스와이프 확정 여부
-    fired: false,    // 한 번 넘겼는지(중복 방지)
+    locked: false, // 가로 스와이프 확정 여부
+    fired: false, // 한 번 넘겼는지(중복 방지)
     pid: -1,
-    captured: false, //  가로 확정 후에만 capture
+    captured: false, // 가로 확정 후에만 capture
   });
 
   // 데스크톱 refs
@@ -375,20 +580,21 @@ export default function Section3() {
   const lockRef = useRef(false);
   const accRef = useRef(0);
 
-  //  가상 스크롤 현재 y
+  // 가상스크롤 현재 y
   const vYRef = useRef(0);
 
-  //  스냅/핸드오프 중복 방지
+  // 스냅/핸드오프 중복 방지
   const handoffLockRef = useRef(false);
 
   // 가상 y 구독
   useEffect(() => {
-    const onVscroll = (e: Event) => {
-      const ce = e as CustomEvent<{ y: number }>;
-      vYRef.current = ce?.detail?.y ?? 0;
+    const onVscroll: EventListener = (ev) => {
+      const ce = ev as CustomEvent<{ y: number }>;
+      vYRef.current = ce.detail?.y ?? 0;
     };
-    window.addEventListener("vscroll", onVscroll as EventListener);
-    return () => window.removeEventListener("vscroll", onVscroll as EventListener);
+
+    window.addEventListener("vscroll", onVscroll);
+    return () => window.removeEventListener("vscroll", onVscroll);
   }, []);
 
   const applyDesktopIndex = (next: number) => {
@@ -405,7 +611,7 @@ export default function Section3() {
     resetSlideAlpha(items[idx]);
   };
 
-  /* -------------------------  데스크톱: wheel-swipe + lock/unlock + vscroll:to 핸드오프 (FIXED) ------------------------- */
+  /* ------------------------- 데스크톱: wheel-swipe + lock/unlock + vscroll:to 핸드오프 ------------------------- */
   useEffect(() => {
     const root = rootRef.current;
     const stack = stackRef.current;
@@ -439,7 +645,8 @@ export default function Section3() {
       return visible && (nearTop || covering);
     };
 
-    const onWheel = (e: WheelEvent) => {
+    const onWheel: EventListener = (ev) => {
+      const e = ev as WheelEvent;
       if (clickingLockRef.current) return;
 
       const dy = e.deltaY;
@@ -549,7 +756,7 @@ export default function Section3() {
     window.addEventListener("wheel", onWheel, { passive: false, capture: true });
 
     return () => {
-      window.removeEventListener("wheel", onWheel as any, true);
+      window.removeEventListener("wheel", onWheel, { capture: true });
       vscrollUnlock();
       accRef.current = 0;
     };
@@ -584,6 +791,7 @@ export default function Section3() {
     const rightLogo = slideEl.querySelector<HTMLElement>(".disneyLogo1");
 
     const rect = imgEl.getBoundingClientRect();
+
     gsap.set(imgEl, {
       position: "fixed",
       left: rect.left,
@@ -599,17 +807,19 @@ export default function Section3() {
     const targetY = window.innerHeight / 2;
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
+
     const dx = targetX - cx;
     const dy = targetY - cy;
 
-    gsap.timeline({
-      defaults: { ease: "power3.inOut" },
-      onComplete: () => {
-        gsap.set(imgEl, { clearProps: "all" });
-        applyDesktopIndex(nextIndex);
-        clickingLockRef.current = false;
-      },
-    })
+    gsap
+      .timeline({
+        defaults: { ease: "power3.inOut" },
+        onComplete: () => {
+          gsap.set(imgEl, { clearProps: "all" });
+          applyDesktopIndex(nextIndex);
+          clickingLockRef.current = false;
+        },
+      })
       .to([centerImg, leftGroup, rightLogo].filter(Boolean), { autoAlpha: 0.25, duration: 0.3 }, 0)
       .to(imgEl, { x: dx, y: dy, autoAlpha: 0, duration: 1.05 }, 0);
   };
@@ -623,7 +833,8 @@ export default function Section3() {
     const leftGroup = slideEl?.querySelector(".section3Left");
     const rightLogo = slideEl?.querySelector(".disneyLogo1");
 
-    gsap.timeline()
+    gsap
+      .timeline()
       .to([centerImg, leftGroup, rightLogo].filter(Boolean), { autoAlpha: 0, duration: 0.25, ease: "power2.out" })
       .add(() => setMIndex(to))
       .add(() => {
@@ -631,16 +842,15 @@ export default function Section3() {
         const nCenter = next?.querySelector(".section3Meddle .marvelImg");
         const nLeft = next?.querySelector(".section3Left");
         const nRight = next?.querySelector(".disneyLogo1");
-        gsap.fromTo([nCenter, nLeft, nRight].filter(Boolean),
-          { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, ease: "power2.out" });
+
+        gsap.fromTo([nCenter, nLeft, nRight].filter(Boolean), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, ease: "power2.out" });
       });
   };
 
-  // ✅ 모바일 스와이프 핸들러
-  const SWIPE_MIN_PX = 42;    // 이 이상 움직이면 넘김
+  // 모바일 스와이프 핸들러
+  const SWIPE_MIN_PX = 42; // 이 이상 움직이면 넘김
   const SWIPE_EDGE_LOCK = 8; // 방향 판단용
 
-  // ★ 변경: onPointerDown에서 capture 제거
   const onPointerDown: React.PointerEventHandler<HTMLDivElement> = (e) => {
     if (!isMobile) return;
     if (e.pointerType === "mouse") return;
@@ -653,11 +863,9 @@ export default function Section3() {
     s.startX = e.clientX;
     s.startY = e.clientY;
     s.pid = e.pointerId;
-
-    // ✅ 여기서 setPointerCapture 하지 않음 (세로 스크롤을 브라우저가 잡게)
+    // ✅ 여기서는 capture 하지 않음 (세로 스크롤을 브라우저에 맡김)
   };
 
-  // ★ 변경: 가로 스와이프 "확정" 시에만 capture + preventDefault
   const onPointerMove: React.PointerEventHandler<HTMLDivElement> = (e) => {
     if (!isMobile) return;
 
@@ -669,26 +877,27 @@ export default function Section3() {
     const adx = Math.abs(dx);
     const ady = Math.abs(dy);
 
-    // 아직 방향 확정 전이면 의도 판단
     if (!s.locked) {
       if (adx < SWIPE_EDGE_LOCK && ady < SWIPE_EDGE_LOCK) return;
 
       if (adx > ady) {
-        //  가로 스와이프 확정
+        // 가로 스와이프 확정
         s.locked = true;
 
-        //  이때만 capture
         if (!s.captured) {
           e.currentTarget.setPointerCapture?.(s.pid);
           s.captured = true;
         }
       } else {
-        //  세로 스크롤 의도 → 브라우저 스크롤에 맡기기
+        // 세로 스크롤 의도 → 브라우저에 맡기기
         s.active = false;
 
-        // 혹시 capture 됐으면 풀기
         if (s.captured) {
-          try { e.currentTarget.releasePointerCapture?.(s.pid); } catch {}
+          try {
+            e.currentTarget.releasePointerCapture?.(s.pid);
+          } catch {
+            // capture가 이미 해제된 상태 등은 무시
+          }
         }
         s.captured = false;
         return;
@@ -698,20 +907,22 @@ export default function Section3() {
     // 가로 스와이프 확정된 경우에만 브라우저 동작 방지
     e.preventDefault();
 
-    // 임계값 넘으면 한 번만 전환
     if (adx >= SWIPE_MIN_PX) {
       s.fired = true;
-      if (dx < 0) mobileJump(Math.min(mIndex + 1, count - 1)); // 왼쪽 밀기 = 다음
-      else mobileJump(Math.max(mIndex - 1, 0));               // 오른쪽 밀기 = 이전
+      if (dx < 0) mobileJump(Math.min(mIndex + 1, count - 1)); // 왼쪽 = 다음
+      else mobileJump(Math.max(mIndex - 1, 0)); // 오른쪽 = 이전
     }
   };
 
-  // ★ 변경: capture 해제까지 처리
   const onPointerUp: React.PointerEventHandler<HTMLDivElement> = (e) => {
     const s = swipeRef.current;
 
     if (s.captured) {
-      try { e.currentTarget.releasePointerCapture?.(s.pid); } catch {}
+      try {
+        e.currentTarget.releasePointerCapture?.(s.pid);
+      } catch {
+        // capture 해제가 이미 된 경우 등은 무시
+      }
     }
 
     s.active = false;
@@ -723,8 +934,7 @@ export default function Section3() {
 
   /* ------------------------- 모바일 ------------------------- */
   if (isMobile) {
-    // ✅ 혹시 데스크톱 로직에서 lock이 남았을 가능성 차단
-    // (원치 않으면 지워도 되지만, "모바일 잠금 풀기"엔 이게 안전함)
+    // 모바일에서 데스크톱 로직 잔여 lock 방지
     vscrollUnlock();
 
     return (
@@ -743,14 +953,14 @@ export default function Section3() {
 
           <nav className="MobbleCheek" aria-label="Slides">
             {Array.from({ length: count }).map((_, i) => {
-              const active = i === mIndex;
+              const activeDot = i === mIndex;
               return (
                 <button
                   key={i}
                   type="button"
-                  className={`mc-dot ${active ? "is-active" : ""}`}
+                  className={`mc-dot ${activeDot ? "is-active" : ""}`}
                   aria-label={`Go to slide ${i + 1}`}
-                  aria-current={active ? "page" : undefined}
+                  aria-current={activeDot ? "page" : undefined}
                   onClick={() => mobileJump(i)}
                 >
                   <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
@@ -772,12 +982,7 @@ export default function Section3() {
         <div className="s3-stage">
           <div className="s3-stack" ref={stackRef}>
             {slides.map((s, i) => (
-              <Section3Slide
-                key={s.id ?? i}
-                {...s}
-                index={i}
-                onGhostClick={handleGhostClick}
-              />
+              <Section3Slide key={s.id ?? i} {...s} index={i} onGhostClick={handleGhostClick} />
             ))}
           </div>
         </div>

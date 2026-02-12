@@ -863,7 +863,6 @@ export default function Section3() {
     s.startX = e.clientX;
     s.startY = e.clientY;
     s.pid = e.pointerId;
-    // ✅ 여기서는 capture 하지 않음 (세로 스크롤을 브라우저에 맡김)
   };
 
   const onPointerMove: React.PointerEventHandler<HTMLDivElement> = (e) => {

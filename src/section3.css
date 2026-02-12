@@ -549,15 +549,15 @@
   #section3 .s3-harry .section3Meddle .marvelImg {
     min-width: 350px;
   }
+  #section3 .s3-harry .section3Right {
+    display: none;
+  }
+  
+  #section3 .section3Meddle .viewPoint {
+    display: none;
+  }
 }
 
-#section3 .s3-harry .section3Right {
-  display: none;
-}
-
-#section3 .section3Meddle .viewPoint {
-  display: none;
-}
 
 @media (max-width: 660px) {
   #section3 .s3-disney .section3Left .leftText {

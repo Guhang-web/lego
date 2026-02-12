@@ -1,44 +1,102 @@
-# 250913
+# LEGO — Virtual Scroll Interactive Portfolio (React + TypeScript)
 
-1. 휠 -> 스크롤 변경 o
+> 브라우저 기본 스크롤 대신 **가상 스크롤(Virtual Scroll)** 을 구현해  
+> 섹션 간 전환/애니메이션 타이밍을 일관되게 제어하는 인터랙티브 포트폴리오입니다.
 
-2. 헤더 높이값 줄이기  o
+## Demo
+- Live: https://lego-x31y.vercel.app/
+- Repo: https://github.com/Guhang-web/lego
 
-3. https://www.jungkwanjang.co.kr/ o
+---
 
-4. hover전에는 안보이게  o
+## Tech Stack
+- React + TypeScript
+- Vite
+- CSS (섹션별 분리)
+- Custom Event 기반 스크롤 상태 전달 (`vscroll`)
 
-5. 가로스크롤 휠 제거 -> 이미지가 커지면서 텍스트도 바뀌게   o
+---
 
-6. box hover시 이미지만 커지게 o
+## Key Architecture 
 
-7. hover시 텍스트 커지는건 전부 칼라로 변경 o
+### 1. Virtual Scroll (App.tsx)
+이 프로젝트는 실제 브라우저 스크롤 대신, 다음 구조로 “스크롤 느낌”을 직접 구현합니다.
 
-8. 10개정도 awwwards에서 찾아오기
---------------------------------------------
-1. https://www.igloo.inc/   이글루 주식회사
+- `wheel` 입력을 받아 목표 스크롤 값(`targetYRef`)을 갱신
+- `requestAnimationFrame` 루프에서 현재 값(`currentYRef`)을 목표값으로 **부드럽게 보간(easing)**
+- 결과를 콘텐츠 래퍼에 `translate3d`로 적용하여 화면을 이동시킴
 
-2. https://cornrevolution.resn.global/#science 옥수수혁명 개척자
+```ts
+el.style.transform = `translate3d(0, ${-currentYRef.current}px, 0)`;
+```
+### 2. Scroll State 공유 방식: CustomEvent
 
-3. https://bruno-simon.com/
-브루노 사이먼 포토폴리오
+가상 스크롤의 현재 위치는 매 프레임 `CustomEvent`로 브로드캐스트합니다.
+- dispatch:
+  - `window.dispatchEvent(new CustomEvent("vscroll", { detail: { y } }))`
+- 섹션 구독:
+  - `window.addEventListener("vscroll", ...)`
+또한 “이동/잠금” 같은 제어도 이벤트로 분리되어 있습니다.
 
-4. https://www.orano.group/experience/innovation/en              오라노
+- `vscroll:to` : 특정 y로 강제 이동
+- `vscroll:lock` / `vscroll:unlock` : 휠 입력 잠금(예: 섹션 내부 연출이 끝날 때까지 고정)
 
-5. https://toptier.relats.com/ firma 회사
+---
 
-6. https://www.theupandupgroup.com/ up&up
+### 3. Layout 측정/범위 제한
 
-7. https://eddie.eco/ 에디 회사
+콘텐츠 높이를 측정해 최대 스크롤 범위(`maxYRef`)를 계산합니다.
 
-8. https://itempire.com/ IT제국 회사
+- `contentHeight - viewportHeight` 로 최대 이동 가능 범위 산정
+- `clamp()`로 `target/current` 값이 범위를 벗어나지 않도록 보정
 
-9. https://iconsax.io/ 아이콘삭스 회사
+---
 
-10. https://restaurantgem.com/  레스토랑 GEM
+## Page Composition (FullPageNav.tsx)
 
-11. https://mont-fort.com/  몽포르
+`FullPageNav`가 실제 페이지(섹션)를 조립합니다.
 
-12. https://kriss.ai/home/front-desk  크리스 에이아이
+- `Section1~5` + `Footer`
+- 각 섹션은 `<section id="sectionX">` 형태로 구분 (앵커 이동/네비게이션 연결에 유리)
 
-13. https://unseen.co/  보이지않는 스튜디오
+---
+
+## Sections Overview
+
+### Section 1 — Intro (Video + Navigation)
+- 배경 영상 기반 인트로 섹션
+- 메뉴 네비게이션을 통해 섹션 이동의 진입점을 제공
+
+### Section 2 — Parallax Object (LEGO Center Follow)
+- 중앙 레고 이미지를 스크롤 진행도에 연동
+- 스크롤에 따라 레고 이미지가 위/아래로 자연스럽게 이동하는 연출
+
+### Section 3 — Wheel-based Slide Showcase
+- 휠 입력 기반으로 슬라이드가 전환되는 구조
+- 중앙 이미지는 Hover 인터랙션 제공
+- 좌측(흑색) 이미지 클릭 시 다음 슬라이드로 이동하는 네비게이션 동작 포함
+
+### Section 4 — Drop & Settle Animation
+- 섹션 진입 시 레고 오브젝트들이 “떨어지는” 연출로 등장
+- 각 오브젝트가 지정 위치로 안착하며 마무리되는 애니메이션
+
+### Section 5 — Pop-out & Settle Animation
+- Section4와 유사한 “안착” 컨셉이지만, 낙하가 아닌 “튀어나오는(pop-out)” 방식
+- 이미지들이 등장 후 제자리로 정렬/안착되는 애니메이션
+
+---
+
+## File Structure
+
+src/
+- `App.tsx`
+  - 가상 스크롤 코어 (wheel + RAF + transform)
+  - `vscroll` 커스텀 이벤트 발행, `to/lock` 제어 수신
+- `FullPageNav.tsx`
+  - 섹션 조립(Section1~5, Footer)
+- `section1.tsx ~ section5.tsx`
+  - 섹션 단위 UI/연출
+- `section1.css ~ section5.css`
+  - 섹션별 스타일
+- `reset.css` / `index.css` / `App.css`
+  - 전역/레이아웃 스타일
